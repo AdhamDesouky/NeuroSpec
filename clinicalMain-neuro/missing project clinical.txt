@@ -1,0 +1,232 @@
+kont b3ml eh 2bl ma anam:
+
+random thoughts:
+
+-follow-up during allowed time, if exceeded new consultation
+||
+-when booking a consultation, book a follow-up
+
+-update visit
+
+-when switching packages, the system should calculate the difference based on how many sessions left, total price of session/number of sessions in package to get session price, discount that price from the new package
+
+-who can delete what:
+--admin can delete all
+--reciptionist request access before delete?
+
+-access request:
+--delete
+--view full visit or patient data
+
+- visit to have pending bool for physician to request a follow up, to be finalized with reception
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+unfinished bussiness:
+
+1-add real data to all tables in db
+
+2-Yktb al modda mn al awl w y3addel b3dha law fe progress ahsn mn al motwk3
+
+3-reminder lel syana bta3t al aghza w al equipment fl clinic 
+
+4-chat bot
+
+5-ML and Desicion support
+
+6- print the prescription properly
+
+7- salary and shit
+
+8- checkboxes for all charts to show and hide viewed series
+
+9-NOTIFICATIONS
+
+10-Disease Ontology:
+all diseases implemented in the system must have a ontology id (instead of the original id and a link where when clicked refers to the relevant page in disease-ontology.org)
+https://disease-ontology.org/do
+
+11-refer to mol5s lec 5 on medical records
+
+12-HL7 is a great bonus
+
+13-generating reports for everything
+
+14-everything is printable
+
+15-SOAP
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+not urgent:
+
+-pop pages into separate window(with existing data is a bonus)
+
+-title windows
+
+-edit prescription
+
+-can't select same test in patient feedback in visit more than once and can't select same exercise in prescription more than once
+
+-check all data taken
+
+-border move only upper part (take from mainwindow line 24 and remove mousedown from main border)
+
+- review all plots
+
+b3yt w bzbt el prescription 3shan fe moshkla fel saving wel updating bs msh mohma awi
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+done:
+-visitType class and table(id,name,time,cost), to be referenced in visit table
+
+=Hydrotherapy
+
+=Upon add , add allergies
+
+=Exercising chart --> drop down list lkol al standard exercises aly btet3ml lel case de w other texbox 
+
++More detailed pre
+
++test
+
++new test window
+
++testFeedBack table
+
++aktar mn view 
+
++admin by-add w delete
+
++al receptionist by-access --> medical form ymlaha awl ma yigy : etsabt abl kda w et3algt 3nd had abl kda wla eh , eh trekhk m3 al marad , *(ymlaha f awl zyara wla kol marra)*
+
++shkl al rosheta 
+#DROPDOWN LIST lel physician yktb feha al patient ksr aw shrkh w al modda estimated aly hyhtagha 3shan yt3alg mnha w kam session w lma ykhtar ytl3lo al adwya el standrad lel marad da w textbox other law 3ayz yzwd haga mn 3ndo 
+
++add mkan lel asha3a 
+
++OCR (optimal charcter recognition) --> bnrf3lo al pic w by- convert al pic l words 3shan al old prescriptions 
+
++communication
+
++comments
+
++make testFeedBack section in visit work
+
++there is an issue with saving after the first save in feedback section, look into that
+
++kont btzbt mwdoo3 elrelation chronic=patient w 3mlt table bs lsa manadethash fe ay 7ta 8er getChronicsByPatientID, kmlhaaaaaaaaaaaa
+
++shaghal al live chart 
+
++Financial System (Partially done, missing revenue calculation for physician, could do a payment class or consider all visits and patients with packages):
+==payment class done
+==revenue calculation done
+
++Notes section in calendar page
+
++- dicom viewer
+
+-Scheduling system
+
+- plot height w weight of visits on patientview page
+
+-when updating height and weight in a visit, only update the patient if it's the most recent visit
+
+- al reciptionistViewVisit, bos 3la number 1 fel unfinished bussiness, kont h3ml UI object lel prescription w UI object lel treatment plan gl
+
+6-al appointment tb2a detailed , hyo3d ad eh  (has type, match)
+
+1- add a new class and table for prescriping a lab result or scan, prescription will be only those, and treatment plan has exercises
+
+1- cancel appointment
+
+1- postpone appointment
+
+3-mark visit done in visit page (linked to 4)
+
+12- preset treatment plans
+
+14- add new treatment plan with prescribed exercises suggestion
+
+-must do a treatment plan ui and a prescription ui
+
+visit to have a done bool
+
+-reciptionist can't view visit and patient as physician or admin
+
+-b8yr kol elvisits l el ui w h3ml ui lel dkatra hwa hwa bs b buttons
+
+-how to schedule:
+for a doctor, get all future visits, if all his day appointments are booked, mark day off, if not check which slots are free and view these in the cb
+
+
+2-meen byshof eh
+
+-article retrieval for physicians, auto for patients of day, sure can be improved but not important
+
+11- sh8al el chat group wel announcements (no need for groups now)
+
+4-delete buttons in settings grids with confirmation
+
+
+ontologies, pushed to db, search in new patient only by searching first 4 letters of the name, number of ontologies viewed at first only 1000 limited in db function
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////
+
+#globalVars manual
+#0-8 (8 included) times for session times in this format: "16:00"
+#9 default time for session
+#10 cost for consultation
+#11 cost for follow-up
+#12 cost for exercise session
+
+
+
+
+
+features:
+1-patient management system//
+2-clinic management system//
+3-financial system of clinic//
+4-efficent appointment management// 
+5-Medical Record management//
+6-Accessibility Constrictions//
+7-OCR //
+8-Live medical help resources access//
+9-Chat system//
+10-Disease Ontology integration//
+11-treatment plan //
+12-prescription//
+13-patient progress data analysis and monitoring//
+14-customized dashboard and different views// 
+15-facilitated data entry//
+16-dicom viewer//
+17-treatment plan and prescription printing
+
+
+//bugs
+new record page uri for new dicom
+dicom not fully functional
+treatment plan addition not showing
+prescription editing
+when entering money in new visit cant handle special characters
+adding chronics in new patient
+adding chronics and injuries in existing patient
+

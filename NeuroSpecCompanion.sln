@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuroSpecCompanion", "NeuroSpecCompanion\NeuroSpecCompanion.csproj", "{E1410477-1CAE-44DD-A2C3-69D7B9F2330F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NeuroSpec.Shared", "NeuroSpec.Shared\NeuroSpec.Shared.shproj", "{C3CE90A1-3C72-4E7D-9642-AC2E08DA8B4A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuroSpecBackend", "NeuroSpecBackend\NeuroSpecBackend\NeuroSpecBackend.csproj", "{FC3D8A1F-DBC2-42D9-B88C-4A33D3EEF701}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "clinical", "clinicalMain-neuro\clinical\clinical.csproj", "{A2A70853-2312-4692-B27C-6AD56EFFC8EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1410477-1CAE-44DD-A2C3-69D7B9F2330F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1410477-1CAE-44DD-A2C3-69D7B9F2330F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1410477-1CAE-44DD-A2C3-69D7B9F2330F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E1410477-1CAE-44DD-A2C3-69D7B9F2330F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1410477-1CAE-44DD-A2C3-69D7B9F2330F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1410477-1CAE-44DD-A2C3-69D7B9F2330F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FC3D8A1F-DBC2-42D9-B88C-4A33D3EEF701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC3D8A1F-DBC2-42D9-B88C-4A33D3EEF701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC3D8A1F-DBC2-42D9-B88C-4A33D3EEF701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC3D8A1F-DBC2-42D9-B88C-4A33D3EEF701}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2A70853-2312-4692-B27C-6AD56EFFC8EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2A70853-2312-4692-B27C-6AD56EFFC8EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2A70853-2312-4692-B27C-6AD56EFFC8EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2A70853-2312-4692-B27C-6AD56EFFC8EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67ADB3A6-6A54-4B0C-9083-F115102D1333}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		NeuroSpec.Shared\NeuroSpec.Shared.projitems*{a2a70853-2312-4692-b27c-6ad56effc8ea}*SharedItemsImports = 5
+		NeuroSpec.Shared\NeuroSpec.Shared.projitems*{c3ce90a1-3c72-4e7d-9642-ac2e08da8b4a}*SharedItemsImports = 13
+		NeuroSpec.Shared\NeuroSpec.Shared.projitems*{e1410477-1cae-44dd-a2c3-69d7b9f2330f}*SharedItemsImports = 5
+		NeuroSpec.Shared\NeuroSpec.Shared.projitems*{fc3d8a1f-dbc2-42d9-b88c-4a33d3eef701}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

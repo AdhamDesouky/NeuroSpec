@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="clinical.userControls.chatItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             Name="item">
+
+    <Border Padding="0 8">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderThickness"
+                        Value="2 0 0 0" />
+                <Setter Property="BorderBrush"
+                        Value="Transparent" />
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="True">
+                        <Setter Property="Background"
+                                Value="{StaticResource lighterColor}" />
+                        <Setter Property="BorderBrush"
+                                Value="{StaticResource darkerColor}" />
+                    </Trigger>
+
+                    <DataTrigger Binding="{Binding ElementName=item, Path=IsActive}"
+                                 Value="True">
+
+                        <Setter Property="Background"
+                                Value="{StaticResource lighterColor}" />
+                        <Setter Property="BorderBrush"
+                                Value="{StaticResource darkerColor}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Background="White"
+                    CornerRadius="50"
+                    Width="43"
+                    Height="43"
+                    Margin="10 0 0 0">
+
+                <Grid>
+                    <TextBlock Text="{Binding Path=TagName,ElementName=item}"
+                               HorizontalAlignment="Center"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               FontSize="14"
+                               Foreground="{Binding Path=Color,ElementName=item}" />
+
+                    
+
+
+                        <!--<fa:ImageAwesome Icon="Bell" Width="30" Foreground="{StaticResource darkerColor}"/>-->
+                    <fa:ImageAwesome Icon="{Binding ElementName=item,Path=Icon}" Width="25" Height="25" Foreground="{StaticResource darkerColor}"/>
+                        
+
+                </Grid>
+            </Border>
+
+            <StackPanel VerticalAlignment="Center"
+                        Grid.Column="1"
+                        Margin="15 0 0 0">
+                <TextBlock Text="{Binding Path=Title,ElementName=item}"
+                           Foreground="{StaticResource darkerColor}"
+                           FontSize="16"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Path=Message,ElementName=item}"
+                           Foreground="{StaticResource darkerColor}"
+                           Margin="0 3 0 0" />
+            </StackPanel>
+
+            <Border CornerRadius="50"
+                    Width="20"
+                    Height="20"
+                    Grid.Column="2"
+                    Visibility="{Binding Path=Visible,ElementName=item}"
+                    Background="{Binding Path=Color,ElementName=item}">
+                <TextBlock Text="{Binding Path=MessageCount,ElementName=item}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="#ffffff" />
+            </Border>
+
+        </Grid>
+    </Border>
+</UserControl>

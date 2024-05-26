@@ -1,0 +1,202 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>NeuroSpecCompanion</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!-- Display name -->
+		<ApplicationTitle>NeuroSpecCompanion</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.neurospeccompanion</ApplicationId>
+		<ApplicationIdGuid>ae49a1ca-8591-4d1c-b809-3838f2c56342</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AndroidResource Remove="Models\**" />
+	  <Compile Remove="Models\**" />
+	  <EmbeddedResource Remove="Models\**" />
+	  <MauiCss Remove="Models\**" />
+	  <MauiXaml Remove="Models\**" />
+	  <None Remove="Models\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="NewPage1.xaml.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Remove="NewPage1.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Fonts\BarlowBold.otf" />
+	  <None Remove="Resources\Fonts\BarlowMedium.otf" />
+	  <None Remove="Resources\Fonts\BarlowRegular.otf" />
+	  <None Remove="Resources\Fonts\BarlowSemiBold.otf" />
+	  <None Remove="Resources\Images\dotsmenu.png" />
+	  <None Remove="Resources\Images\dotsmore.png" />
+	  <None Remove="Resources\Images\downarrow.png" />
+	  <None Remove="Resources\Images\downchevron.png" />
+	  <None Remove="Resources\Images\envelope.png" />
+	  <None Remove="Resources\Images\hotels.png" />
+	  <None Remove="Resources\Images\leftchevron.png" />
+	  <None Remove="Resources\Images\loupe.png" />
+	  <None Remove="Resources\Images\menubars.png" />
+	  <None Remove="Resources\Images\notification.png" />
+	  <None Remove="Resources\Images\pin.png" />
+	  <None Remove="Resources\Images\plane.png" />
+	  <None Remove="Resources\Images\securitypin.png" />
+	  <None Remove="Resources\Images\star.png" />
+	  <None Remove="Resources\Images\swaparrows.png" />
+	  <None Remove="Resources\Images\ticket.png" />
+	  <None Remove="Resources\Images\train.png" />
+	  <None Remove="Resources\Images\user.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="IronOcr" Version="2024.5.25" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="MongoDB.Bson" Version="2.25.0" />
+		<PackageReference Include="PdfPig" Version="0.1.8" />
+		<PackageReference Include="Tesseract" Version="5.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\ChatBot\ChatBotMainView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChatBot\ChatHomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChatBot\Templates\ReceiverChatMessageItemTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChatBot\Templates\RecentChatItemTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChatBot\Templates\SenderChatMessageItemTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChatBot\Templates\SuggestedItemTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CommunityChatPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CollectingAllResourcesHere.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\HomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MedicalHistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MedicalHistory\MedicalHistoryMainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MemoryTest\MemoryGame.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MemoryTest\MemoryGameTutorial.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ProgressTrackerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TapTest\TapGame.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TapTest\TapTutorial.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\UserProfilePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Icons\" />
+	  <Folder Include="Resources\Images\MemoryGame\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\Icons\bell_solid.svg" />
+	  <MauiImage Include="Resources\Images\Icons\calendar_days_solid.svg" />
+	  <MauiImage Include="Resources\Images\Icons\chart.svg" />
+	  <MauiImage Include="Resources\Images\Icons\circle_play.svg" />
+	  <MauiImage Include="Resources\Images\Icons\circle_user_solid.svg" />
+	  <MauiImage Include="Resources\Images\Icons\clock.svg" />
+	  <MauiImage Include="Resources\Images\Icons\file_medical.svg" />
+	  <MauiImage Include="Resources\Images\Icons\file_upload.svg" />
+	  <MauiImage Include="Resources\Images\Icons\home.svg" />
+	  <MauiImage Include="Resources\Images\Icons\message.svg" />
+	  <MauiImage Include="Resources\Images\Icons\notes_medical.svg" />
+	  <MauiImage Include="Resources\Images\Icons\pause.svg" />
+	  <MauiImage Include="Resources\Images\Icons\rotate.svg" />
+	  <MauiImage Include="Resources\Images\Icons\stop.svg" />
+	  <MauiImage Include="Resources\Images\Icons\stopwatch.svg" />
+		<MauiImage Include="Resources\Images\MemoryGame\fox.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\bear.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\lion.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\moose.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\parrot.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\owl.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\racoon.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\elephant.jpg" />
+		<MauiImage Include="Resources\Images\MemoryGame\bunny.jpg" />
+
+
+
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\CollectingAllResourcesHere.xaml.cs">
+	    <DependentUpon>CollectingAllResourcesHere.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadGenericExceptionInfoBarNeuroSpecCompanionHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+
+	<Import Project="..\NeuroSpec.Shared\NeuroSpec.Shared.projitems" Label="Shared" />
+
+</Project>

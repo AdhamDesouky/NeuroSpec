@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeuroSpecCompanion.Views.TapTest.TapTutorial"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             
+             Title="TapTutorial">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid>
+                <Grid RowDefinitions="Auto, Auto, *">
+                    <!-- Header -->
+                    <Frame CornerRadius="0" BackgroundColor="{StaticResource Primary}" 
+           HasShadow="True" HeightRequest="65"
+           Padding="0, 10" BorderColor="{StaticResource Primary}">
+                        <Grid VerticalOptions="Center" HeightRequest="50" Padding="10, 0">
+                            <ImageButton Source="bell_solid" HeightRequest="25" WidthRequest="25"
+                         HorizontalOptions="End" Margin="10, 0">
+                                <ImageButton.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                                </ImageButton.Behaviors>
+                            </ImageButton>
+                            <Label Text="Hello, Abdo" HorizontalOptions="Start" Margin="0, 10" 
+                   VerticalOptions="Center" FontSize="24"/>
+
+
+                        </Grid>
+                    </Frame>
+                    <!--Search-->
+                    <VerticalStackLayout Grid.Row="2" Margin="10, 20">
+                        <!--<Frame BackgroundColor="{StaticResource Secondary}" Padding="0"
+               HeightRequest="50" BorderColor="{x:Null}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Entry Placeholder="Search ticket, hotel, recommendation?"
+                       PlaceholderColor="{StaticResource Tertiary}"
+                       FontFamily="BarlowMeduim" VerticalOptions="Center"
+                       Margin="15, 0" TextColor="{StaticResource Primary}"/>
+
+                            <ImageButton Grid.Column="1" Source="loupe"
+                             WidthRequest="25" HeightRequest="25"
+                             Margin="15, 0">
+                                <ImageButton.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource Primary}"/>
+                                </ImageButton.Behaviors>
+                            </ImageButton>
+                        </Grid>
+                    </Frame>-->
+
+
+                        <HorizontalStackLayout Margin="0" Spacing="10" >
+                            <!--Square-->
+                            <Frame HeightRequest="90" WidthRequest="90"
+                   BackgroundColor="{StaticResource Primary}" Padding="0">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <Image Source="plane" WidthRequest="50" HeightRequest="50">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                                        </Image.Behaviors>
+                                    </Image>
+                                    <Label Text="Flight" FontSize="15"
+                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <Frame HeightRequest="90" WidthRequest="90"
+                   BackgroundColor="{StaticResource Primary}" Padding="0">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <Image Source="train" WidthRequest="50" HeightRequest="50">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                                        </Image.Behaviors>
+                                    </Image>
+                                    <Label Text="Train" FontSize="15"
+                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <Frame HeightRequest="90" WidthRequest="90"
+                   BackgroundColor="{StaticResource Primary}" Padding="0">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <Image Source="hotels" WidthRequest="50" HeightRequest="50">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                                        </Image.Behaviors>
+                                    </Image>
+                                    <Label Text="Hotel" FontSize="15"
+                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <Frame HeightRequest="90" WidthRequest="90"
+                   BackgroundColor="{StaticResource Primary}" Padding="0">
+                                <VerticalStackLayout VerticalOptions="Center">
+                                    <Image Source="dotsmore" WidthRequest="50" HeightRequest="50">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                                        </Image.Behaviors>
+                                    </Image>
+                                    <Label Text="More" FontSize="15"
+                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                        </HorizontalStackLayout>
+
+
+                        <BoxView HeightRequest="0.5" Color="{StaticResource Tertiary}" Margin="5, 0"/>
+
+
+
+                        <VerticalStackLayout Margin="5, 10" Spacing="10">
+                            <Label Text="Activities"
+                        TextColor="{StaticResource Secondary}" FontSize="24"/>
+                            <!--Resting Tremor-->
+                            <Frame Padding="15" BackgroundColor="{StaticResource Primary}"
+                        HeightRequest="140">
+                                
+
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <!-- Image Box -->
+                                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
+                                        <Image Source="trembling_hand" WidthRequest="100" HeightRequest="100" />
+                                    </Frame>
+                                    <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
+                                        <VerticalStackLayout>
+                                            <Label Text="Resting Tremor" FontSize="24"/>
+                                        </VerticalStackLayout>
+
+                                        <HorizontalStackLayout HorizontalOptions="End"
+                                               VerticalOptions="Center" Spacing="2">
+                                            <Image Source="star" WidthRequest="20" HeightRequest="20">
+                                                <Image.Behaviors>
+                                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource Accent}"/>
+                                                </Image.Behaviors>
+                                            </Image>
+                                            <!--<Label Text="4,5" FontSize="15"/>-->
+                                        </HorizontalStackLayout>
+
+                                        <Label Grid.Row="2" Margin="0, 7" FontSize="16"
+                               Text="Determine if you have a resting tremor."
+                               FontFamily="BarlowRegular"/>
+
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                            <!--Memory Test-->
+                            <Frame Padding="15" BackgroundColor="{StaticResource Primary}"
+                        HeightRequest="140">
+                                
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <!-- Image Box -->
+                                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
+                                        <Image Source="brain" HeightRequest="120" WidthRequest="120"/>
+                                    </Frame>
+                                    <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
+                                        <VerticalStackLayout>
+                                            <Label Text="Memory test" FontSize="24"/>
+                                        </VerticalStackLayout>
+
+                                        <HorizontalStackLayout HorizontalOptions="End"
+                                               VerticalOptions="Center" Spacing="2">
+                                            <Image Source="star" WidthRequest="20" HeightRequest="20">
+                                                <Image.Behaviors>
+                                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource Accent}"/>
+                                                </Image.Behaviors>
+                                            </Image>
+                                            <!--<Label Text="4,5" FontSize="15"/>-->
+                                        </HorizontalStackLayout>
+
+                                        <!--<BoxView Grid.Row="1" HeightRequest="1" Color="{StaticResource Secondary}"
+                                 Margin="2"/>-->
+
+                                        <Label Grid.Row="2" Margin="0, 7" FontSize="16"
+                               Text="Test your immediate recall."
+                               FontFamily="BarlowRegular"/>
+
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                            <!--Vibration-->
+                            <Frame Padding="15" BackgroundColor="{StaticResource Primary}"
+                        HeightRequest="140">
+                                
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <!-- Image Box -->
+                                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
+                                        <Image Source="vibration" HeightRequest="120" WidthRequest="120"/>
+                                    </Frame>
+                                    <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
+                                        <VerticalStackLayout>
+                                            <Label Text="Vibration" FontSize="24"/>
+                                        </VerticalStackLayout>
+
+                                        <HorizontalStackLayout HorizontalOptions="End"
+                                               VerticalOptions="Center" Spacing="2">
+                                            <Image Source="star" WidthRequest="20" HeightRequest="20">
+                                                <Image.Behaviors>
+                                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource Accent}"/>
+                                                </Image.Behaviors>
+                                            </Image>
+                                            <!--<Label Text="4,5" FontSize="15"/>-->
+                                        </HorizontalStackLayout>
+
+                                        <!--<BoxView Grid.Row="1" HeightRequest="1" Color="{StaticResource Secondary}"
+                                 Margin="2"/>-->
+
+                                        <Label Grid.Row="2" Margin="0, 7" FontSize="16"
+                               Text="Test your responsivness."
+                               FontFamily="BarlowRegular"/>
+
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                            <!--Tap Tap Tap-->
+                            <Frame Padding="15" BackgroundColor="{StaticResource Primary}"
+                            HeightRequest="140">
+                                
+                            </Frame>
+                            <Grid ColumnDefinitions="Auto, *">
+                                <!-- Image Box -->
+                                <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
+                                    <Image Source="vibration" HeightRequest="120" WidthRequest="120"/>
+                                </Frame>
+                                <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
+                                    <VerticalStackLayout>
+                                        <Label Text="Tap Tap Tap!" FontSize="24"/>
+                                    </VerticalStackLayout>
+
+                                    <HorizontalStackLayout HorizontalOptions="End"
+                                               VerticalOptions="Center" Spacing="2">
+                                        <Image Source="star" WidthRequest="20" HeightRequest="20">
+                                            <Image.Behaviors>
+                                                <toolkit:IconTintColorBehavior TintColor="{StaticResource Accent}"/>
+                                            </Image.Behaviors>
+                                        </Image>
+                                        <!--<Label Text="4,5" FontSize="15"/>-->
+                                    </HorizontalStackLayout>
+
+                                    <!--<BoxView Grid.Row="1" HeightRequest="1" Color="{StaticResource Secondary}"
+                                 Margin="2"/>-->
+
+                                    <Label Grid.Row="2" Margin="0, 7" FontSize="16"
+                               Text="Test your responsivness and accuracy."
+                               FontFamily="BarlowRegular"/>
+
+                                </Grid>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+
+
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

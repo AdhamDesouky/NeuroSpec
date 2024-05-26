@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>c3ce90a1-3c72-4e7d-9642-ac2e08da8b4a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NeuroSpec.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ChatBot\ChatMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\AppointmentType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\AttendanceRecord.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\BillingRecord.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\CalendarEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\EvaluationTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\EvaluationTestFeedBack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\IssueScan.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\MedicalRecord.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\OntologyTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Patient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Payment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Prescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\ScanTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Visit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\HUB\ChatHub.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="images\3alolo.png" />
+    <None Remove="images\abdelkader.png" />
+    <None Remove="images\afsha.png" />
+    <None Remove="images\akram tawfik.png" />
+    <None Remove="images\batta.png" />
+    <None Remove="images\CR7.png" />
+    <None Remove="images\kahraba.png" />
+    <None Remove="images\messi.png" />
+    <None Remove="images\salah.png" />
+    <None Remove="images\shenawi.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetProjects.WpfToolkit.Input" Version="6.1.94" />
+    <PackageReference Include="fo-dicom" Version="5.1.2" />
+    <PackageReference Include="fo-dicom.Desktop" Version="4.0.8" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
+    <PackageReference Include="MySql.Data" Version="8.2.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.8.0" />
+    <PackageReference Include="PDFsharp" Version="6.0.0" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="Syncfusion.Pdf.OCR.Wpf" Version="23.2.6" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\3alolo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\abdelkader.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\afsha.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\akram tawfik.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\batta.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\CR7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\kahraba.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\messi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\salah.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\shenawi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+	</ItemGroup>
+	<Import Project="..\..\NeuroSpec.Shared\NeuroSpec.Shared.projitems" Label="Shared" />
+
+</Project>
