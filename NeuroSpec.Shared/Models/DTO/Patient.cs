@@ -3,27 +3,37 @@ using System.Collections.Generic;
 
 namespace NeuroSpec.Shared.Models.DTO
 {
+/// <summary>
+/// Very unstable model, needs to be refactored
+/// </summary>
     public class Patient
     {
         public string ResourceType { get; set; } = "Patient";
         public Identifier Identifier { get; set; }
         public string Password { get; set; }
-        public bool Active { get; set; }
         public List<HumanName> Name { get; set; }
         public List<ContactPoint> Telecom { get; set; }
         public string Gender { get; set; } // male | female | other | unknown
         public DateTime BirthDate { get; set; }
+
+#nullable enable
+        public List<Address>? Address { get; set; }
         public bool? DeceasedBoolean { get; set; }
         public DateTime? DeceasedDateTime { get; set; }
-        public List<Address> Address { get; set; }
-        public CodeableConcept MaritalStatus { get; set; }
+        public CodeableConcept? MaritalStatus { get; set; }
         public bool? MultipleBirthBoolean { get; set; }
         public int? MultipleBirthInteger { get; set; }
-        public List<Attachment> Photo { get; set; }
-        public List<Contact> Contact { get; set; }
-        public List<Communication> Communication { get; set; }
-        public List<Reference> GeneralPractitioner { get; set; }
-        public Reference ManagingOrganization { get; set; }
+        public List<Attachment>? Photo { get; set; }
+        public List<Contact>? Contact { get; set; }
+        public List<Communication>? Communication { get; set; }
+        public List<Reference>? GeneralPractitioner { get; set; }
+        public Reference? ManagingOrganization { get; set; }
+#nullable disable
+
+        
+        public int HeightInCm { get; set; }
+        public int WeightInKg { get; set; }
+
         public List<Link> Link { get; set; }
 
         public Patient()
@@ -57,12 +67,12 @@ namespace NeuroSpec.Shared.Models.DTO
 
     public class HumanName
     {
-        public string Use { get; set; } // usual | official | temp | nickname | anonymous | old | maiden
+        public string? Use { get; set; } // usual | official | temp | nickname | anonymous | old | maiden
         public string Text { get; set; }
         public string Family { get; set; }
-        public string Given { get; set; }
-        public string Prefix { get; set; }
-        public string Suffix { get; set; }
+        public string? Given { get; set; }
+        public string? Prefix { get; set; }
+        public string? Suffix { get; set; }
 
         public HumanName()
         {
@@ -77,7 +87,7 @@ namespace NeuroSpec.Shared.Models.DTO
     {
         public string System { get; set; } // phone | fax | email | pager | url | sms | other
         public string Value { get; set; }
-        public string Use { get; set; } // home | work | temp | old | mobile
+        public string? Use { get; set; } // home | work | temp | old | mobile
         public int? Rank { get; set; }
 
         public ContactPoint() { }

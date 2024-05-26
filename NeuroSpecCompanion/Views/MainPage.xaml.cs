@@ -35,5 +35,10 @@ namespace NeuroSpecCompanion.Views
             // Simulate a successful login for demonstration purposes
             return username == "adham" && password == "adham";
         }
+
+        private void OnRegisterClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new RegisterPages.RegisterPage());
+        }
     }
 }

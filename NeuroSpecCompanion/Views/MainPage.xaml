@@ -10,7 +10,7 @@
     <ScrollView>
         <VerticalStackLayout Margin="20">
             <Grid>
-                <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *">
+                <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto,Auto,Auto, *">
                     <!-- Header -->
                     <Frame CornerRadius="0" BackgroundColor="{StaticResource Primary}"
                            HasShadow="True" HeightRequest="65"
@@ -58,13 +58,17 @@
 
                     <!-- Remember Me Checkbox -->
                     <StackLayout Grid.Row="5" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                        <CheckBox Color="{StaticResource Blue100Accent}" />
-                        <Label Text="Remember Me" TextColor="{StaticResource White}" FontSize="16" Margin="10,0,0,0" />
+                        <CheckBox Color="{StaticResource Blue100Accent}" VerticalOptions="Center"/>
+                        <Label Text="Remember Me" TextColor="{StaticResource White}" FontSize="16" Margin="0" VerticalOptions="Center" />
                     </StackLayout>
 
                     <!-- Login Button -->
                     <Button Grid.Row="6" Text="Login" BackgroundColor="{StaticResource Blue300Accent}" TextColor="{StaticResource White}" FontAttributes="Bold"
                             FontSize="18" Padding="15" CornerRadius="10" Clicked="OnLoginClicked"
+                            HorizontalOptions="FillAndExpand" Margin="20,10,20,0" />
+
+                    <Button Grid.Row="7" Text="Register" BackgroundColor="{StaticResource Blue300Accent}" TextColor="{StaticResource White}" FontAttributes="Bold"
+                            FontSize="18" Padding="15" CornerRadius="10" Clicked="OnRegisterClicked"
                             HorizontalOptions="FillAndExpand" Margin="20,10,20,0" />
 
                     <!-- Error Message Label -->
