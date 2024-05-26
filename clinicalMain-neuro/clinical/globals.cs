@@ -1,4 +1,4 @@
-﻿using clinical.BaseClasses;
+﻿using NeuroSpec.Shared.Models.DTO;
 using clinical.Pages;
 using MahApps.Metro.IconPacks;
 using Org.BouncyCastle.Tls;
@@ -23,20 +23,16 @@ namespace clinical
 {
     class globals
     {
-        public globals()
-        {
-        }
+        public globals() { }
 
         public static User signedIn = null;
         public static Patient selectedPatient = null;
+
         public static DateTime CalculateBirthdate(int age)
         {
             DateTime currentDate = DateTime.Now;
-
             int birthYear = currentDate.Year - age;
-
             DateTime birthdate = new DateTime(birthYear, currentDate.Month, currentDate.Day);
-
             return birthdate;
         }
 
@@ -46,9 +42,7 @@ namespace clinical
             string s = "";
             s += patientID.ToString().Substring(0, 4);
             s += dateTime.DayOfYear.ToString();
-
             return int.Parse(s);
-
         }
 
         public static int generateNewAttendanceRecordID(int userID)
@@ -58,10 +52,9 @@ namespace clinical
             s += userID.ToString().Substring(0, 2);
             s += dateTime.DayOfYear.ToString();
             s += dateTime.Year.ToString().Substring(2, 2);
-
             return int.Parse(s);
-
         }
+
         public static int generateNewCalendarEventID(int userID)
         {
             DateTime dateTime = DateTime.Now;
@@ -69,10 +62,9 @@ namespace clinical
             s += userID.ToString().Substring(0, 2);
             s += dateTime.DayOfYear.ToString();
             s += dateTime.Year.ToString().Substring(2, 2);
-
             return int.Parse(s);
-
         }
+
         public static int generateNewPatientID(string phoneNumber)
         {
             DateTime dateTime = DateTime.Now;
@@ -80,8 +72,8 @@ namespace clinical
             s += dateTime.Minute.ToString();
             s += phoneNumber.Substring(3, 3);
             return int.Parse(s);
-
         }
+
         public static int generateNewDoctorID(string nid)
         {
             DateTime dateTime = DateTime.Now;
@@ -91,8 +83,8 @@ namespace clinical
             s += nid[12];
             s += nid[13];
             return Convert.ToInt32(s);
-
         }
+
         public static int generateNewEmployeeID(string nid)
         {
             DateTime dateTime = DateTime.Now;
@@ -102,69 +94,71 @@ namespace clinical
             s += nid[12];
             s += nid[13];
             return Convert.ToInt32(s);
-
         }
+
         public static string generateNewAdminID()
         {
             string s = "1";
             Random rand = new Random();
             s += rand.Next(100).ToString();
             return s;
-
         }
+
         public static int generateNewVisitID(int patID, DateTime time)
         {
             string s = patID.ToString().Substring(0, 3) + time.DayOfYear + time.Hour;
             return Convert.ToInt32(s);
         }
+
         public static int generateNewPaymentID(int patID, DateTime time)
         {
             string s = patID.ToString().Substring(2, 2) + new Random().Next(99).ToString() + time.DayOfYear.ToString() + time.Hour.ToString();
             return Convert.ToInt32(s);
         }
+
         public static int generateNewPrescriptionID(int visitID, DateTime time)
         {
             string s = visitID.ToString().Substring(0, 2) + time.Day + time.Minute + time.Second;
             return Convert.ToInt32(s);
         }
+
         public static int generateNewIssueExerciseID(int prescriptionID, int patientID)
         {
             string s = prescriptionID.ToString().Substring(0, 2) + new Random().Next(99).ToString() + patientID.ToString().Substring(0, 2) + new Random().Next(99).ToString();
             return Convert.ToInt32(s);
         }
+
         public static int generateNewTestFeedBackID(int visitID, int patientID)
         {
             string s = visitID.ToString().Substring(0, 2) + new Random().Next(99).ToString() + patientID.ToString().Substring(0, 2) + new Random().Next(99).ToString();
             return Convert.ToInt32(s);
         }
+
         public static int generateNewExerciseID()
         {
             string s = new Random().Next(99).ToString() + new Random().Next(99).ToString() + new Random().Next(81).ToString();
             return Convert.ToInt32(s);
         }
+
         public static int generateNewChatRoomID(int fID, int sID)
         {
-
             string s = fID.ToString().Substring(0, 3) + sID.ToString().Substring(0, 3);
             return Convert.ToInt32(s);
         }
+
         public static int generateNewChatMessageID(int senderID)
         {
-
             string s = senderID.ToString().Substring(0, 1) + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString();
             return Convert.ToInt32(s);
         }
 
-
         public static void updateCalendarWithVisits(int DoctorID)
         {
-
+            // Implementation here
         }
 
-
-
         ///////////////////////////////////////////
-        /// creating ui
+        /// Creating UI
         //////////////////////////////////////////
 
         public static void makeItLookClickable(Border border)
@@ -175,14 +169,16 @@ namespace clinical
             border.MouseLeave += (sender, e) => border.Background = original;
             border.MouseEnter += (sender, e) => border.Background = (Brush)Application.Current.FindResource("lighterColor");
         }
+
         public static void makeItLookClickableReverseColors(Border border)
         {
-            Brush original=border.Background;
+            Brush original = border.Background;
             border.MouseEnter += (sender, e) => border.Cursor = Cursors.Hand;
             border.MouseLeave += (sender, e) => border.Cursor = Cursors.Arrow;
             border.MouseLeave += (sender, e) => border.Background = original;
             border.MouseEnter += (sender, e) => border.Background = (Brush)Application.Current.FindResource("darkerColor");
         }
+
         public static void makeTextBlockLookLikeHyperLink(TextBlock tb)
         {
             tb.MouseEnter += (sender, e) => tb.Cursor = Cursors.Hand;
@@ -190,6 +186,7 @@ namespace clinical
             tb.MouseEnter += (sender, e) => tb.TextDecorations = TextDecorations.Underline;
             tb.MouseLeave += (sender, e) => tb.TextDecorations = null;
         }
+
         public static Border CreateOntologyUIObject(OntologyTerm oi)
         {
             Border border = new Border
@@ -219,9 +216,10 @@ namespace clinical
                 FontSize = 12
             };
             makeTextBlockLookLikeHyperLink(DOID);
+
             TextBlock ontologyTitle = new TextBlock
             {
-                Text = $"{oi.Name}",
+                Text = $"{oi.Lbl}",
                 Margin = new Thickness(5, 3, 5, 0),
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -229,10 +227,10 @@ namespace clinical
                 Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
                 FontSize = 14,
             };
-            //makeTextBlockLookLikeHyperLink(on)
+
             TextBlock ontologyDef = new TextBlock
             {
-                Text = $"{oi.Def}",
+                Text = $"{oi.Meta.Definition.Val}",
                 Margin = new Thickness(5, 2, 5, 0),
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -250,16 +248,11 @@ namespace clinical
                 Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
                 FontSize = 12,
             };
-            if (oi.Synonyms != null && oi.Synonyms.Count > 0)
-            {
-                ontologySynonyms.Text = $"Synonyms: {oi.Synonyms},\n Parent: {oi.Parent}";
 
-            }
-            else if (oi.Parent != null && oi.Parent != "")
+            if (oi.Meta.Synonyms != null && oi.Meta.Synonyms.Count > 0)
             {
-                ontologySynonyms.Text = $"Parent: {oi.Parent}";
+                ontologySynonyms.Text = $"Synonyms: {string.Join(", ", oi.Meta.Synonyms.Select(s => s.Val))}";
             }
-
 
             Grid.SetRow(DOID, 0);
             Grid.SetRow(ontologyTitle, 1);
@@ -272,32 +265,29 @@ namespace clinical
             grid.Children.Add(ontologySynonyms);
             DOID.MouseDown += (sender, e) => ViewOntologyTermByDOID(oi);
             border.Child = grid;
-            if (oi.Urls != null && oi.Urls.Count > 0)
+
+            if (oi.Meta.Xrefs != null && oi.Meta.Xrefs.Count > 0)
             {
                 makeItLookClickable(border);
                 border.MouseDown += (sender, e) => ViewOntologyTerm(oi);
             }
+
             return border;
         }
 
         private static void ViewOntologyTermByDOID(OntologyTerm oi)
         {
-            oi.Id=oi.Id.Replace(":", "_");
-            //string s1 = $"https://disease-ontology.org/?id={oi.Id}";
-            string s2= $"https://www.ebi.ac.uk/ols/ontologies/doid/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F{oi.Id}";
-            //Process.Start(new ProcessStartInfo(s1) { UseShellExecute = true });
+            oi.Id = oi.Id.Replace(":", "_");
+            string s2 = $"https://www.ebi.ac.uk/ols/ontologies/doid/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F{oi.Id}";
             Process.Start(new ProcessStartInfo(s2) { UseShellExecute = true });
-
         }
 
         private static void ViewOntologyTerm(OntologyTerm oi)
         {
-            string s = oi.Urls[0];
-            s=s.Replace("http\\:", "http:").Replace("https\\:", "https:");
+            string s = oi.Meta.Xrefs[0].Val;
+            s = s.Replace("http\\:", "http:").Replace("https\\:", "https:");
             Process.Start(new ProcessStartInfo(s) { UseShellExecute = true });
-
         }
-
 
         public static Border CreatePrescriptionUI(Prescription prescription)
         {
@@ -329,14 +319,13 @@ namespace clinical
             {
                 Margin = new Thickness(5)
             };
+
             List<IssueScan> issues = DB.GetAllIssueScansByPrescriptionID(prescription.PrescriptionID);
             foreach (var i in issues)
             {
                 TextBlock prescriptionItem = CreatePrescribedTextBlock($"-{DB.GetScanTestById(i.ScanTestID).ScanTestName}, {i.Notes}", 2, 1, 2.5, 0);
                 stackPanel.Children.Add(prescriptionItem);
             }
-
-
 
             Grid.SetRow(stackPanel, 2);
             Grid.SetColumn(stackPanel, 1);
@@ -352,7 +341,6 @@ namespace clinical
             Grid.SetColumn(timestampTB, 1);
             Grid.SetRow(stackPanel, 2);
             Grid.SetColumn(stackPanel, 1);
-
 
             if (!signedIn.isReciptionist)
             {
@@ -373,10 +361,6 @@ namespace clinical
                 grid.Children.Add(viewPrescriptionBTN);
             }
 
-
-
-
-            // Add UI elements to Grid
             grid.Children.Add(DoctorNameTextBlock);
             grid.Children.Add(timestampTextBlock);
             grid.Children.Add(prescribedTextBlock);
@@ -384,11 +368,10 @@ namespace clinical
             grid.Children.Add(timestampTB);
             grid.Children.Add(stackPanel);
 
-            // Add Grid to Border
             borderedGrid.Child = grid;
-
             return borderedGrid;
         }
+
         static void viewPrescription(Prescription prescription)
         {
             new prescriptionWindow(prescription).Show();
@@ -413,7 +396,6 @@ namespace clinical
 
             return textBlock;
         }
-
 
         public static Border createAppointmentUIObject(Visit visit, Action<Visit> viewVisit, Action<Patient> viewPatient)
         {
@@ -569,12 +551,10 @@ namespace clinical
             makeItLookClickable(viewVisitButton);
 
             patientProfileButton.MouseDown += (sender, e) => viewPatient(patient);
-            viewVisitButton.MouseDown += (sender, e) => viewVisit(visit); ;
+            viewVisitButton.MouseDown += (sender, e) => viewVisit(visit);
             buttonsPanel.Children.Add(viewVisitButton);
 
             patientProfileButton.Child = patientProfileText;
-
-
             buttonsPanel.Children.Add(patientProfileButton);
 
             Grid.SetRow(visitTime, 0);
@@ -583,7 +563,6 @@ namespace clinical
             Grid.SetRow(phonePanel, 3);
             Grid.SetRow(buttonsPanel, 4);
 
-
             grid.Children.Add(visitTime);
             grid.Children.Add(patientName);
             grid.Children.Add(visitTypePanel);
@@ -591,10 +570,8 @@ namespace clinical
             grid.Children.Add(buttonsPanel);
 
             border.Child = grid;
-
             return border;
         }
-
 
         public static Border createAppointmentUIObject(Visit visit, Action<Visit> viewVisit)
         {
@@ -634,7 +611,7 @@ namespace clinical
 
             TextBlock patientName = new TextBlock
             {
-                Text = $"{patient.FirstName} {patient.LastName}",
+                Text = $"{patient.Name[0].Text} {patient.Name[0].Family}",
                 Margin = new Thickness(10, 5, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = FontWeights.Bold,
@@ -683,7 +660,7 @@ namespace clinical
 
             TextBlock patientPhone = new TextBlock
             {
-                Text = patient.PhoneNumber,
+                Text = patient.Telecom?.FirstOrDefault(cp => cp.System == "phone")?.Value ?? "No phone number",
                 Margin = new Thickness(5, 0, 5, 0),
                 FontWeight = FontWeights.SemiBold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
@@ -698,8 +675,6 @@ namespace clinical
                 Orientation = Orientation.Horizontal,
                 Margin = new Thickness(10, 5, 0, 0)
             };
-
-
 
             Border viewVisitButton = new Border
             {
@@ -727,17 +702,14 @@ namespace clinical
             makeItLookClickable(viewVisitButton);
             viewVisitButton.Child = viewVisitText;
 
-            viewVisitButton.MouseDown += (sender, e) => viewVisit(visit); ;
+            viewVisitButton.MouseDown += (sender, e) => viewVisit(visit);
             buttonsPanel.Children.Add(viewVisitButton);
-
-
 
             Grid.SetRow(visitTime, 0);
             Grid.SetRow(patientName, 1);
             Grid.SetRow(visitTypePanel, 2);
             Grid.SetRow(phonePanel, 3);
             Grid.SetRow(buttonsPanel, 4);
-
 
             grid.Children.Add(visitTime);
             grid.Children.Add(patientName);
@@ -746,19 +718,11 @@ namespace clinical
             grid.Children.Add(buttonsPanel);
 
             border.Child = grid;
-
             return border;
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="article"></param>
-        /// <returns></returns>
         public static Border createArticleUIObject(Article article)
         {
-
             Border border = new Border
             {
                 Style = (Style)Application.Current.FindResource("theLinedBorder"),
@@ -784,10 +748,9 @@ namespace clinical
                 Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
                 FontSize = 14
             };
-            border.MouseLeftButtonDown += (sender, e) => viewArticle(article);
-            //make when mouse enter the cursor changes to pointer
-            makeItLookClickable(border);
 
+            border.MouseLeftButtonDown += (sender, e) => viewArticle(article);
+            makeItLookClickable(border);
 
             TextBlock typeAndDate = new TextBlock
             {
@@ -808,8 +771,7 @@ namespace clinical
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
-                FontSize = 12,
-
+                FontSize = 12
             };
             Grid.SetRow(snippet, 2);
 
@@ -818,10 +780,9 @@ namespace clinical
             grid.Children.Add(snippet);
 
             border.Child = grid;
-
             return border;
-
         }
+
         static string mainUrl = "https://www.news-medical.net";
 
         static void viewArticle(Article article)
@@ -832,100 +793,48 @@ namespace clinical
             }
         }
 
-
-        //printing
         public static void PrintPage(Page page)
         {
             PrintDialog printDialog = new PrintDialog();
-
             if (printDialog.ShowDialog() == true)
             {
-                // Set content properties
                 page.Measure(new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight));
                 page.Arrange(new Rect(new Point(0, 0), page.DesiredSize));
-
-                // Print the visual content of the Page directly
                 printDialog.PrintVisual(page, "Print Document");
             }
         }
 
-
-        //private static void SaveAsPdf(FixedDocument fixedDoc, string outputPath)
-        //{
-        //    using (FileStream fs = new FileStream(outputPath, FileMode.Create))
-        //    {
-        //        PdfDocument pdfDocument = new PdfDocument();
-        //        pdfDocument.Info.Title = "Printed Document";
-
-        //        // Iterate through each page of the FixedDocument and add it to the PdfDocument
-        //        foreach (PageContent pageContent in fixedDoc.Pages)
-        //        {
-        //            var page = new PdfPage();
-        //            var content = new PdfPageContent();
-        //            var stream = new MemoryStream();
-
-        //            var xpsDocument = new XpsDocument(pageContent.SourceDocument, FileAccess.Read);
-        //            var package = System.IO.Packaging.Package.Open(stream, FileMode.Create, FileAccess.ReadWrite);
-        //            var xpsPackage = (IXpsFixedDocumentSequenceReader)XpsDocument.OpenXpsDocumentReader(xpsDocument).FixedDocumentSequenceReader;
-
-        //            var paginator = xpsPackage.FixedDocuments[0].Paginator;
-        //            paginator.SaveAsXaml(XmlWriter.Create(package.GetPart(new Uri("/Documents/1/FixedDoc.fdoc", UriKind.Relative), CompressionOption.Maximum).GetStream(FileMode.Create, FileAccess.Write)));
-
-        //            package.Close();
-        //            stream.Seek(0, SeekOrigin.Begin);
-
-        //            page.AddImage(XImage.FromStream(stream));
-        //            pdfDocument.Pages.Add(page);
-        //        }
-
-        //        // Save the PdfDocument to the specified path
-        //        pdfDocument.Save(fs);
-        //    }
-        //}
-
-
-        ///////////////////////////////////////////////
-        ///Scheduling part
-        ///////////////////////////////////////////////
-        ///
-
+        // Scheduling part
 
         public static void ScheduleVisit(Visit newVisit)
         {
             if (CanBookVisit(newVisit))
-            { DB.InsertVisit(newVisit); }
+            {
+                DB.InsertVisit(newVisit);
+            }
             else
             {
                 MessageBox.Show("Can't Book in this time slot, change slot or select first available slot.");
             }
-
-
         }
 
         static bool CanBookVisit(Visit visit)
         {
-            // Generate time slots for the proposed date and time
             Visit fakeVisit = visit;
             List<DateTime> proposedSlots = GenerateTimeSlots(visit.TimeStamp, fakeVisit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration()));
-
             List<Visit> existingVisits = DB.GetFutureDoctorVisits(visit.DoctorID);
 
-
-            // Check for conflicts with existing visits
             List<DateTime> unavailableSlots = existingVisits
-                .SelectMany(visit => GenerateTimeSlots(visit.TimeStamp, visit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(v.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
                 .ToList();
 
-            // Check if there are any common elements (conflicts)
             bool hasConflicts = proposedSlots.Intersect(unavailableSlots).Any();
-
-            // If there are no conflicts, return true; otherwise, return false
             return !hasConflicts;
         }
+
         public static DateTime FindFirstFreeSlot(int DoctorID, DateTime when)
         {
             List<DateTime> availableSlots = FindAvailableTimeSlots(DoctorID, when);
-
             while (availableSlots.Count == 0)
             {
                 when = when.AddDays(7);
@@ -940,17 +849,15 @@ namespace clinical
             List<Visit> existingVisits = DB.GetFutureDoctorVisits(DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
-                .SelectMany(visit => GenerateTimeSlots(visit.TimeStamp, visit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(v.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
                 .ToList();
 
             List<DateTime> availableSlots = allSlots.Except(unavailableSlots).ToList();
-
             return availableSlots;
         }
 
         public static List<string> GetAvailableTimeSlotsOnDay(DateTime selectedDay, int DoctorID)
         {
-            // Generate time slots for the selected day
             DateTime dayStartTime = selectedDay.Date.AddHours(DB.GetOpeningTime());
             DateTime dayEndTime = selectedDay.Date.AddHours(DB.GetClosingTime());
             TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
@@ -958,27 +865,24 @@ namespace clinical
             List<DateTime> allSlots = GenerateTimeSlots(dayStartTime, dayEndTime, slotDuration);
             List<Visit> existingVisits = DB.GetFutureDoctorVisits(DoctorID);
 
-            // Check for conflicts with existing visits
             List<DateTime> unavailableSlots = existingVisits
-                .Where(visit => visit.TimeStamp.Date == selectedDay.Date)
-                .SelectMany(visit => GenerateTimeSlots(visit.TimeStamp, visit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .Where(v => v.TimeStamp.Date == selectedDay.Date)
+                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(v.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
                 .ToList();
 
-            // Find available slots by removing occupied slots
             List<DateTime> availableSlots = allSlots.Except(unavailableSlots).ToList();
             List<string> toReturn = new List<string>();
-            foreach (var i in availableSlots)
+            foreach (var slot in availableSlots)
             {
-                toReturn.Add(i.ToString("HH:mm"));
+                toReturn.Add(slot.ToString("HH:mm"));
             }
             return toReturn;
         }
 
         static List<DateTime> GenerateAllPossibleTimeSlots(DateTime when)
         {
-            // Generate a list of time slots for multiple days
             DateTime startDate = when;
-            DateTime endDate = when.AddDays(7); // Schedule for the next 7 days
+            DateTime endDate = when.AddDays(7);
             TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
 
             List<DateTime> allSlots = new List<DateTime>();
@@ -993,23 +897,18 @@ namespace clinical
                     allSlots.Add(time);
                 }
             }
-
             return allSlots;
         }
 
         static List<DateTime> GenerateTimeSlots(DateTime startTime, DateTime endTime, TimeSpan slotDuration)
         {
-            // Generate a list of time slots for a given time range
             List<DateTime> slots = new List<DateTime>();
 
             for (DateTime time = startTime; time < endTime; time += slotDuration)
             {
                 slots.Add(time);
             }
-
             return slots;
         }
-
-
     }
 }

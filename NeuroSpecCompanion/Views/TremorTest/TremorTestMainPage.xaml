@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeuroSpecCompanion.Views.TremorTest.TremorTestMainPage"
+             Title="TremorTestMainPage">
+    <ScrollView>
+    <VerticalStackLayout>
+            <Label Text="Tremor Test" 
+               VerticalOptions="CenterAndExpand" 
+               HorizontalOptions="CenterAndExpand" />
+            <Button Text="Start Test" Clicked="OnStartTestClicked"/>
+            <Button Text="Stop Test" Clicked="OnStopTestClicked"/>
+            <Label x:Name="AccelerationLabel" 
+                   BackgroundColor="Black"
+               Text="Acceleration: " 
+               VerticalOptions="CenterAndExpand" 
+               HorizontalOptions="CenterAndExpand" />
+    </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
