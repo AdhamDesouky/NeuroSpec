@@ -156,7 +156,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Icons\" />
-	  <Folder Include="Resources\Images\MemoryGame\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -184,6 +183,7 @@
 		<MauiImage Include="Resources\Images\MemoryGame\racoon.jpg" />
 		<MauiImage Include="Resources\Images\MemoryGame\elephant.jpg" />
 		<MauiImage Include="Resources\Images\MemoryGame\bunny.jpg" />
+		<MauiImage Include="Resources\Images\UserProfile\camerasolid.svg" />
 
 
 
