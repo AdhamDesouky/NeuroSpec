@@ -1,4 +1,4 @@
-﻿using clinical.BaseClasses;
+﻿using NeuroSpec.Shared.Models.DTO;
 using MahApps.Metro.IconPacks;
 using Syncfusion.Pdf;
 using System;

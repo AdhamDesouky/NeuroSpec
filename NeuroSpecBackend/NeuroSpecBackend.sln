@@ -23,6 +23,6 @@ Global
 		SolutionGuid = {EEF96896-1EA6-468D-BC20-91296A109756}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\NeuroSpecCompanion\NeuroSpec.Shared\NeuroSpec.Shared.projitems*{41438d51-a3b2-4a48-aaa3-17bf707d61dc}*SharedItemsImports = 5
+		..\NeuroSpec.Shared\NeuroSpec.Shared.projitems*{41438d51-a3b2-4a48-aaa3-17bf707d61dc}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
