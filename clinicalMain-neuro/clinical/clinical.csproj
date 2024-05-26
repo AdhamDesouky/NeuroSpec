@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetProjects.WpfToolkit.Input" Version="6.1.94" />
+    <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="fo-dicom" Version="5.1.2" />
     <PackageReference Include="fo-dicom.Desktop" Version="4.0.8" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
@@ -32,7 +33,7 @@
     <PackageReference Include="PDFsharp" Version="6.0.0" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Syncfusion.Pdf.OCR.Wpf" Version="23.2.6" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
 
