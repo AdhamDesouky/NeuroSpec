@@ -11,23 +11,21 @@
 
     <!-- Register the routes -->
     <ShellContent Route="MainPage" ContentTemplate="{DataTemplate Views:MainPage}" />
-    <ShellContent Route="HomePage" ContentTemplate="{DataTemplate Views:HomePage}" />
-
     <TabBar>
-        <Tab Title="Home" Icon="home">
-            <ShellContent ContentTemplate="{DataTemplate Views:HomePage}" />
-        </Tab>
-        <Tab Title="History" Icon="file_medical">
-            <ShellContent ContentTemplate="{DataTemplate Views:MedicalHistoryPage}" />
-        </Tab>
-        <Tab Title="Chat" Icon="message">
-            <ShellContent ContentTemplate="{DataTemplate ChatbotViews:ChatBotMainView}" />
-        </Tab>
-        <Tab Title="Analytics" Icon="chart">
-            <ShellContent ContentTemplate="{DataTemplate Views:ProgressTrackerPage}" />
-        </Tab>
-        <Tab Title="Me" Icon="user">
-            <ShellContent ContentTemplate="{DataTemplate Views:UserProfilePage}" />
-        </Tab>
-    </TabBar>
+    <Tab Title="Home" Icon="home">
+        <ShellContent Route="HomePage" ContentTemplate="{DataTemplate Views:HomePage}" />
+    </Tab>
+    <Tab Title="History" Icon="file_medical">
+        <ShellContent Route="MedicalHistoryPage" ContentTemplate="{DataTemplate Views:MedicalHistoryPage}" />
+    </Tab>
+    <Tab Title="Chat" Icon="message">
+        <ShellContent Route="ChatBotMainView" ContentTemplate="{DataTemplate ChatbotViews:ChatBotMainView}" />
+    </Tab>
+    <Tab Title="Analytics" Icon="chart">
+        <ShellContent Route="ProgressTrackerPage" ContentTemplate="{DataTemplate Views:ProgressTrackerPage}" />
+    </Tab>
+    <Tab Title="Me" Icon="user">
+        <ShellContent Route="UserProfilePage" ContentTemplate="{DataTemplate Views:UserProfilePage}" />
+    </Tab>
+</TabBar>
 </Shell>
