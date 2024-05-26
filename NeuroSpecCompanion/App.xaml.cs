@@ -1,4 +1,6 @@
-﻿namespace NeuroSpecCompanion
+﻿using Microsoft.Maui.Controls;
+
+namespace NeuroSpecCompanion
 {
     public partial class App : Application
     {
@@ -7,6 +9,9 @@
             InitializeComponent();
 
             MainPage = new AppShell();
+
+            // Navigate to the login page on app startup
+            Shell.Current.GoToAsync("//MainPage");
         }
     }
 }

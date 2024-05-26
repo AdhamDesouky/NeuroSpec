@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="NeuroSpecCompanion.Views.MainPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Primary}"
+             Title="LoginPage">
+
+    <ScrollView>
+        <VerticalStackLayout Margin="20">
+            <Grid>
+                <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *">
+                    <!-- Header -->
+                    <Frame CornerRadius="0" BackgroundColor="{StaticResource Primary}"
+                           HasShadow="True" HeightRequest="65"
+                           Padding="0, 10" BorderColor="{StaticResource Primary}">
+                        <Grid VerticalOptions="Center" HeightRequest="50" Padding="10, 0">
+                            <Label Text="NeuroSpec" HorizontalOptions="Center" VerticalOptions="Center"
+                                   FontSize="40" TextColor="{StaticResource White}" FontAttributes="Bold"/>
+                        </Grid>
+                    </Frame>
+
+                    <!-- Logo Section -->
+                    <Frame Grid.Row="1" BackgroundColor="{StaticResource Secondary}"
+                           HeightRequest="150" WidthRequest="150" HorizontalOptions="Center"
+                           CornerRadius="75" Padding="0" Margin="20">
+                        <Image Source="app_logo.png" Aspect="AspectFit" HorizontalOptions="Center"
+                               VerticalOptions="Center" Margin="10" />
+                    </Frame>
+
+                    <!-- Welcome Message -->
+                    <Label Grid.Row="2" Text="Welcome, let's navigate your journey with care and support."
+                           FontSize="18" TextColor="{StaticResource White}" HorizontalTextAlignment="Center"
+                           Margin="20,10,20,0"/>
+
+                    <!-- Username Section -->
+                    <StackLayout Grid.Row="3" Orientation="Vertical" HorizontalOptions="FillAndExpand" Margin="20,10,20,0">
+                        <Label Text="Username:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                            <Image Source="username_icon.png" HeightRequest="24" WidthRequest="24" Margin="0,0,10,0"/>
+                            <Entry x:Name="userNameEntry" Placeholder="Username" TextColor="{StaticResource White}"
+                                   HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Primary}" 
+                                   FontSize="18" />
+                        </StackLayout>
+                    </StackLayout>
+
+                    <!-- Password Section -->
+                    <StackLayout Grid.Row="4" Orientation="Vertical" HorizontalOptions="FillAndExpand" Margin="20,10,20,0">
+                        <Label Text="Password:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                            <Image Source="password_icon.png" HeightRequest="24" WidthRequest="24" Margin="0,0,10,0"/>
+                            <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True"
+                                   TextColor="{StaticResource White}" HorizontalOptions="FillAndExpand"
+                                   BackgroundColor="{StaticResource Primary}" FontSize="18"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <!-- Remember Me Checkbox -->
+                    <StackLayout Grid.Row="5" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                        <CheckBox Color="{StaticResource Blue100Accent}" />
+                        <Label Text="Remember Me" TextColor="{StaticResource White}" FontSize="16" Margin="10,0,0,0" />
+                    </StackLayout>
+
+                    <!-- Login Button -->
+                    <Button Grid.Row="6" Text="Login" BackgroundColor="{StaticResource Blue300Accent}" TextColor="{StaticResource White}" FontAttributes="Bold"
+                            FontSize="18" Padding="15" CornerRadius="10" Clicked="OnLoginClicked"
+                            HorizontalOptions="FillAndExpand" Margin="20,10,20,0" />
+
+                    <!-- Error Message Label -->
+                    <Label Grid.Row="7" x:Name="errorMessageLabel" Text="" TextColor="Red" FontSize="14"
+                           IsVisible="False" HorizontalOptions="Center" />
+                </Grid>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

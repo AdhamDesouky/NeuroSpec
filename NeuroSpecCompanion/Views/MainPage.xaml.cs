@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Maui.Controls;
 
-namespace NeuroSpecCompanion
+namespace NeuroSpecCompanion.Views
 {
     public partial class MainPage : ContentPage
     {
@@ -10,18 +10,18 @@ namespace NeuroSpecCompanion
             InitializeComponent();
         }
 
-        private void OnLoginClicked(object sender, EventArgs e)
+        private async void OnLoginClicked(object sender, EventArgs e)
         {
             string username = userNameEntry.Text;
             string password = passwordEntry.Text;
-            if(ValidateLogin(username, password))
+            if (ValidateLogin(username, password))
             {
-                DisplayAlert("Login Success", "Login Successful", "OK");
-                Shell.Current.GoToAsync("//Home");
+                await DisplayAlert("Login Success", "Login Successful", "OK");
+                await Shell.Current.GoToAsync("//HomePage");
             }
             else
             {
-                DisplayAlert("Login Failed", "Invalid Login Credentials", "OK");
+                await DisplayAlert("Login Failed", "Invalid Login Credentials", "OK");
             }
         }
 
@@ -32,7 +32,8 @@ namespace NeuroSpecCompanion
                 return false;
             }
 
-            return true;
+            // Simulate a successful login for demonstration purposes
+            return username == "adham" && password == "adham";
         }
     }
 }

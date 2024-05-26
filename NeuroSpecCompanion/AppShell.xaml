@@ -3,27 +3,31 @@
     x:Class="NeuroSpecCompanion.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:NeuroSpecCompanion"
     xmlns:Views="clr-namespace:NeuroSpecCompanion.Views"
     xmlns:ChatbotViews="clr-namespace:NeuroSpecCompanion.Views.ChatBot"
     Shell.FlyoutBehavior="Disabled"
     Shell.TabBarBackgroundColor="{StaticResource Secondary}"
     Shell.TabBarForegroundColor="{StaticResource Primary}">
+
+    <!-- Register the routes -->
+    <ShellContent Route="MainPage" ContentTemplate="{DataTemplate Views:MainPage}" />
+    <ShellContent Route="HomePage" ContentTemplate="{DataTemplate Views:HomePage}" />
+
     <TabBar>
         <Tab Title="Home" Icon="home">
-            <ShellContent ContentTemplate="{DataTemplate Views:HomePage}"/>
+            <ShellContent ContentTemplate="{DataTemplate Views:HomePage}" />
         </Tab>
         <Tab Title="History" Icon="file_medical">
-            <ShellContent ContentTemplate="{DataTemplate Views:MedicalHistoryPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate Views:MedicalHistoryPage}" />
         </Tab>
         <Tab Title="Chat" Icon="message">
-            <ShellContent ContentTemplate="{DataTemplate ChatbotViews:ChatBotMainView}"/>
+            <ShellContent ContentTemplate="{DataTemplate ChatbotViews:ChatBotMainView}" />
         </Tab>
         <Tab Title="Analytics" Icon="chart">
-            <ShellContent ContentTemplate="{DataTemplate Views:ProgressTrackerPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate Views:ProgressTrackerPage}" />
         </Tab>
         <Tab Title="Me" Icon="user">
-            <ShellContent ContentTemplate="{DataTemplate Views:UserProfilePage}"/>
+            <ShellContent ContentTemplate="{DataTemplate Views:UserProfilePage}" />
         </Tab>
     </TabBar>
 </Shell>
