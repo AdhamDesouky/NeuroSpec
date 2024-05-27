@@ -1,6 +1,7 @@
-﻿using clinical.BaseClasses;
+﻿
 using LiveCharts;
 using LiveCharts.Wpf;
+using NeuroSpec.Shared.Models.DTO;
 using PdfSharp.Charting;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
-﻿using clinical.BaseClasses;
-using CommunityToolkit.HighPerformance;
+﻿using CommunityToolkit.HighPerformance;
+using NeuroSpec.Shared.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using static clinical.BaseClasses.ontology;
 
 namespace clinical.Pages
 {

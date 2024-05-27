@@ -1,5 +1,4 @@
-﻿using clinical.BaseClasses;
-using System.Data;
+﻿using System.Data;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +10,7 @@ using LiveCharts;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
+using NeuroSpec.Shared.Models.DTO;
 
 namespace clinical.Pages
 {

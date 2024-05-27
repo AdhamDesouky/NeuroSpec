@@ -1,11 +1,11 @@
-﻿using clinical.BaseClasses;
-using clinical.Pages;
+﻿using clinical.Pages;
 using System.Collections.Generic;
 using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using MahApps.Metro.IconPacks;
+using NeuroSpec.Shared.Models.DTO;
 
 namespace clinical
 {
