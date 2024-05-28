@@ -1,4 +1,4 @@
-﻿using clinical.BaseClasses;
+﻿using NeuroSpec.Shared.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

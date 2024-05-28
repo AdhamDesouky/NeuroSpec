@@ -1,5 +1,5 @@
-﻿using clinical.BaseClasses;
-using clinical.userControls;
+﻿using clinical.userControls;
+using NeuroSpec.Shared.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

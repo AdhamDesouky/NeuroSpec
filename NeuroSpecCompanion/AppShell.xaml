@@ -10,7 +10,7 @@
     Shell.TabBarForegroundColor="{StaticResource Primary}">
 
     <!-- Register the routes -->
-    <ShellContent Route="MainPage" ContentTemplate="{DataTemplate Views:MainPage}" />
+    <!--<ShellContent Route="MainPage" ContentTemplate="{DataTemplate Views:MainPage}" />-->
     <TabBar>
     <Tab Title="Home" Icon="home">
         <ShellContent Route="HomePage" ContentTemplate="{DataTemplate Views:HomePage}" />
