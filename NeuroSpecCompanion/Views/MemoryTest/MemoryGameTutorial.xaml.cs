@@ -6,4 +6,9 @@ public partial class MemoryGameTutorial : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void StartGame(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new MemoryGame());
+    }
 }

@@ -1,3 +1,4 @@
+using NeuroSpecCompanion.Services.FHIR_Base;
 using NeuroSpecCompanion.Services.OCR_Service;
 using NeuroSpecCompanion.Services.PDF_OCR_Service;
 
@@ -32,6 +33,10 @@ public partial class MedicalHistoryPage : ContentPage
         if (result != null)
         {
             using var stream = await result.OpenReadAsync();
+            FirebaseService firebaseService = new FirebaseService();
+            var downloadUrl = await firebaseService.UploadFile(stream, result);
+            //TODO: Save the download URL to the user's profile'
+
             var pdfText = await _pdfService.ReadTextFromPDFAsync(stream);
             PdfTextLabel.Text = pdfText;
         }
@@ -49,10 +54,12 @@ public partial class MedicalHistoryPage : ContentPage
         {
             using var stream = await result.OpenReadAsync();
             SelectedImage.Source = ImageSource.FromStream(() => stream);
+            FirebaseService firebaseService = new FirebaseService();
+            var downloadUrl = await firebaseService.UploadFile(stream, result);
+            //TODO: Save the download URL to the user's profile'
 
             var ocrResult = await _ocrService.ReadTextFromImageAsync(stream);
             PdfTextLabel.Text = ocrResult;
         }
-
     }
 }

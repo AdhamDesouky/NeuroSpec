@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GenerativeAI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,51 +8,83 @@ using System.Threading.Tasks;
 
 namespace NeuroSpecCompanion.Services
 {
-    /// <summary>
-    /// This is not functional yet. It is a placeholder for the ChatbotService class.
-    /// Make it contact the backend service instead of diretly contacting the chatbot service.
-    /// </summary>
+
+    public class ArabicApiResponse
+    {
+        public string answer { get; set; }
+    }
+
+
     public class ChatbotService
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _url;
-        
+        string apiKey = "AIzaSyC96km5Mts6OPAfkk27qsZmCmrlHnnCCxw";
+        GenerativeModel _model;
         public ChatbotService()
         {
-            _httpClient = new HttpClient();
-            _url = "https://abdelrahmansaleh.us-east-1.modelbit.com/v1/predict_weather/latest";
-
+            _model = new GenerativeModel(apiKey);
         }
+
         public async Task<string> ProcessMessageAsync(string text)
         {
             try
             {
-                // JSON body
-                var jsonBody = new { data = text  };
-                var json = JsonSerializer.Serialize(jsonBody);
-
-                // Set up the request content
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                // Send the POST request
-                var response = await _httpClient.PostAsync(_url, content);
-
-                // Ensure the response is successful
-                response.EnsureSuccessStatusCode();
-
-                // Read the response content
-                var responseContent = await response.Content.ReadAsStringAsync();
-
-                // Output the response
-                return responseContent;
+                var chat = _model.StartChat(new GenerativeAI.Types.StartChatParams());
+                var response = await chat.SendMessageAsync(text);
+                return response;
             }
-            catch (HttpRequestException e)
+            catch (Exception e)
             {
-                // Output error message
                 return $"Request error: {e.Message}";
             }
         }
-
     }
+
+    //galal
+    //public class ChatbotService
+    //{
+    //    private readonly HttpClient _httpClient;
+    //    private readonly string _url;
+
+    //    public ChatbotService()
+    //    {
+    //        _httpClient = new HttpClient();
+    //        _url = "https://cfae-154-178-134-151.ngrok-free.app/predict";
+
+    //    }
+    //    public async Task<string> ProcessMessageAsync(string text)
+    //    {
+    //        try
+    //        {
+
+    //            // JSON body
+    //            var jsonBody = new { prompt = text };
+    //            var json = JsonSerializer.Serialize(jsonBody);
+
+    //            // Set up the request content
+    //            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+    //            // Send the POST request
+    //            var response = await _httpClient.PostAsync(_url, content);
+
+    //            response.EnsureSuccessStatusCode();
+
+    //            var jsonString = await response.Content.ReadAsStringAsync();
+    //            var options = new JsonSerializerOptions
+    //            {
+    //                PropertyNameCaseInsensitive = true,
+    //                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    //            };
+    //            var arabicResponse = JsonSerializer.Deserialize<ArabicApiResponse>(jsonString, options);
+
+    //            return arabicResponse.answer;
+    //        }
+    //        catch (HttpRequestException e)
+    //        {
+    //            // Output error message
+    //            return $"Request error: {e.Message}";
+    //        }
+    //    }
+
+    //}
 }
 

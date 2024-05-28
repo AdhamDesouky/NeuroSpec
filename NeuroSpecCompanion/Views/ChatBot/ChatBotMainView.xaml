@@ -5,6 +5,7 @@
              xmlns:controls="clr-namespace:NeuroSpecCompanion.Controls"
              xmlns:templates="clr-namespace:NeuroSpecCompanion.Views.ChatBot.Templates"
              xmlns:viewmodel="clr-namespace:NeuroSpecCompanion.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Shell.NavBarIsVisible="False"
              Title="ChatBotMainView">
     <ContentPage.Resources>
@@ -82,8 +83,9 @@
 
             <Style x:Key="ChatEntryContainerStyle" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{StaticResource ChatEntryBackgroundColor}" />
-                <Setter Property="HeightRequest" Value="72" />
+                <Setter Property="MinimumHeightRequest" Value="65" />
                 <Setter Property="CornerRadius" Value="22" />
+                <Setter Property="BorderColor" Value="{StaticResource LightButNotWhiteColor}" />
                 <Setter Property="HasShadow" Value="False" />
                 <Setter Property="Padding" Value="4" />
                 <Setter Property="Margin" Value="12" />
@@ -137,7 +139,7 @@
                     Grid.Row="1"
                     ColumnDefinitions="*, Auto">
                     <Label
-                        Text="أهلا بيك, انا 'عبدو صالح', دكتورك الشخصي الذكي 🤓, قولي بتشتكي من ايه؟" 
+                        Text="أهلا بيك, انا 'جعفر'، دكتورك الشخصي الذكي 🐢🤓، أقدر اساعدك ازاي؟" 
                         FlowDirection="RightToLeft"
                         Style="{StaticResource UsernameTextStyle}"/>
 
@@ -148,6 +150,7 @@
                 <BoxView
                     Style="{StaticResource ChatAdornerStyle}"/>
                 <Grid
+                    BackgroundColor="Transparent"
                     RowDefinitions="*, Auto">
                     <Grid>
                         <ScrollView x:Name="chatScrollView">
@@ -161,23 +164,30 @@
                     </Grid>
                     <Frame
                         Grid.Row="1"
-                        Style="{StaticResource ChatEntryContainerStyle}">
+                        Style="{StaticResource ChatEntryContainerStyle}"
+                        BackgroundColor="Transparent">
                         <Grid
                             ColumnDefinitions="*, Auto">
-                            <controls:BorderlessEntry
+                            <Editor
                                 x:Name="chatEntry"
                                 Placeholder="Type your message..."
+                                TextColor="{StaticResource Primary}"
+                                FontSize="18"
+                                AutoSize="TextChanges"
                                 Style="{StaticResource ChatEntryStyle}"/>
                             <Grid 
                                 Grid.Column="1"
                                 Style="{StaticResource SearchButtonContainerStyle}">
-                                <Ellipse
-                                    Fill="{StaticResource PrimaryBrush}"
-                                    Style="{StaticResource SearchButtonEllipseStyle}"/>
+
                                 <ImageButton
                                     Clicked="Send"
-                                    Source="elephant.png"
-                                    Style="{StaticResource SearchButtonImageStyle}"/>
+                                    WidthRequest="25"
+                                    Source="paper_plane_solid.svg"
+                                    Style="{StaticResource SearchButtonImageStyle}">
+                                    <ImageButton.Behaviors>
+                                        <toolkit:IconTintColorBehavior TintColor="{StaticResource PrimaryColor}"/>
+                                    </ImageButton.Behaviors>
+                                </ImageButton>
                             </Grid>
                         </Grid>
                     </Frame>

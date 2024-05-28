@@ -82,6 +82,10 @@
             <!-- COLORS -->
             <Color x:Key="PrimaryColor">#00123a</Color>
             <Color x:Key="SecondaryColor">#fdffff</Color>
+            <Color x:Key="LighterPrimaryColor">#324161</Color>
+            <Color x:Key="LightButNotWhiteColor">#B2B7C3</Color>
+
+
 
             <!-- BRUSHES -->
             <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />

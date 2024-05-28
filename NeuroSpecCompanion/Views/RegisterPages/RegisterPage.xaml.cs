@@ -1,5 +1,6 @@
 using NeuroSpec.Shared.Models.DTO;
 using NeuroSpecCompanion.Services;
+using NeuroSpecCompanion.Services.FHIR_Base;
 using System.Text.Json;
 
 namespace NeuroSpecCompanion.Views.RegisterPages;
@@ -16,10 +17,36 @@ public partial class RegisterPage : ContentPage
         bddp.Date = new DateTime(2002,4,23);
 
 	}
+    private Stream _fileStream;
 
-    private void OnUploadPhotoClicked(object sender, EventArgs e)
+    private async void OnUploadPhotoClicked(object sender, EventArgs e)
     {
 
+        try
+        {
+            var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
+            {
+                Title = "Select a photo"
+            });
+
+            if (result != null)
+            {
+                _fileStream = await result.OpenReadAsync();
+
+                FirebaseService firebaseService = new FirebaseService();
+                var downloadUrl = await firebaseService.UploadFile(_fileStream, result);
+                //TODO: Save the download URL to the user's profile'
+
+                Console.WriteLine("Url: " + downloadUrl);
+                // Display the selected photo
+                uploadPhotoImgBtn.Source = ImageSource.FromStream(() => _fileStream);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle any exceptions
+            Console.WriteLine($"Exception: {ex.Message}");
+        }
     }
 
     private async void OnRegisterClicked(object sender, EventArgs e)

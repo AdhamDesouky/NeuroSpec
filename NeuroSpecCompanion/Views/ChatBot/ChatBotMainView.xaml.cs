@@ -35,7 +35,7 @@ public partial class ChatBotMainView : ContentPage
 
                         Content = new Grid
                         {
-                            BackgroundColor = (Color)Application.Current.Resources["PrimaryColor"],
+                            BackgroundColor = (Color)Application.Current.Resources["LighterPrimaryColor"],
                             MinimumWidthRequest = 10,
                             Children =
                             {
@@ -43,6 +43,7 @@ public partial class ChatBotMainView : ContentPage
                                 {
                                     Text = text,
                                     FontSize = 18,
+                                    FontAttributes= FontAttributes.Bold,
                                     FlowDirection = FlowDirection.RightToLeft,
                                     Margin = new Thickness(15)
                                 }
@@ -78,9 +79,10 @@ public partial class ChatBotMainView : ContentPage
                                 new Label
                                 {
                                     Text = text,
+                                    Margin= new Thickness(15,15,30,15),
                                     FontSize = 18,
+                                    FontAttributes= FontAttributes.Bold,
                                     FlowDirection = FlowDirection.LeftToRight,
-                                    Margin = new Thickness(15)
                                 }
                             }
                         }
@@ -112,14 +114,11 @@ public partial class ChatBotMainView : ContentPage
         }
         //chatStack.Children.Add(CreateNewSenderMessage("afterCleaning: " + finalText));
 
-        if (string.IsNullOrEmpty(finalText))
-        {
-            chatStack.Children.Add(CreateNewResponseMessage("I'm sorry, I can't understand your message.\n Please Make Sure to type your message in Arabic."));
-            ScrollToBottom();
-            return;
-        }
+        //for kamal and galal's model
+        //string responseMessage=await _chatBotService.ProcessMessageAsync(finalText);
 
-        string responseMessage = await _chatBotService.ProcessMessageAsync(finalText);
+        //for generative AI model
+        string responseMessage = await _chatBotService.ProcessMessageAsync(text);
         chatStack.Children.Add(CreateNewResponseMessage(responseMessage));
         ScrollToBottom();
     }

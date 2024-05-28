@@ -1,8 +1,5 @@
-using Firebase.Storage;
-using Microsoft.Maui.Controls;
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.Maui.Storage;
+using NeuroSpecCompanion.Services.FHIR_Base;
 
 namespace NeuroSpecCompanion.Views
 {
@@ -28,6 +25,11 @@ namespace NeuroSpecCompanion.Views
                 {
                     _fileStream = await result.OpenReadAsync();
 
+                    FirebaseService firebaseService = new FirebaseService();
+                    var downloadUrl = await firebaseService.UploadFile(_fileStream, result);
+                    //TODO: Save the download URL to the user's profile'
+
+                    Console.WriteLine("Url: " + downloadUrl);
                     // Display the selected photo
                     userImageButton.Source = ImageSource.FromStream(() => _fileStream);
                 }
@@ -39,38 +41,5 @@ namespace NeuroSpecCompanion.Views
             }
         }
 
-        private async void OnUploadFileClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var fileResult = await FilePicker.PickAsync(new PickOptions
-                {
-                    PickerTitle = "Select a file"
-                });
-
-                if (fileResult != null)
-                {
-                    _fileStream = await fileResult.OpenReadAsync();
-                    statusLabel.Text = "Uploading...";
-
-                    // Upload the file to Firebase Storage
-                    var firebaseStorage = new FirebaseStorage("neurospec-d06c2.appspot.com");
-                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(fileResult.FileName)}";
-                    var storageReference = firebaseStorage
-                        .Child("uploads")
-                        .Child(fileName);
-
-                    var downloadUrl = await storageReference.PutAsync(_fileStream);
-                    statusLabel.Text = "Upload successful!";
-                    Console.WriteLine($"File URL: {downloadUrl}");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions
-                statusLabel.Text = "Failed to upload file.";
-                Console.WriteLine($"Exception: {ex.Message}");
-            }
-        }
     }
 }

@@ -16,7 +16,7 @@ public partial class HomePage : ContentPage
 
     private void MemoryTestClicked(object sender, TappedEventArgs e)
     {
-        Navigation.PushAsync(new MemoryGame());
+        Navigation.PushAsync(new MemoryGameTutorial());
     }
 
     private void VibrationClicked(object sender, TappedEventArgs e)

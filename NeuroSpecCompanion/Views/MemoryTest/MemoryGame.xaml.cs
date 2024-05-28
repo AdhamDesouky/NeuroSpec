@@ -96,6 +96,7 @@ public partial class MemoryGame : ContentPage
     void EndGame()
     {
         _started = false;
+        startStopBtn.IsEnabled = false;
         ViewScore();
     }
     string randomizeImages(int r, int c)

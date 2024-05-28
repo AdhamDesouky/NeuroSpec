@@ -93,8 +93,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="2.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+		<PackageReference Include="Google_GenerativeAI" Version="1.0.0" />
 		<PackageReference Include="IronOcr" Version="2024.5.25" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="MongoDB.Bson" Version="2.25.0" />
@@ -123,9 +125,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CommunityChatPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\CollectingAllResourcesHere.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\HomePage.xaml">
@@ -162,7 +161,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Icons\" />
-	  <Folder Include="Services\FHIR_Base\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -176,6 +174,8 @@
 	  <MauiImage Include="Resources\Images\Icons\file_upload.svg" />
 	  <MauiImage Include="Resources\Images\Icons\home.svg" />
 	  <MauiImage Include="Resources\Images\Icons\message.svg" />
+		<MauiImage Include="Resources\Images\Icons\paper_plane_solid.svg" />
+		
 	  <MauiImage Include="Resources\Images\Icons\notes_medical.svg" />
 	  <MauiImage Include="Resources\Images\Icons\pause.svg" />
 	  <MauiImage Include="Resources\Images\Icons\rotate.svg" />
@@ -194,12 +194,6 @@
 
 
 
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="Views\CollectingAllResourcesHere.xaml.cs">
-	    <DependentUpon>CollectingAllResourcesHere.xaml</DependentUpon>
-	  </Compile>
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadGenericExceptionInfoBarNeuroSpecCompanionHideInfoBar="True" /></VisualStudio></ProjectExtensions>

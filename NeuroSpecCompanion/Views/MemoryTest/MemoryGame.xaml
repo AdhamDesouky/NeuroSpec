@@ -21,7 +21,7 @@
                         </Image>
                         <Label x:Name="timerLabel" Text="00:05" HorizontalOptions="Start" Margin="40, 10" 
                     VerticalOptions="Center" FontSize="24"/>
-                        <ImageButton Source="circle_play" WidthRequest="30" HorizontalOptions="End" Margin="0,10" Clicked="startClicked">
+                        <ImageButton x:Name="startStopBtn" Source="circle_play" WidthRequest="30" HorizontalOptions="End" Margin="0,10" Clicked="startClicked">
                             <ImageButton.Behaviors>
                                 <toolkit:IconTintColorBehavior TintColor="{StaticResource Secondary}" />
                             </ImageButton.Behaviors>
