@@ -26,7 +26,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<IEnumerable<Patient>>(content);
         }
         
-        public async Task<Patient> GetPatientByIdAsync(string patientID)
+        public async Task<Patient> GetPatientByIdAsync(int patientID)
         {
             var response = await _httpClient.GetAsync(_baseApi + "/" + patientID);
             response.EnsureSuccessStatusCode();
@@ -34,7 +34,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<Patient>(content);
         }
 
-        public async Task<Hl7.Fhir.Model.Patient> GetFHIRPatientByIdAsync(string patientID)
+        public async Task<Hl7.Fhir.Model.Patient> GetFHIRPatientByIdAsync(int patientID)
         {
             var response = await _httpClient.GetAsync(_baseApi + "/onFHIR/" + patientID);
             response.EnsureSuccessStatusCode();
@@ -42,13 +42,17 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<Hl7.Fhir.Model.Patient>(content);
         }
 
-        public async Task<bool> VerifyPatientAsync(string patientID, string password)
+        public async Task<bool> VerifyPatientAsync(int patientID, string password)
         {
             var response = await _httpClient.GetAsync(_baseApi + "/" + patientID + "/" + password);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<bool>(content);
+
         }
+
+        
+
         public async Task<Patient> InsertPatientAsync(Patient patient)
         {
             var json = JsonSerializer.Serialize(patient);

@@ -4,6 +4,7 @@ using NeuroSpecCompanion.Services;
 using NeuroSpec.Shared.Services.Firebase_Service;
 using NeuroSpecCompanion.Services.OCR_Service;
 using NeuroSpecCompanion.Services.PDF_OCR_Service;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 
 //using NeuroSpecCompanion.Services;
 
@@ -27,7 +28,8 @@ namespace NeuroSpecCompanion
             builder.Services.AddSingleton<FirebaseService>();
             builder.Services.AddSingleton<IOCRService, OCRService>();
             builder.Services.AddSingleton<IPDFOCRService, PDFOCRService>();
-
+            builder.Services.AddSingleton<AuthService>();
+            builder.Services.AddSingleton<PatientService>();
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -55,7 +55,7 @@ namespace NeuroSpecBackend.Controllers
 
             if (patient == null)
             {
-                return NotFound();
+                return Ok(false);
             }
 
             return Ok(true);

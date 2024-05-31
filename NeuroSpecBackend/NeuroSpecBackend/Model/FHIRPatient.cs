@@ -1,5 +1,4 @@
 ﻿using Hl7.Fhir.Model;
-using NeuroSpec.Shared.Models.DTO;
 using Patient = Hl7.Fhir.Model.Patient;
 using myPatient= NeuroSpec.Shared.Models.DTO.Patient;
 namespace NeuroSpecBackend.Model

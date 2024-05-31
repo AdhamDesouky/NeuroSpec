@@ -23,9 +23,9 @@ public partial class RegisterPage : ContentPage
 
 	}
     private Stream _fileStream;
+    string ppDownloadUrl="";
     private async void OnUploadPhotoClicked(object sender, EventArgs e)
     {
-
         try
         {
             var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
@@ -41,7 +41,7 @@ public partial class RegisterPage : ContentPage
                 var downloadUrl = await firebaseService.UploadFile(_fileStream);
                 //TODO: Save the download URL to the user's profile'
 
-                Console.WriteLine("Url: " + downloadUrl);
+                ppDownloadUrl= downloadUrl;
                 // Display the selected photo
                 uploadPhotoImgBtn.Source = ImageSource.FromStream(() => _fileStream);
             }
@@ -52,32 +52,57 @@ public partial class RegisterPage : ContentPage
             Console.WriteLine($"Exception: {ex.Message}");
         }
     }
-
+    int patientId;
     private Patient ReadEntryData()
     {
-        
+        patientId = IDGeneration.generateNewPatientID(phoneEntry.Text);
+        string fn=firstNameEntry.Text;
+        string ln=lastNameEntry.Text;
+        string em=emailEntry.Text;
+        string un=userNameEntry.Text;
+        if (string.IsNullOrEmpty(un)) un = "";
+        if (string.IsNullOrEmpty(em)) em = "";
+        string pw = passwordEntry.Text;
+        string ph = phoneEntry.Text;
+        string st=streetEntry.Text;
+        if(string.IsNullOrEmpty(st)) st = "";
+        string ct=cityEntry.Text;
+        if(string.IsNullOrEmpty(ct)) ct = "";
+        string stt=stateEntry.Text;
+        if(string.IsNullOrEmpty(stt)) stt = "";
+        string zp=zipEntry.Text;
+        if(string.IsNullOrEmpty(zp)) zp = "";
+        string cn=countryEntry.Text;
+        if(string.IsNullOrEmpty(cn)) cn = "";
+        DateTime dob = bddp.Date;
+        bool gndr = maleRB.IsChecked;
+        double ht = HeightStepper.Value;
+        double wt = WeightStepper.Value;
+        bool dh = rightHandRB.IsChecked;
+
         Patient patient = new Patient()
         {
-            PatientID = IDGeneration.generateNewPatientID(phoneEntry.Text),
-            FirstName = firstNameEntry.Text,
-            LastName = lastNameEntry.Text,
-            Email = emailEntry.Text,
-            Password = passwordEntry.Text,
-            PhoneNumber = phoneEntry.Text,
+            PatientID = patientId,
+            Username = un,
+            FirstName = fn,
+            LastName = ln,
+            Email = em,
+            Password = pw,
+            PhoneNumber = ph,
             Address = new Address
             {
-                Street= streetEntry.Text,
-                City= cityEntry.Text,
-                State= stateEntry.Text,
-                ZipCode= zipEntry.Text,
-                Country= countryEntry.Text
+                Street= st,
+                City= ct,
+                State= stt,
+                ZipCode= zp,
+                Country= cn
             },
-            DateOfBirth = bddp.Date,
-            Gender= maleRB.IsChecked,
-            ProfilePicture=uploadPhotoImgBtn.Source.ToString(),
-            Height = HeightStepper.Value,
-            Weight = WeightStepper.Value,
-            DominantHand = rightHandRB.IsChecked
+            DateOfBirth = dob,
+            Gender= gndr,
+            ProfilePicture=ppDownloadUrl,
+            Height = ht,
+            Weight = wt,
+            DominantHand = dh
         };
         return patient;
     }
@@ -93,10 +118,10 @@ public partial class RegisterPage : ContentPage
         
         Patient patient = ReadEntryData();
         var json = JsonSerializer.Serialize(patient);
-        await DisplayAlert("Patient", json, "OK");
+        //await DisplayAlert("Patient", json, "OK");
         PatientService _patientService = new PatientService();
         await _patientService.InsertPatientAsync(patient);
-        await DisplayAlert("Success", "Patient registered successfully", "OK");
+        await DisplayAlert("Success", $"Patient registered successfully, your ID is:{patientId}", "OK");
 
     }
     private bool VerifyPassword()

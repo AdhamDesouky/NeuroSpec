@@ -58,7 +58,7 @@
 
                     <!-- Remember Me Checkbox -->
                     <StackLayout Grid.Row="5" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                        <CheckBox Color="{StaticResource Blue100Accent}" VerticalOptions="Center"/>
+                        <CheckBox x:Name="autoLoginSwitch" Color="{StaticResource Blue100Accent}" VerticalOptions="Center"/>
                         <Label Text="Remember Me" TextColor="{StaticResource White}" FontSize="16" Margin="0" VerticalOptions="Center" />
                     </StackLayout>
 

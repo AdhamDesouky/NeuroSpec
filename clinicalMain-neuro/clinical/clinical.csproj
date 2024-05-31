@@ -29,6 +29,7 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.40" />
     <PackageReference Include="MySql.Data" Version="8.2.0" />
     <PackageReference Include="NuGet.Protocol" Version="6.8.0" />
     <PackageReference Include="PDFsharp" Version="6.0.0" />
