@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using NeuroSpecCompanion.Services;
-using NeuroSpecCompanion.Services.FHIR_Base;
+using NeuroSpec.Shared.Services.Firebase_Service;
 using NeuroSpecCompanion.Services.OCR_Service;
 using NeuroSpecCompanion.Services.PDF_OCR_Service;
 

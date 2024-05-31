@@ -25,6 +25,7 @@
     <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="fo-dicom" Version="5.1.2" />
     <PackageReference Include="fo-dicom.Desktop" Version="4.0.8" />
+    <PackageReference Include="Hl7.Fhir.R5" Version="5.4.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />

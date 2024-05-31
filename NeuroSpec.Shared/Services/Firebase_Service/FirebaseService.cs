@@ -1,6 +1,6 @@
 ﻿using Firebase.Storage;
 
-namespace NeuroSpecCompanion.Services.FHIR_Base
+namespace NeuroSpec.Shared.Services.Firebase_Service
 {
     public class FirebaseService
     {
@@ -13,9 +13,9 @@ namespace NeuroSpecCompanion.Services.FHIR_Base
             _url = "neurospec-d06c2.appspot.com";
 
         }
-        public async Task<string> UploadFile(Stream _fileStream, FileResult fileResult)
+        public async Task<string> UploadFile(Stream _fileStream)
         {
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(fileResult.FileName)}";
+            var fileName = $"{Guid.NewGuid()}";
             var storageReference = _firebaseStorage
             .Child("uploads")
             .Child(fileName);

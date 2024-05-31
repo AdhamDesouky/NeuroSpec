@@ -2,9 +2,6 @@
 using MongoDB.Driver;
 using NeuroSpecBackend.Model;
 using NeuroSpec.Shared.Models.DTO;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace NeuroSpecBackend.Controllers
 {
     [Route("api/[controller]")]
@@ -26,9 +23,9 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpGet("{patientID}")]
-        public async Task<ActionResult<Patient>> GetPatientById(string patientID)
+        public async Task<ActionResult<Patient>> GetPatientById(int patientID)
         {
-            var patient = await _patients.Find(p => p.Identifier.Value == patientID).FirstOrDefaultAsync();
+            var patient = await _patients.Find(p => p.PatientID== patientID).FirstOrDefaultAsync();
 
             if (patient == null)
             {
@@ -38,10 +35,23 @@ namespace NeuroSpecBackend.Controllers
             return Ok(patient);
         }
 
-        [HttpGet("{patientID}/{password}")]
-        public async Task<ActionResult<bool>> VerifyPatient(string patientID, string password)
+        [HttpGet("onFHIR/{patientID}")]
+        public async Task<ActionResult<Hl7.Fhir.Model.Patient>> GetFHIRPatientById(int patientID)
         {
-            var patient = await _patients.Find(p => p.Identifier.Value == patientID && p.Password == password).FirstOrDefaultAsync();
+            var patient = await _patients.Find(p => p.PatientID == patientID).FirstOrDefaultAsync();
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+            Hl7.Fhir.Model.Patient returnPatient=FHIRPatient.ToHl7Patient(patient);
+            return Ok(returnPatient);
+        }
+
+        [HttpGet("{patientID}/{password}")]
+        public async Task<ActionResult<bool>> VerifyPatient(int patientID, string password)
+        {
+            var patient = await _patients.Find(p => p.PatientID== patientID && password==p.Password).FirstOrDefaultAsync(); 
 
             if (patient == null)
             {
@@ -55,18 +65,18 @@ namespace NeuroSpecBackend.Controllers
         public async Task<ActionResult<Patient>> InsertPatient(Patient patient)
         {
             await _patients.InsertOneAsync(patient);
-            return CreatedAtAction(nameof(GetPatientById), new { patientID = patient.Identifier.Value }, patient);
+            return CreatedAtAction(nameof(GetPatientById), new { patientID = patient.PatientID }, patient);
         }
 
         [HttpPut("{patientID}")]
-        public async Task<IActionResult> UpdatePatient(string patientID, Patient patient)
+        public async Task<IActionResult> UpdatePatient(int patientID, Patient patient)
         {
-            if (patientID != patient.Identifier.Value)
+            if (patientID != patient.PatientID)
             {
                 return BadRequest();
             }
 
-            var result = await _patients.ReplaceOneAsync(p => p.Identifier.Value == patientID, patient);
+            var result = await _patients.ReplaceOneAsync(p => p.PatientID == patientID, patient);
 
             if (result.MatchedCount == 0)
             {
@@ -77,9 +87,9 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpDelete("{patientID}")]
-        public async Task<IActionResult> DeletePatient(string patientID)
+        public async Task<IActionResult> DeletePatient(int patientID)
         {
-            var result = await _patients.DeleteOneAsync(p => p.Identifier.Value == patientID);
+            var result = await _patients.DeleteOneAsync(p => p.PatientID == patientID);
 
             if (result.DeletedCount == 0)
             {

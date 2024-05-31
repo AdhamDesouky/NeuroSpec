@@ -6,56 +6,56 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using NeuroSpec.Shared.Models.DTO;
 
-namespace NeuroSpecCompanion.Services
+namespace NeuroSpecCompanion.Shared.Services.DTO_Services
 {
-    public class ScanTestService
+    public class EvaluationTestService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
 
-        public ScanTestService()
+        public EvaluationTestService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/ScanTest";
+            _baseApi = "http://neurospec.somee.com/api/EvaluationTest";
         }
 
-        public async Task<IEnumerable<ScanTest>> GetAllScanTestsAsync()
+        public async Task<IEnumerable<EvaluationTest>> GetAllTestsAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<ScanTest>>(content);
+            return JsonSerializer.Deserialize<IEnumerable<EvaluationTest>>(content);
         }
 
-        public async Task<ScanTest> GetScanTestByIdAsync(int scanTestID)
+        public async Task<EvaluationTest> GetTestByIdAsync(int testId)
         {
-            var response = await _httpClient.GetAsync($"{_baseApi}/{scanTestID}");
+            var response = await _httpClient.GetAsync($"{_baseApi}/{testId}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<ScanTest>(content);
+            return JsonSerializer.Deserialize<EvaluationTest>(content);
         }
 
-        public async Task<ScanTest> InsertScanTestAsync(ScanTest scanTest)
+        public async Task<EvaluationTest> InsertTestAsync(EvaluationTest test)
         {
-            var json = JsonSerializer.Serialize(scanTest);
+            var json = JsonSerializer.Serialize(test);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<ScanTest>(responseContent);
+            return JsonSerializer.Deserialize<EvaluationTest>(responseContent);
         }
 
-        public async Task UpdateScanTestAsync(int scanTestID, ScanTest scanTest)
+        public async Task UpdateTestAsync(int testId, EvaluationTest test)
         {
-            var json = JsonSerializer.Serialize(scanTest);
+            var json = JsonSerializer.Serialize(test);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"{_baseApi}/{scanTestID}", content);
+            var response = await _httpClient.PutAsync($"{_baseApi}/{testId}", content);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task DeleteScanTestAsync(int scanTestID)
+        public async Task DeleteTestAsync(int testId)
         {
-            var response = await _httpClient.DeleteAsync($"{_baseApi}/{scanTestID}");
+            var response = await _httpClient.DeleteAsync($"{_baseApi}/{testId}");
             response.EnsureSuccessStatusCode();
         }
     }

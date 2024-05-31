@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hl7.Fhir.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace NeuroSpecCompanion
         {
             return (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
         }
+        
     }
 }

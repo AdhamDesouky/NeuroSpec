@@ -6,13 +6,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using NeuroSpec.Shared.Models.DTO;
 
-namespace NeuroSpecCompanion.Services
+
+namespace NeuroSpecCompanion.Shared.Services.DTO_Services
 {
     public class PatientService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
-        
         public PatientService()
         {
             _httpClient = new HttpClient();
@@ -33,6 +33,15 @@ namespace NeuroSpecCompanion.Services
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Patient>(content);
         }
+
+        public async Task<Hl7.Fhir.Model.Patient> GetFHIRPatientByIdAsync(string patientID)
+        {
+            var response = await _httpClient.GetAsync(_baseApi + "/onFHIR/" + patientID);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Hl7.Fhir.Model.Patient>(content);
+        }
+
         public async Task<bool> VerifyPatientAsync(string patientID, string password)
         {
             var response = await _httpClient.GetAsync(_baseApi + "/" + patientID + "/" + password);
@@ -48,18 +57,6 @@ namespace NeuroSpecCompanion.Services
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Patient>(responseContent);
-        }
-        public async Task UpdatePatientAsync(string patientID, Patient patient)
-        {
-            var json = JsonSerializer.Serialize(patient);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync(_baseApi + "/" + patientID, content);
-            response.EnsureSuccessStatusCode();
-        }
-        public async Task DeletePatientAsync(string patientID)
-        {
-            var response = await _httpClient.DeleteAsync(_baseApi + "/" + patientID);
-            response.EnsureSuccessStatusCode();
         }
     }
 }

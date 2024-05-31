@@ -1,7 +1,12 @@
 using NeuroSpec.Shared.Models.DTO;
 using NeuroSpecCompanion.Services;
-using NeuroSpecCompanion.Services.FHIR_Base;
+using NeuroSpec.Shared.Services.Firebase_Service;
 using System.Text.Json;
+using SixLabors.ImageSharp.Processing;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
+using NeuroSpec.Shared.Globals;
+
+
 
 namespace NeuroSpecCompanion.Views.RegisterPages;
 
@@ -18,7 +23,6 @@ public partial class RegisterPage : ContentPage
 
 	}
     private Stream _fileStream;
-
     private async void OnUploadPhotoClicked(object sender, EventArgs e)
     {
 
@@ -34,7 +38,7 @@ public partial class RegisterPage : ContentPage
                 _fileStream = await result.OpenReadAsync();
 
                 FirebaseService firebaseService = new FirebaseService();
-                var downloadUrl = await firebaseService.UploadFile(_fileStream, result);
+                var downloadUrl = await firebaseService.UploadFile(_fileStream);
                 //TODO: Save the download URL to the user's profile'
 
                 Console.WriteLine("Url: " + downloadUrl);
@@ -49,6 +53,36 @@ public partial class RegisterPage : ContentPage
         }
     }
 
+    private Patient ReadEntryData()
+    {
+        
+        Patient patient = new Patient()
+        {
+            PatientID = IDGeneration.generateNewPatientID(phoneEntry.Text),
+            FirstName = firstNameEntry.Text,
+            LastName = lastNameEntry.Text,
+            Email = emailEntry.Text,
+            Password = passwordEntry.Text,
+            PhoneNumber = phoneEntry.Text,
+            Address = new Address
+            {
+                Street= streetEntry.Text,
+                City= cityEntry.Text,
+                State= stateEntry.Text,
+                ZipCode= zipEntry.Text,
+                Country= countryEntry.Text
+            },
+            DateOfBirth = bddp.Date,
+            Gender= maleRB.IsChecked,
+            ProfilePicture=uploadPhotoImgBtn.Source.ToString(),
+            Height = HeightStepper.Value,
+            Weight = WeightStepper.Value,
+            DominantHand = rightHandRB.IsChecked
+        };
+        return patient;
+    }
+
+
     private async void OnRegisterClicked(object sender, EventArgs e)
     {
         VerifyData();
@@ -56,19 +90,8 @@ public partial class RegisterPage : ContentPage
         {
             return;
         }
-        //Register Patient
-        Patient patient = new Patient();
-        patient.Name.Add(new HumanName { Text = firstNameEntry.Text, Family = lastNameEntry.Text });
-        patient.Address.Add(new Address { City = cityEntry.Text, Country = countryEntry.Text, PostalCode = zipEntry.Text,State=stateEntry.Text});
-        patient.BirthDate = bddp.Date;
-        patient.Gender = maleRB.IsChecked ? "Male" : "Female";
-        patient.Telecom.Add(new ContactPoint { Value = phoneEntry.Text, System="Phone" }) ;
-        patient.Telecom.Add(new ContactPoint { Value = emailEntry.Text, System = "Email" });
-
-        patient.Password = passwordEntry.Text;
-        patient.HeightInCm=(int)(HeightStepper.Value);
-        patient.WeightInKg=(int)(WeightStepper.Value);
-
+        
+        Patient patient = ReadEntryData();
         var json = JsonSerializer.Serialize(patient);
         await DisplayAlert("Patient", json, "OK");
         PatientService _patientService = new PatientService();
@@ -83,7 +106,7 @@ public partial class RegisterPage : ContentPage
     private void VerifyData()
     {
         dataVerified = false;
-        if (string.IsNullOrEmpty(firstNameEntry.Text) || string.IsNullOrEmpty(lastNameEntry.Text) || string.IsNullOrEmpty(emailEntry.Text) || string.IsNullOrEmpty(passwordEntry.Text) || string.IsNullOrEmpty(confirmPasswordEntry.Text) || string.IsNullOrEmpty(phoneEntry.Text))
+        if (string.IsNullOrEmpty(firstNameEntry.Text) || string.IsNullOrEmpty(lastNameEntry.Text)|| string.IsNullOrEmpty(passwordEntry.Text) || string.IsNullOrEmpty(confirmPasswordEntry.Text) || string.IsNullOrEmpty(phoneEntry.Text))
         {
             DisplayAlert("Error", "Please fill in all the fields", "OK");
             return;

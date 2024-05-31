@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using NeuroSpec.Shared.Models.DTO;
 
-namespace NeuroSpecCompanion.Services
+namespace NeuroSpecCompanion.Shared.Services.DTO_Services
 {
     public class PaymentService
     {

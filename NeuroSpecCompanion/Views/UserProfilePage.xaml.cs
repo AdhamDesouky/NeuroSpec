@@ -1,5 +1,5 @@
 using Microsoft.Maui.Storage;
-using NeuroSpecCompanion.Services.FHIR_Base;
+using NeuroSpec.Shared.Services.Firebase_Service;
 
 namespace NeuroSpecCompanion.Views
 {
@@ -26,7 +26,7 @@ namespace NeuroSpecCompanion.Views
                     _fileStream = await result.OpenReadAsync();
 
                     FirebaseService firebaseService = new FirebaseService();
-                    var downloadUrl = await firebaseService.UploadFile(_fileStream, result);
+                    var downloadUrl = await firebaseService.UploadFile(_fileStream);
                     //TODO: Save the download URL to the user's profile'
 
                     Console.WriteLine("Url: " + downloadUrl);

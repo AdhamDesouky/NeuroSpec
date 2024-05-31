@@ -9,6 +9,7 @@
     <Import_RootNamespace>NeuroSpec.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Globals\IDGeneration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ChatBot\ChatMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\AppointmentType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\AttendanceRecord.cs" />
@@ -26,5 +27,20 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Visit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\HUB\ChatHub.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\AppointmentTypeService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\AttendanceRecordService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\CalendarEventService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\EvaluationTestFeedbackService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\EvaluationTestService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueScanController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\MedicalRecordService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\OntologyTermService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PatientService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PaymentService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PrescriptionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\ScanTestService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\UserService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\VisitService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Firebase_Service\FirebaseService.cs" />
   </ItemGroup>
 </Project>
