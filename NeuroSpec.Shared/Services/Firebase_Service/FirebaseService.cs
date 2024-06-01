@@ -24,5 +24,16 @@ namespace NeuroSpec.Shared.Services.Firebase_Service
             return downloadUrl;
 
         }
+        public async Task<string> UploadProfilePicture(Stream _fileStream)
+        {
+            var fileName = $"{Guid.NewGuid()}";
+            var storageReference = _firebaseStorage
+            .Child("profilePictures")
+            .Child(fileName);
+
+            var downloadUrl = await storageReference.PutAsync(_fileStream);
+            return downloadUrl;
+
+        }
     }
 }

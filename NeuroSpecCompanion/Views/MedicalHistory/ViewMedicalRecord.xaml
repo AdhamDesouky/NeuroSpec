@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeuroSpecCompanion.Views.MedicalHistory.ViewMedicalRecord"
+             Title="Medical Record Details"
+             BackgroundColor="{StaticResource Primary}">
+
+    <StackLayout Padding="20" Spacing="20">
+        <Label Text="{Binding TimeStamp, StringFormat='Date: {0:MM/dd/yyyy hh:mm tt}'}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Secondary}"/>
+        <Label Text="{Binding Type}" FontSize="16" FontAttributes="Italic"/>
+
+        
+        <Image x:Name="RecordImage" HeightRequest="400" Aspect="AspectFit" IsVisible="False"/>
+        <WebView x:Name="RecordPdf" HeightRequest="400" IsVisible="False"/>
+        <Label Text="Report:" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0" TextColor="{StaticResource Secondary}"/>
+        <Label Text="{Binding Report}" FontSize="16" TextColor="{StaticResource Secondary}"/>
+
+        <Label Text="Doctor's Notes:" FontSize="18" FontAttributes="Bold" Margin="0,20,0,0"/>
+        <Label Text="{Binding DoctorNotes}" FontSize="16" TextColor="{StaticResource Secondary}"/>
+    </StackLayout>
+</ContentPage>

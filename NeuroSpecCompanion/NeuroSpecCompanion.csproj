@@ -90,9 +90,11 @@
 	  <None Remove="Resources\Images\ticket.png" />
 	  <None Remove="Resources\Images\train.png" />
 	  <None Remove="Resources\Images\user.png" />
+	  <None Remove="ViewModels\MedicalHistoryViewModel.cs~RF39f71a8.TMP" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="IronOcr" Version="2024.5.25" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
 	</ItemGroup>
@@ -104,12 +106,12 @@
 		<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
 		<PackageReference Include="Google_GenerativeAI" Version="1.0.0" />
 		<PackageReference Include="Hl7.Fhir.R5" Version="5.8.1" />
-		<PackageReference Include="IronOcr" Version="2024.5.25" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.40" />
 		<PackageReference Include="MongoDB.Bson" Version="2.25.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="PdfPig" Version="0.1.8" />
+		<PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 		<PackageReference Include="SkiaSharp" Version="2.88.8" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 		<PackageReference Include="Tesseract" Version="5.2.0" />
@@ -143,7 +145,7 @@
 	  <MauiXaml Update="Views\MedicalHistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\MedicalHistory\MedicalHistoryMainPage.xaml">
+	  <MauiXaml Update="Views\MedicalHistory\ViewMedicalRecord.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MemoryTest\MemoryGame.xaml">

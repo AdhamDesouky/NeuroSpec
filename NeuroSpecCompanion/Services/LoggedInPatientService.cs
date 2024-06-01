@@ -9,6 +9,6 @@ namespace NeuroSpecCompanion.Services
 {
     public static class LoggedInPatientService
     {
-        public static Patient? LoggedInPatient { get; set; }
+        public static Patient LoggedInPatient { get; set; }
     }
 }

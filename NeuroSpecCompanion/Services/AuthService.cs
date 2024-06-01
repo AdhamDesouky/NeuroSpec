@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using NeuroSpec.Shared.Models.DTO;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
 
 
@@ -19,22 +20,39 @@ namespace NeuroSpecCompanion.Services
             _httpClient = new HttpClient();
             _baseApi = "http://neurospec.somee.com/api/Patient";
         }
+        public async Task<Patient> GetPatientByIdAsync(int patientID)
+        {
+            var response = await _httpClient.GetAsync($"{_baseApi}/{patientID}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
 
+            var content = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var patient = JsonSerializer.Deserialize<Patient>(content, options);
+            return patient;
+        }
         public async Task<bool> VerifyPatientCallerAsync(int patientID, string password,bool autoLogin)
         {
             PatientService patientService = new PatientService();
-
             var response = await _httpClient.GetAsync(_baseApi + "/" + patientID + "/" + password);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             var isValid= JsonSerializer.Deserialize<bool>(content);
             if (isValid)
             {
-                var patient = await patientService.GetPatientByIdAsync(patientID);
+                var patient = await GetPatientByIdAsync(patientID);
 
                 if (patient != null)
                 {
                     LoggedInPatientService.LoggedInPatient = patient;
+                    Console.WriteLine($"Logged in as {patient.Username}" + patient.FirstName);
+                    Console.WriteLine($"Logged in as {LoggedInPatientService.LoggedInPatient.Username}" + LoggedInPatientService.LoggedInPatient.FirstName);
                     if (autoLogin)
                     {
                         // Save credentials securely for auto login

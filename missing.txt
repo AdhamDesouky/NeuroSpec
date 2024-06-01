@@ -1,0 +1,21 @@
+TODOs:
+
+-Medical Record:
+--Print in view record page
+--Multiple VisualAttachements upload and viewing in each record
+--Edit the front end for the view records pages
+
+-Register Page:
+-- Center the upload image and move it to the top
+-- Check functionality of image upload
+
+-Login Page:
+-- add a loading screen on program startup, where everything is called from db and autologin is done
+-- add a logo
+-- login by username or id not just id
+
+-Home Page:
+-- the flight hotel buttons up, either remove them or do something about them
+-- add a side bar?
+-- notifications button logs out!
+

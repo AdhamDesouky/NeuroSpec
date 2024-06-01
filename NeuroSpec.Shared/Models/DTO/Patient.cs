@@ -5,6 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace NeuroSpec.Shared.Models.DTO
 {
+    /// <summary>
+    /// References Patient in FHIR
+    /// </summary>
     public class Patient
     {
         [BsonId]

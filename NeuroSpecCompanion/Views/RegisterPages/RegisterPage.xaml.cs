@@ -1,8 +1,6 @@
 using NeuroSpec.Shared.Models.DTO;
-using NeuroSpecCompanion.Services;
 using NeuroSpec.Shared.Services.Firebase_Service;
 using System.Text.Json;
-using SixLabors.ImageSharp.Processing;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using NeuroSpec.Shared.Globals;
 
@@ -14,12 +12,15 @@ public partial class RegisterPage : ContentPage
 {
     bool PasswordsMatch = false;
     bool dataVerified = false;
-	public RegisterPage()
+    FirebaseService _firebaseService;
+
+    public RegisterPage()
 	{
 		InitializeComponent();
         maleRB.IsChecked = true;
         rightHandRB.IsChecked = true;
         bddp.Date = new DateTime(2002,4,23);
+        _firebaseService = new FirebaseService();
 
 	}
     private Stream _fileStream;
@@ -37,8 +38,7 @@ public partial class RegisterPage : ContentPage
             {
                 _fileStream = await result.OpenReadAsync();
 
-                FirebaseService firebaseService = new FirebaseService();
-                var downloadUrl = await firebaseService.UploadFile(_fileStream);
+                var downloadUrl = await _firebaseService.UploadProfilePicture(_fileStream);
                 //TODO: Save the download URL to the user's profile'
 
                 ppDownloadUrl= downloadUrl;
@@ -122,7 +122,7 @@ public partial class RegisterPage : ContentPage
         PatientService _patientService = new PatientService();
         await _patientService.InsertPatientAsync(patient);
         await DisplayAlert("Success", $"Patient registered successfully, your ID is:{patientId}", "OK");
-
+        await Navigation.NavigationStack[0].Navigation.PopAsync();
     }
     private bool VerifyPassword()
     {

@@ -5,6 +5,7 @@ using NeuroSpec.Shared.Models.DTO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hl7.Fhir.Model;
 
 namespace NeuroSpecBackend.Controllers
 {
@@ -44,6 +45,19 @@ namespace NeuroSpecBackend.Controllers
             }
 
             return Ok(medicalRecord);
+        }
+
+        [HttpGet("onFHIR/{recordID:int}")]
+        public async Task<ActionResult<DiagnosticReport>> GetMedicalRecordOnFHIRByID(int recordID)
+        {
+            var medicalRecord = await _medicalRecords.Find(m => m.RecordID == recordID).FirstOrDefaultAsync();
+
+            if (medicalRecord == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(FHIRMapper.ToHl7MedicalRecord(medicalRecord));
         }
 
         [HttpGet("ByPatient/{patientID:int}")]

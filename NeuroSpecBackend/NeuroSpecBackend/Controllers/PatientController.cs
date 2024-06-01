@@ -44,7 +44,7 @@ namespace NeuroSpecBackend.Controllers
             {
                 return NotFound();
             }
-            Hl7.Fhir.Model.Patient returnPatient=FHIRPatient.ToHl7Patient(patient);
+            Hl7.Fhir.Model.Patient returnPatient=FHIRMapper.ToHl7Patient(patient);
             return Ok(returnPatient);
         }
 
