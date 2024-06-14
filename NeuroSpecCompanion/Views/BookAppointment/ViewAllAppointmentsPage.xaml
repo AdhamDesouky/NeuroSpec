@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeuroSpecCompanion.Views.BookAppointment.ViewAllAppointmentsPage"
+             xmlns:vm="clr-namespace:NeuroSpecCompanion.ViewModels"
+             Title="All Appointments"
+             BackgroundColor="{StaticResource Primary}">
+
+    <ContentPage.BindingContext>
+        <vm:ViewAllAppointmentsViewModel />
+    </ContentPage.BindingContext>
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            <Button Text="Book Appointment" Command="{Binding BookAppointmentCommand}" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource Primary}" CornerRadius="10"/>
+            <!-- Visits List -->
+            <Label 
+                Text="Patient Visits"
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="{StaticResource Secondary}"
+                Margin="0,20,0,10"/>
+
+            <CollectionView x:Name="VisitsCollectionView" ItemsSource="{Binding Visits}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        Text="Delete"
+                                        BackgroundColor="Red"
+                                        Command="{Binding Path=BindingContext.DeleteVisitCommand, Source={x:Reference VisitsCollectionView}}"
+                                        CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <Frame HasShadow="True" CornerRadius="10" Padding="10" Margin="0,5" BackgroundColor="CadetBlue">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewVisitCommand, Source={x:Reference VisitsCollectionView}}" CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                <Label Text="{Binding TimeStamp, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="18"/>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -19,3 +19,10 @@ TODOs:
 -- add a side bar?
 -- notifications button logs out!
 
+-Prescription:
+-- Active Prescription
+-- Past Prescriptions
+
+-Issue:
+--Link Issue with concurrent result. (idk how yet)
+

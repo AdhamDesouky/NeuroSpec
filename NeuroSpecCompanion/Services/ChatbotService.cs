@@ -1,45 +1,86 @@
 ﻿using GenerativeAI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace NeuroSpecCompanion.Services
 {
 
-    public class ArabicApiResponse
-    {
-        public string answer { get; set; }
-    }
 
 
     public class ChatbotService
     {
-        string apiKey = "AIzaSyC96km5Mts6OPAfkk27qsZmCmrlHnnCCxw";
+        string apiKey = "AIzaSyC96km5Mts6OPAfkk27qsZmCmrlHnnCCxw";// for gemini
         GenerativeModel _model;
+        string huggingFaceUrl = "https://ruslanmv-ai-medical-chatbot.hf.space/run/predict";
+
         public ChatbotService()
         {
             _model = new GenerativeModel(apiKey);
+
         }
+
+        //gemini
+
+        //public async Task<string> ProcessMessageAsync(string text)
+        //{
+        //    try
+        //    {
+        //        var chat = _model.StartChat(new GenerativeAI.Types.StartChatParams());
+        //        var response = await chat.SendMessageAsync(text);
+        //        return response;
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return $"Request error: {e.Message}";
+        //    }
+        //}
 
         public async Task<string> ProcessMessageAsync(string text)
         {
-            try
+            var payload = new
             {
-                var chat = _model.StartChat(new GenerativeAI.Types.StartChatParams());
-                var response = await chat.SendMessageAsync(text);
-                return response;
-            }
-            catch (Exception e)
+                data = new string[] { text },
+                fn_index = 0
+            };
+
+            string jsonPayload = JsonConvert.SerializeObject(payload);
+
+            using (HttpClient client = new HttpClient())
             {
-                return $"Request error: {e.Message}";
+                HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsync(huggingFaceUrl, content);
+
+                    response.EnsureSuccessStatusCode();
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    JObject jsonResponse = JObject.Parse(responseBody);
+
+                    JArray data = (JArray)jsonResponse["data"];
+                    string result = data[0].ToString();
+                    return result;
+                }
+                catch (HttpRequestException e)
+                {
+                    return("Request error: " + e.Message);
+                }
             }
         }
+
     }
 
     //galal
+
+    //public class ArabicApiResponse
+    //{
+    //    public string answer { get; set; }
+    //}
+
+
     //public class ChatbotService
     //{
     //    private readonly HttpClient _httpClient;

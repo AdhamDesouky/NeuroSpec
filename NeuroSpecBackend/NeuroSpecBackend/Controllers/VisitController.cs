@@ -71,11 +71,64 @@ namespace NeuroSpecBackend.Controllers
             return visit;
         }
 
-        // Add other actions similar to above...
+        [HttpGet("byPatientID/{patientID}")]
+        public async Task<ActionResult<List<Visit>>> GetAllVisitsByPatientID(int patientID)
+        {
+            var visits = await _visits.Find(v => v.PatientID == patientID).ToListAsync();
 
+            if (visits == null)
+            {
+                return NotFound();
+            }
+
+            return visits;
+        }
         private bool VisitExists(int visitID)
         {
             return _visits.Find(v => v.VisitID == visitID).Any();
+        }
+        //get all visits by doctor id
+        [HttpGet("byDoctorID/{doctorID}")]
+        public async Task<ActionResult<List<Visit>>> GetAllVisitsByDoctorID(int doctorID)
+        {
+            var visits = await _visits.Find(v => v.DoctorID == doctorID).ToListAsync();
+
+            if (visits == null)
+            {
+                return NotFound();
+            }
+
+            return visits;
+        }
+
+        //get all available time slots on day for doctor
+        [HttpGet("available-time-slots-on-day/{selectedDay}/{DoctorID}")]
+        public async Task<ActionResult<List<string>>> GetAvailableTimeSlotsOnDay(DateTime selectedDay, int DoctorID)
+        {
+            var visits = await _visits.Find(b => b.TimeStamp.Date == selectedDay.Date && b.DoctorID == DoctorID).ToListAsync();
+            if (visits == null)
+            {
+                return NotFound();
+            }
+            var availableTimeSlots = new List<string>();
+            var timeSlots = new List<string> { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00" };
+            foreach (var timeSlot in timeSlots)
+            {
+                var isAvailable = true;
+                foreach (var visit in visits)
+                {
+                    if (visit.TimeStamp.ToString("HH:mm") == timeSlot)
+                    {
+                        isAvailable = false;
+                        break;
+                    }
+                }
+                if (isAvailable)
+                {
+                    availableTimeSlots.Add(timeSlot);
+                }
+            }
+            return availableTimeSlots;
         }
     }
 }

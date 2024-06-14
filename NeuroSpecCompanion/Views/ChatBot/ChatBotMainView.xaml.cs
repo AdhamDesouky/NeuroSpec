@@ -4,6 +4,8 @@ using System.Runtime.ConstrainedExecution;
 using System.Text.Json;
 using System.Text;
 using NeuroSpecCompanion.Services;
+using NeuroSpec.Shared.Services.OntologyServices;
+using NeuroSpec.Shared.Models.Ontology;
 
 namespace NeuroSpecCompanion.Views.ChatBot;
 
@@ -93,6 +95,10 @@ public partial class ChatBotMainView : ContentPage
     }
     char[] arabicLetters = {'ء',' ', 'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي','ى','أ', 'آ','إ' };
 
+
+    ////this shouldnt be here, im testing
+    //DrugOntologyService ontologyService = new DrugOntologyService();
+
     private async void Send(object sender, EventArgs e)
     {
         string text = chatEntry.Text;
@@ -120,6 +126,14 @@ public partial class ChatBotMainView : ContentPage
         //for generative AI model
         string responseMessage = await _chatBotService.ProcessMessageAsync(text);
         chatStack.Children.Add(CreateNewResponseMessage(responseMessage));
+
+        //List<DrugOntology> searchResults = await ontologyService.GetDrugOntologyAsync(text);
+        //string res="";
+        //foreach (var item in searchResults)
+        //{
+        //    res += item.Name + "\n";
+        //}
+        //chatStack.Children.Add(CreateNewResponseMessage(res));
         ScrollToBottom();
     }
 

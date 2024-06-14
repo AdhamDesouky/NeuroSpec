@@ -34,6 +34,7 @@
     <PackageReference Include="NuGet.Protocol" Version="6.8.0" />
     <PackageReference Include="PDFsharp" Version="6.0.0" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="Simple.GradioClient" Version="0.0.1" />
     <PackageReference Include="Syncfusion.Pdf.OCR.Wpf" Version="23.2.6" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="Tesseract" Version="5.2.0" />

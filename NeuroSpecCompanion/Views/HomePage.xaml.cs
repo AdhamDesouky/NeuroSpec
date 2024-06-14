@@ -2,6 +2,8 @@ using NeuroSpecCompanion.Views.TapTest;
 using NeuroSpecCompanion.Views.MemoryTest;
 using NeuroSpecCompanion.Services;
 using CommunityToolkit.Maui.Core.Views;
+using NeuroSpecCompanion.Views.VibrationTest;
+using NeuroSpecCompanion.Views.BookAppointment;
 namespace NeuroSpecCompanion.Views;
 
 public partial class HomePage : ContentPage
@@ -9,11 +11,7 @@ public partial class HomePage : ContentPage
 	public HomePage()
 	{
 		InitializeComponent();
-        hellolbl.Text = $"Hello, {LoggedInPatientService.LoggedInPatient.FirstName}";
-
-        //test
-        DisplayAlert("Medical History", $"{LoggedInPatientService.LoggedInPatient.PatientID},{LoggedInPatientService.LoggedInPatient.LastName}", "OK");
-        
+        hellolbl.Text = $"Hello, {LoggedInPatientService.LoggedInPatient.FirstName}";        
 	}
 
     private void RestingTremorClicked(object sender, TappedEventArgs e)
@@ -28,6 +26,7 @@ public partial class HomePage : ContentPage
 
     private void VibrationClicked(object sender, TappedEventArgs e)
     {
+        Navigation.PushAsync(new VibrationTestGamePage());
 
     }
 
@@ -39,7 +38,7 @@ public partial class HomePage : ContentPage
 
     private void HistorySquareClicked(object sender, TappedEventArgs e)
     {
-        Navigation.PushAsync(new MedicalHistoryPage());
+        Navigation.PushAsync(new ViewAllAppointmentsPage());
     }
 
     private void signOut(object sender, EventArgs e)

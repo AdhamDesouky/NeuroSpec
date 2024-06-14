@@ -34,6 +34,14 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Visit>(content);
         }
+        public async Task<List<Visit>> GetVisitsByPatientIDAsync(int patientID)
+        {
+            var response = await _httpClient.GetAsync($"{_baseApi}/byPatientID/{patientID}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<Visit>>(content);
+        }
+
 
         public async Task<Visit> InsertVisitAsync(Visit visit)
         {
@@ -57,6 +65,15 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         {
             var response = await _httpClient.DeleteAsync($"{_baseApi}/{visitID}");
             response.EnsureSuccessStatusCode();
+        }
+
+        //        [HttpGet("available-time-slots-on-day/{selectedDay}/{DoctorID}")]
+        public async Task<List<string>> GetAvailableTimeSlotsOnDayAsync(DateTime selectedDay, int DoctorID)
+        {
+            var response = await _httpClient.GetAsync($"{_baseApi}/available-time-slots-on-day/{selectedDay}/{DoctorID}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<string>>(content);
         }
     }
 }

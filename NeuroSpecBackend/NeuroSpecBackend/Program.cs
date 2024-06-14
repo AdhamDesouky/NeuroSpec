@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using NeuroSpecBackend.Model;
 using NeuroSpec.Shared.Models.HUB;
 using Microsoft.SemanticKernel;
-using NeuroSpecBackend.Services;
 
 
 namespace NeuroSpecBackend
@@ -19,8 +18,6 @@ namespace NeuroSpecBackend
             builder.Services.Configure<NeuroDbContext>(builder.Configuration.GetSection("DatabaseSettings"));
 
             builder.Services.AddScoped<NeuroDbContext>();
-
-            builder.Services.AddScoped<ChatbotService>();
             
             builder.Services.AddSignalR(); //chat
 

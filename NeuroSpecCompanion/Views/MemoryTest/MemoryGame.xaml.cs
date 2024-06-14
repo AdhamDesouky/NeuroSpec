@@ -131,7 +131,7 @@ public partial class MemoryGame : ContentPage
     }
     void StartTimer()
     {
-        Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+        Dispatcher.StartTimer(TimeSpan.FromSeconds(1), () =>
         {
             _timerDuration--;
             timerLabel.Text = globals.FormatTimeMinSeconds(_timerDuration / 60, _timerDuration % 60);
@@ -142,7 +142,6 @@ public partial class MemoryGame : ContentPage
             }
             return true;
         });
-
     }
     void FlipCards()
     {

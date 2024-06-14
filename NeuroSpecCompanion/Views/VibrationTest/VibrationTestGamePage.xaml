@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeuroSpecCompanion.Views.VibrationTest.VibrationTestGamePage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             BackgroundColor="{StaticResource Primary}"
+             Shell.NavBarIsVisible="False"
+             Title="Vibration Test">
+    <VerticalStackLayout>
+        <Grid>
+            <Grid RowDefinitions="Auto,Auto, *, Auto">
+                <!-- Header -->
+                <Frame CornerRadius="0" BackgroundColor="{StaticResource Primary}" 
+            HasShadow="True" HeightRequest="65"
+            Padding="0, 10" BorderColor="{StaticResource Primary}">
+                    <Grid VerticalOptions="Center" HeightRequest="60" Padding="10, 0">
+                        <Image Source="clock" WidthRequest="30" HorizontalOptions="Start" Margin="0,10">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource Secondary}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label x:Name="timerLabel" Text="00:05" HorizontalOptions="Start" Margin="40, 10" 
+                    VerticalOptions="Center" FontSize="24"/>
+                        <ImageButton x:Name="startStopBtn" Source="circle_play" WidthRequest="30" HorizontalOptions="End" Margin="0,10" Clicked="startClicked">
+                            <ImageButton.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource Secondary}" />
+                            </ImageButton.Behaviors>
+                        </ImageButton>
+
+                    </Grid>
+                </Frame>
+                <Frame BackgroundColor="White">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnScreenTapped"/>
+                    </Frame.GestureRecognizers>
+                </Frame>                
+
+            </Grid>
+        </Grid>
+    </VerticalStackLayout>
+
+</ContentPage>

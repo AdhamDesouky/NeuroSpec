@@ -1,4 +1,5 @@
-﻿using NeuroSpecCompanion.Views.MedicalHistory;
+﻿using NeuroSpecCompanion.Views.BookAppointment;
+using NeuroSpecCompanion.Views.MedicalHistory;
 
 namespace NeuroSpecCompanion
 {
@@ -8,6 +9,9 @@ namespace NeuroSpecCompanion
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(ViewMedicalRecord), typeof(ViewMedicalRecord));
+            Routing.RegisterRoute(nameof(ViewAppointmentPage), typeof(ViewAppointmentPage));
+            Routing.RegisterRoute(nameof(BookAppointmentMainPage), typeof(BookAppointmentMainPage));
+            Routing.RegisterRoute(nameof(ViewAllAppointmentsPage), typeof(ViewAllAppointmentsPage));
 
         }
     }

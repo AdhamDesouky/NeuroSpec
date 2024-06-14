@@ -92,5 +92,6 @@ namespace NeuroSpecBackend.Model
 
             return diagnosticReport;
         }
+        
     }
 }
