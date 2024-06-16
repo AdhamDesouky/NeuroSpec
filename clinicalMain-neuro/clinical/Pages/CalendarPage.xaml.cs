@@ -1,24 +1,14 @@
-﻿using clinical.BaseClasses;
-using clinical.userControls;
+﻿using clinical.userControls;
 using FontAwesome.WPF;
-using NuGet.Protocol.Plugins;
+using NeuroSpec.Shared.Globals;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -30,25 +20,28 @@ namespace clinical.Pages
         string[] months = {"January", "February", "March", "April", "May", "June", "July",
             "August", "September", "October", "November", "December" };
 
-        private Button selectedYrButton=null;
-        private Button selectedMnthButton=null;
+        private Button selectedYrButton = null;
+        private Button selectedMnthButton = null;
+        VisitService visitService = new VisitService();
+        CalendarEventService calendarEventService = new CalendarEventService();
+        PatientService patientService = new PatientService();
+        AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
 
-
-        int leftestYr =DateTime.Now.Year-2, rightestYr= DateTime.Now.Year + 2;
+        int leftestYr = DateTime.Now.Year - 2, rightestYr = DateTime.Now.Year + 2;
 
         DateTime selectedDay;
         public CalendarPage()
         {
             InitializeComponent();
 
-            selectedDay=DateTime.Now;
+            selectedDay = DateTime.Now;
             Refresh();
-            
+
             refreshYears();
 
-            for(int i = 1; i <= 12; i++)
+            for (int i = 1; i <= 12; i++)
             {
-                int m=i;
+                int m = i;
                 Button mnthBtn = new Button
                 {
                     Content = m.ToString(),
@@ -63,29 +56,29 @@ namespace clinical.Pages
                 }
 
                 mnthStack.Children.Add(mnthBtn);
-            }            
+            }
 
 
-            List<int>hours = new List<int>();
-            List<int>minutes = new List<int>();
-            for(int i = 0; i <= 23; i++)
+            List<int> hours = new List<int>();
+            List<int> minutes = new List<int>();
+            for (int i = 0; i <= 23; i++)
             {
                 hours.Add(i);
             }
-            for(int i = 0;i <= 59; i++)
+            for (int i = 0; i <= 59; i++)
             {
                 minutes.Add(i);
             }
-            fromHrCB.ItemsSource=hours;
+            fromHrCB.ItemsSource = hours;
             toHrCB.ItemsSource = hours;
-            fromMinCB.ItemsSource=minutes;
-            toMinCB.ItemsSource=minutes;
+            fromMinCB.ItemsSource = minutes;
+            toMinCB.ItemsSource = minutes;
 
             fromHrCB.SelectedIndex = 0;
             toHrCB.SelectedIndex = 0;
             fromMinCB.SelectedIndex = 0;
             toMinCB.SelectedIndex = 0;
-            
+
 
 
 
@@ -96,7 +89,7 @@ namespace clinical.Pages
             yrStack.Children.Clear();
             for (int i = leftestYr; i <= rightestYr; i++)
             {
-                
+
                 int yr = i;
                 Button yrBtn = new Button
                 {
@@ -106,16 +99,17 @@ namespace clinical.Pages
 
                 yrBtn.Click += (sender, e) => switchToYr(sender as Button, yr);
 
-                if (yr == DateTime.Now.Year) {
+                if (yr == DateTime.Now.Year)
+                {
                     selectedYrButton = yrBtn;
                     yrBtn.Style = (Style)FindResource("calendarButtonBig");
                 }
                 yrStack.Children.Add(yrBtn);
             }
         }
-        void Refresh()
+        async void Refresh()
         {
-            string lab= months[selectedDay.Month - 1] + " "+ selectedDay.Year.ToString();
+            string lab = months[selectedDay.Month - 1] + " " + selectedDay.Year.ToString();
             monthMainLBL.Text = lab;
 
             dayTB.Text = selectedDay.Day.ToString();
@@ -123,8 +117,8 @@ namespace clinical.Pages
             monthTB.Text = months[selectedDay.Month - 1];
             dayOfTheWeekTB.Text = selectedDay.DayOfWeek.ToString();
             calendar.DisplayDate = selectedDay;
-            
-            
+
+
             DateTime dateTime = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day);
 
             List<Visit> todayVisits = new List<Visit>();
@@ -133,13 +127,13 @@ namespace clinical.Pages
 
             if (globals.signedIn.isReciptionist)
             {
-                todayVisits= DB.GetAllVisitsOnDate(dateTime);
+                todayVisits = await visitService.GetVisitsByDateAsync(dateTime);
             }
             else
             {
-                todayVisits = DB.GetDoctorVisitsOnDate(globals.signedIn.UserID, dateTime);
+                todayVisits = await visitService.GetDoctorVisitsOnDate(globals.signedIn.UserID, dateTime);
             }
-            calendarEvents = DB.GetCalendarEventsByUserIDAndDate(globals.signedIn.UserID, dateTime);
+            calendarEvents = await calendarEventService.GetCalendarEventsByUserIDAndDate(globals.signedIn.UserID, dateTime);
 
 
             int collectedSize = todayVisits.Count + calendarEvents.Count;
@@ -147,15 +141,15 @@ namespace clinical.Pages
 
             visitsStackPanel.Children.Clear();
 
-            int i = 0,j=0;
-            while(i<todayVisits.Count||j<calendarEvents.Count)
+            int i = 0, j = 0;
+            while (i < todayVisits.Count || j < calendarEvents.Count)
             {
                 if (i < todayVisits.Count && (j == calendarEvents.Count || todayVisits[i].TimeStamp < calendarEvents[j].EventStartTime))
                 {
                     Visit visit1 = todayVisits[i];
                     Item itemControl = new Item();
-                    itemControl.Title = $"{visit1.PatientName}";
-                    itemControl.Description = $"{visit1.Type}";
+                    itemControl.Title = $"{(await patientService.GetPatientByIdAsync(visit1.PatientID)).FirstName}";
+                    itemControl.Description = $"{(await appointmentTypeService.GetAppointmentTypeByIDAsync(visit1.AppointmentTypeID)).Name}";
                     itemControl.IconBell = FontAwesomeIcon.Bell;
                     if (visit1.IsDone)
                     {
@@ -194,7 +188,7 @@ namespace clinical.Pages
                         itemControl.Icon = FontAwesomeIcon.CalendarCheckOutline;
                         itemControl.Color = (SolidColorBrush)FindResource("lightFontColor");
                     }
-                    
+
 
                     itemControl.Time = ev.EventStartTime.ToString("HH:mm") + " - " + ev.EventEndTime.ToString("HH:mm");
                     itemControl.MarkDoneCommand = new RelayCommand(() => markEventDone(ev));
@@ -209,32 +203,32 @@ namespace clinical.Pages
                 }
 
             }
-            todayTaskCnt.Text = $"{collectedSize} tasks - {doneTotal} done - {collectedSize-doneTotal} left";
+            todayTaskCnt.Text = $"{collectedSize} tasks - {doneTotal} done - {collectedSize - doneTotal} left";
 
 
         }
 
-        void deleteEvent(CalendarEvent ev)
+        async void deleteEvent(CalendarEvent ev)
         {
             MessageBoxResult result = MessageBox.Show($"Are you sure you want to drop task {ev.EventName}? This action cannot be undone.", "Delete Task", MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes)
             {
-                DB.DeleteCalendarEvent(ev);
+                await calendarEventService.DeleteCalendarEventAsync(ev.EventID);
                 Refresh();
             }
         }
 
-        void markVisitDone(Visit visit)
+        async void markVisitDone(Visit visit)
         {
-            visit.IsDone=!visit.IsDone;
-            DB.UpdateVisit(visit);
+            visit.IsDone = !visit.IsDone;
+            await visitService.UpdateVisitAsync(visit.VisitID, visit);
             Refresh();
         }
 
-        void markEventDone(CalendarEvent ev)
+        async void markEventDone(CalendarEvent ev)
         {
             ev.IsDone = !ev.IsDone;
-            DB.UpdateCalendarEvent(ev);
+            await calendarEventService.UpdateCalendarEventAsync(ev.EventID, ev);
             Refresh();
         }
 
@@ -247,7 +241,7 @@ namespace clinical.Pages
         {
             txtText.Focus();
         }
-        
+
         private void txtNote_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(txtTitle.Text) && txtTitle.Text.Length > 0)
@@ -267,10 +261,10 @@ namespace clinical.Pages
         private void selectedDayChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            selectedDay= calendar.SelectedDate ?? DateTime.MinValue;
+            selectedDay = calendar.SelectedDate ?? DateTime.MinValue;
             Refresh();
         }
-        
+
         void switchToYr(Button sender, int year)
         {
             if (selectedYrButton != null)
@@ -280,8 +274,8 @@ namespace clinical.Pages
 
             sender.Style = (Style)FindResource("calendarButtonBig");
             selectedYrButton = sender;
-            DateTime now= new DateTime(year,selectedDay.Month,selectedDay.Day);
-            selectedDay=now;
+            DateTime now = new DateTime(year, selectedDay.Month, selectedDay.Day);
+            selectedDay = now;
 
             Refresh();
         }
@@ -330,14 +324,23 @@ namespace clinical.Pages
             Refresh();
         }
 
-        private void addNote(object sender, MouseButtonEventArgs e)
+        private async void addNote(object sender, MouseButtonEventArgs e)
         {
             DateTime fromDT = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day, (int)fromHrCB.SelectedItem, (int)fromMinCB.SelectedItem, 0);
-            DateTime toDT= new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day, (int)toHrCB.SelectedItem, (int)toMinCB.SelectedItem, 0);
+            DateTime toDT = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day, (int)toHrCB.SelectedItem, (int)toMinCB.SelectedItem, 0);
             string title = txtTitle.Text;
             string desc = txtText.Text;
-            CalendarEvent ev = new CalendarEvent(globals.generateNewCalendarEventID(globals.signedIn.UserID), globals.signedIn.UserID, title, desc, fromDT, toDT, false) ;
-            DB.InsertCalendarEvent(ev);
+            CalendarEvent ev = new CalendarEvent
+            {
+                EventID = IDGeneration.generateNewCalendarEventID(globals.signedIn.UserID),
+                UserID = globals.signedIn.UserID,
+                EventName = title,
+                EventText = desc,
+                EventStartTime = fromDT,
+                EventEndTime = toDT,
+                IsDone = false
+            };
+            await calendarEventService.InsertCalendarEventAsync(ev);
             Refresh();
         }
 

@@ -19,12 +19,12 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             _baseApi = "http://neurospec.somee.com/api/Prescription";
         }
 
-        public async Task<IEnumerable<Prescription>> GetAllPrescriptionsAsync()
+        public async Task<List<Prescription>> GetAllPrescriptionsAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<Prescription>>(content);
+            return JsonSerializer.Deserialize<List<Prescription>>(content);
         }
 
         public async Task<Prescription> GetPrescriptionByIDAsync(int prescriptionID)
@@ -35,20 +35,20 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<Prescription>(content);
         }
 
-        public async Task<IEnumerable<Prescription>> GetAllPrescriptionsByPatientIDAsync(int patientID)
+        public async Task<List<Prescription>> GetAllPrescriptionsByPatientIDAsync(int patientID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/patient/{patientID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<Prescription>>(content);
+            return JsonSerializer.Deserialize<List<Prescription>>(content);
         }
 
-        public async Task<IEnumerable<Prescription>> GetAllPrescriptionsByVisitIDAsync(int visitID)
+        public async Task<List<Prescription>> GetAllPrescriptionsByVisitIDAsync(int visitID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/visit/{visitID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<Prescription>>(content);
+            return JsonSerializer.Deserialize<List<Prescription>>(content);
         }
 
         public async Task<Prescription> InsertPrescriptionAsync(Prescription prescription)

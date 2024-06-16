@@ -1,10 +1,9 @@
-﻿using System;
+﻿using NeuroSpec.Shared.Models.DTO;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using NeuroSpec.Shared.Models.DTO;
 
 namespace NeuroSpecCompanion.Shared.Services.DTO_Services
 {
@@ -12,19 +11,24 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
+        private readonly JsonSerializerOptions options;
 
         public UserService()
         {
             _httpClient = new HttpClient();
             _baseApi = "http://neurospec.somee.com/api/User";
+            options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<List<User>> GetAllUsersAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<User>>(content);
+            return JsonSerializer.Deserialize<List<User>>(content, options);
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -32,31 +36,31 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/{id}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<User>(content);
+            return JsonSerializer.Deserialize<User>(content, options);
         }
 
-        public async Task<IEnumerable<User>> GetAllEmployeesAsync()
+        public async Task<List<User>> GetAllEmployeesAsync()
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/GetAllEmployees");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<User>>(content);
+            return JsonSerializer.Deserialize<List<User>>(content, options);
         }
 
-        public async Task<IEnumerable<User>> GetAllDoctorsAsync()
+        public async Task<List<User>> GetAllDoctorsAsync()
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/GetAllDoctors");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<User>>(content);
+            return JsonSerializer.Deserialize<List<User>>(content, options);
         }
 
-        public async Task<IEnumerable<User>> GetAllAdminsAsync()
+        public async Task<List<User>> GetAllAdminsAsync()
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/GetAllAdmins");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<User>>(content);
+            return JsonSerializer.Deserialize<List<User>>(content, options);
         }
 
         public async Task<User> GetUserByNIDAsync(string nid)
@@ -64,17 +68,17 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/GetUserByNID/{nid}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<User>(content);
+            return JsonSerializer.Deserialize<User>(content, options);
         }
 
         public async Task<User> InsertUserAsync(User user)
         {
-            var json = JsonSerializer.Serialize(user);
+            var json = JsonSerializer.Serialize(user, options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<User>(responseContent);
+            return JsonSerializer.Deserialize<User>(responseContent, options);
         }
 
         public async Task DeleteUserAsync(int id)

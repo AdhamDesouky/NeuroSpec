@@ -16,7 +16,7 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patient>>> GetAllPatients()
+        public async Task<ActionResult<List<Patient>>> GetAllPatients()
         {
             var patients = await _patients.Find(_ => true).ToListAsync();
             return Ok(patients);
@@ -97,6 +97,27 @@ namespace NeuroSpecBackend.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePatient(Patient patient)
+        {
+            var result = await _patients.ReplaceOneAsync(p => p.PatientID == patient.PatientID, patient);
+
+            if (result.MatchedCount == 0)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        //get all patients of a doctor
+        [HttpGet("doctor/{doctorID}")]
+        public async Task<ActionResult<List<Patient>>> GetPatientsByDoctor(int doctorID)
+        {
+            var patients = await _patients.Find(p => p.AssignedDoctorID == doctorID).ToListAsync();
+            return Ok(patients);
         }
     }
 }

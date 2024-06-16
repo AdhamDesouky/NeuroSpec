@@ -1,21 +1,14 @@
-﻿using clinical.BaseClasses;
-using MahApps.Metro.IconPacks;
-using Org.BouncyCastle.Asn1.Crmf;
+﻿using MahApps.Metro.IconPacks;
+using NeuroSpec.Shared.Globals;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 namespace clinical.Pages
 {
     /// <summary>
@@ -26,30 +19,40 @@ namespace clinical.Pages
         Visit currVisit;
         Patient currPatient;
 
+        VisitService VisitService = new VisitService();
+        UserService UserService = new UserService();
+        PatientService PatientService = new PatientService();
+        PrescriptionService PrescriptionService = new PrescriptionService();
+        EvaluationTestFeedbackService EvaluationTestFeedbackService = new EvaluationTestFeedbackService();
 
         private List<TestItem> testItems = new List<TestItem>();
         public visit(Visit selectedVisit)
         {
             InitializeComponent();
             currVisit = selectedVisit;
-            currPatient = DB.GetPatientById(selectedVisit.PatientID);
+            initAsync();
             heightTB.Text = currVisit.Height.ToString();
             weightTB.Text = currVisit.Weight.ToString();
-            patientNameMainTxt.Text = currPatient.FullName;
-            patientNameText.Text = currPatient.FullName;
             visitIdText.Text = currVisit.VisitID.ToString();
             visitDate.Text = currVisit.TimeStamp.ToString("g");
-            DoctorName.Text = currPatient.DoctorName;
             hwborder.IsEnabled = false;
-            
+
             noteTXT.Text = currVisit.TherapistNotes;
-            List<Prescription>prescriptions = DB.GetAllPrescriptionsByVisitID(selectedVisit.VisitID);
-            foreach(Prescription p in prescriptions)
+
+        }
+        private async void initAsync()
+        {
+            DoctorName.Text = (await UserService.GetUserByIdAsync(currVisit.DoctorID)).FullName;
+            currPatient = await PatientService.GetPatientByIdAsync(currVisit.PatientID);
+            patientNameMainTxt.Text = currPatient.FirstName;
+            patientNameText.Text = currPatient.FirstName;
+            List<Prescription> prescriptions = await PrescriptionService.GetAllPrescriptionsByVisitIDAsync(currVisit.VisitID);
+            foreach (Prescription p in prescriptions)
             {
                 prescriptionsStackPanel.Children.Add(globals.CreatePrescriptionUI(p));
             }
-            
-            List<EvaluationTestFeedBack> testFeedBacks = DB.GetFeedbackByVisit(selectedVisit.VisitID);
+
+            List<EvaluationTestFeedBack> testFeedBacks = await EvaluationTestFeedbackService.GetFeedbackByVisitAsync(currVisit.VisitID);
 
             if (currVisit.IsDone)
             {
@@ -63,7 +66,7 @@ namespace clinical.Pages
 
             foreach (EvaluationTestFeedBack fd in testFeedBacks)
             {
-                TestItem item = new TestItem(DB.GetTestById(fd.TestID).TestName, fd.Notes, fd.Severity, fd.TestID);
+                TestItem item = new TestItem(fd.TestName, fd.Notes, fd.Severity);
                 item.feedBackId = fd.TestFeedBackID;
                 testItems.Add(item);
                 CreateTestItem(item);
@@ -71,10 +74,9 @@ namespace clinical.Pages
             }
 
 
-
         }
 
-       
+
 
         private void addTest(object sender, MouseButtonEventArgs e)
         {
@@ -83,7 +85,7 @@ namespace clinical.Pages
 
         private void navigateBack(object sender, MouseButtonEventArgs e)
         {
-            if(NavigationService.CanGoBack)NavigationService.GoBack();
+            if (NavigationService.CanGoBack) NavigationService.GoBack();
         }
 
         private void newPrescription(object sender, MouseButtonEventArgs e)
@@ -97,7 +99,7 @@ namespace clinical.Pages
             noteTXT.IsEnabled = !noteTXT.IsEnabled;
         }
 
-        
+
 
 
 
@@ -150,7 +152,7 @@ namespace clinical.Pages
 
 
             // Create and initialize AutoCompleteBox
-            AutoCompleteBox testAutoCompleteBox = new AutoCompleteBox { Margin = new Thickness(0, 18, 5, 18), ItemsSource = DB.GetAllTests(), FilterMode = AutoCompleteFilterMode.Contains };
+            AutoCompleteBox testAutoCompleteBox = new AutoCompleteBox { Margin = new Thickness(0, 18, 5, 18), FilterMode = AutoCompleteFilterMode.Contains };
             Grid.SetColumn(testAutoCompleteBox, 1);
 
             // Create and initialize Grid for RadioButtons
@@ -245,7 +247,7 @@ namespace clinical.Pages
 
 
             // Create and initialize AutoCompleteBox
-            AutoCompleteBox testAutoCompleteBox = new AutoCompleteBox { Name = "testACT", Text = testFeedBack.TestName, Margin = new Thickness(0, 18, 5, 18), ItemsSource = DB.GetAllTests(), FilterMode = AutoCompleteFilterMode.Contains };
+            AutoCompleteBox testAutoCompleteBox = new AutoCompleteBox { Name = "testACT", Text = testFeedBack.TestName, Margin = new Thickness(0, 18, 5, 18), FilterMode = AutoCompleteFilterMode.Contains };
             Grid.SetColumn(testAutoCompleteBox, 1);
 
             // Create and initialize Grid for RadioButtons
@@ -363,14 +365,12 @@ namespace clinical.Pages
             public string Notes { get; set; }
             public string TestName { get; set; }
             public int Severity { get; set; }
-            public int TestID { get; set; }
             public int feedBackId { get; set; }
-            public TestItem(string tn, string notes, int se, int testID)
+            public TestItem(string tn, string notes, int se)
             {
                 TestName = tn;
                 this.Notes = notes;
                 Severity = se;
-                TestID = testID;
                 feedBackId = 0;
             }
             public TestItem()
@@ -379,66 +379,36 @@ namespace clinical.Pages
             }
         }
 
-        private void saveFeedBacks(object sender, MouseButtonEventArgs e)
+        private async void saveFeedBacks(object sender, MouseButtonEventArgs e)
         {
-            List<EvaluationTest> tests = DB.GetAllTests();
 
-            bool pending = false;
-            if (testItems.Count > 0)
+            if (testItems.Count == 0)
             {
-                int cnt = 0;
-                foreach (TestItem obj in testItems)
-                {
-                    bool found = false;
-
-                    foreach (EvaluationTest test in tests)
-                    {
-                        if (obj.TestName == null || obj.TestName.Length == 0) break;
-                        if (test.TestName.Trim().ToLower().Equals(obj.TestName.Trim().ToLower()) || test.TestName.Trim().ToLower().Contains(obj.TestName.Trim().ToLower()))
-                        {
-                            found = true;
-                            obj.TestID = test.TestID;
-                            break;
-                        }
-                    }
-                    if (!found)
-                    {
-                        MessageBoxResult result = MessageBox.Show(obj.TestName + " in cell " + (cnt + 1).ToString() + " was not found, do you want to add it to the Tests Library?", "New Test Detected",
-                            MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            EvaluationTest ex = new EvaluationTest(new Random().Next(999), obj.TestName, " ");
-                            obj.TestID = ex.TestID;
-                            DB.InsertTest(ex);
-                        }
-                        else if (result == MessageBoxResult.No)
-                        {
-                            MessageBox.Show("Please refer to the test in cell " + (cnt + 1).ToString() + " and edit it or pick a test from the recommendations to be able to proceed.");
-                            pending = true;
-                            break;
-                        }
-                    }
-                    cnt++;
-                }
+                MessageBox.Show("No Tests to save");
+                return;
             }
 
+            await EvaluationTestFeedbackService.DeleteAllVisitFeedbackAsync(currVisit.VisitID);
 
-            if (!pending)
+
+            for (int i = 0; i < testItems.Count; i++)
             {
-                DB.DeleteAllVisitFeedback(currVisit.VisitID);
 
-                foreach (var test in testItems)
+                int id = IDGeneration.generateNewTestFeedBackID(currVisit.VisitID, currPatient.PatientID);
+                EvaluationTestFeedBack newFeedBack = new EvaluationTestFeedBack
                 {
-
-                    int id = globals.generateNewTestFeedBackID(currVisit.VisitID, currPatient.PatientID);
-                    EvaluationTestFeedBack newFeedBack = new(id, test.Severity, currVisit.VisitID, currPatient.PatientID, test.TestID, test.Notes, currVisit.TimeStamp);
-                    DB.InsertFeedback(newFeedBack);
-
-                }
-                MessageBox.Show("FeedBacks Saved");
-
+                    TestFeedBackID = id,
+                    Severity = testItems[i].Severity,
+                    VisitID = currVisit.VisitID,
+                    PatientID = currPatient.PatientID,
+                    TestName = testItems[i].TestName,
+                    Notes = testItems[i].Notes,
+                    TimeStamp = currVisit.TimeStamp
+                };
+                await EvaluationTestFeedbackService.InsertFeedbackAsync(newFeedBack);
             }
+            MessageBox.Show("FeedBacks Saved");
+
         }
 
         private void editHeightAndWeight(object sender, MouseButtonEventArgs e)
@@ -446,7 +416,7 @@ namespace clinical.Pages
             hwborder.IsEnabled = !hwborder.IsEnabled;
         }
 
-        private void updateHeightAndWeight(object sender, MouseButtonEventArgs e)
+        private async void updateHeightAndWeight(object sender, MouseButtonEventArgs e)
         {
             double h = Double.Parse(heightTB.Text);
             double w = Double.Parse(weightTB.Text);
@@ -456,15 +426,13 @@ namespace clinical.Pages
             currPatient.Height = w;
             hwborder.IsEnabled = false;
 
-            DB.UpdateVisit(currVisit);
-            Visit mostRecent= DB.GetMostRecentVisitByPatientID(currPatient.PatientID);
-            if (mostRecent == null || mostRecent.VisitID==currVisit.VisitID)
-            {
-                DB.UpdatePatient(currPatient);
-            }
+            await VisitService.UpdateVisitAsync(currVisit.VisitID, currVisit);
+
+            await PatientService.UpdatePatientAsync(currPatient);
+
         }
 
-        private void markDoneUnDone(object sender, MouseButtonEventArgs e)
+        private async void markDoneUnDone(object sender, MouseButtonEventArgs e)
         {
             currVisit.IsDone = !currVisit.IsDone;
             if (currVisit.IsDone)
@@ -476,9 +444,9 @@ namespace clinical.Pages
                 markDoneTXT.Text = "Mark visit Done";
 
             }
-            DB.UpdateVisit(currVisit);
+            await VisitService.UpdateVisitAsync(currVisit.VisitID, currVisit);
         }
 
-        
+
     }
 }

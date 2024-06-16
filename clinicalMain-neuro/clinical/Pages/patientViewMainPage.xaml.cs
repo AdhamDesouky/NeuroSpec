@@ -1,7 +1,10 @@
 ﻿
 using LiveCharts;
 using LiveCharts.Wpf;
+using NeuroSpec.Shared.Globals;
 using NeuroSpec.Shared.Models.DTO;
+using NeuroSpec.Shared.Services.DTO_Services;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using PdfSharp.Charting;
 using System;
 using System.Collections.Generic;
@@ -24,6 +27,10 @@ namespace clinical.Pages
     {
         private ObservableCollection<MedicalRecord> medicalRecords;
         Patient currPatient;
+        EvaluationTestFeedbackService evaluationTestFeedbackService = new EvaluationTestFeedbackService();
+        VisitService visitService = new VisitService();
+        PatientChronicService patientChronicService = new PatientChronicService();
+        MedicalRecordService medicalRecordService = new MedicalRecordService();
         public patientViewMainPage(Patient patient)
         {
             InitializeComponent();
@@ -32,30 +39,36 @@ namespace clinical.Pages
             patientIDTxt.Text = patient.PatientID.ToString();
             patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
             patientNameTxt.Text = patient.FirstName + " " + patient.LastName;
-            ageTxt.Text = patient.Age.ToString();
+            ageTxt.Text = StaticFunctions.CalculateAge(patient.DateOfBirth).ToString();
             contactInfoTxt.Text = patient.PhoneNumber;
-            referringTxt.Text = patient.referringName;
+            referringTxt.Text = patient.ReferringDoctor;
             noteTXT.Text = patient.Email;
             heightTxt.Text = patient.Height.ToString();
             weightTxt.Text = patient.Weight.ToString();
 
             LoadChart();
+            initAsync();
 
-            List<OntologyTerm> patientChronics = DB.GetAllDiseasesByPatientID(currPatient.PatientID);
-            foreach (OntologyTerm ch in patientChronics)
+            
+
+        }
+
+        async void initAsync()
+        {
+            List<PatientChronic> patientChronics = await patientChronicService.GetPatientChronicsByPatientIDAsync(currPatient.PatientID);
+            foreach (PatientChronic ch in patientChronics)
             {
                 CreateChronicBorder(ch);
             }
 
-            
 
-            foreach (var i in DB.GetPatientPrevVisits(patient.PatientID))
+
+            foreach (var i in await visitService.GetVisitsByPatientIDAsync(currPatient.PatientID))
             {
                 prevVisitsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit));
             }
 
-            medicalRecordsDataGrid.ItemsSource = DB.GetAllPatientRecords(patient.PatientID);
-
+            medicalRecordsDataGrid.ItemsSource = await medicalRecordService.GetAllPatientRecordsAsync(currPatient.PatientID);
         }
 
         private void viewRecord_Click(object sender, RoutedEventArgs e)
@@ -130,18 +143,18 @@ namespace clinical.Pages
             UpdateChart();
         }
 
-        private void UpdateChart()
+        private async void UpdateChart()
         {
-            List<EvaluationTestFeedBack> feedBacks = DB.GetFeedbackByPatient(currPatient.PatientID);
-            List<Visit> visits = DB.GetPatientPrevVisits(currPatient.PatientID);
+            List<EvaluationTestFeedBack> feedBacks = await evaluationTestFeedbackService.GetFeedbackByPatientAsync(currPatient.PatientID);
+            List<Visit>visits=await visitService.GetVisitsByPatientIDAsync(currPatient.PatientID);
 
             SeriesCollection = new LiveCharts.SeriesCollection();
 
-            var distinctTestIds = feedBacks.Select(feedback => feedback.TestID).Distinct();
+            var distinctTestNames= feedBacks.Select(feedback => feedback.TestName).Distinct();
 
-            foreach (var testId in distinctTestIds)
+            foreach (var testName in distinctTestNames)
             {
-                var feedbacksForTestId = feedBacks.Where(feedback => feedback.TestID == testId);
+                var feedbacksForTestId = feedBacks.Where(feedback => feedback.TestName == testName);
 
                 IEnumerable<IGrouping<int, EvaluationTestFeedBack>> groupedData;
 
@@ -159,10 +172,10 @@ namespace clinical.Pages
                         .GroupBy(feedback => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(feedback.TimeStamp, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday))
                         .OrderBy(group => group.Key);
                 }
-
                 LineSeries lineSeries = new LineSeries
                 {
-                    Title = DB.GetTestById(testId).TestName,
+                    
+                    Title = testName,
                     Values = new ChartValues<int>(groupedData.SelectMany(group => group.Select(feedback => feedback.Severity))),
                     PointGeometry = null // This removes the point marker
                 };
@@ -218,7 +231,7 @@ namespace clinical.Pages
         public Func<double, double> YFormatter { get; set; }
 
 
-        public void CreateChronicBorder(OntologyTerm chronic)
+        public void CreateChronicBorder(PatientChronic chronic)
         {
             Border border = new Border
             {
@@ -231,14 +244,14 @@ namespace clinical.Pages
             {
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment = System.Windows.VerticalAlignment.Center,
-                Text = chronic.Name,
+                Text = chronic.ChronicName,
                 Style = (Style)Application.Current.Resources["titleText"],
                 TextWrapping = TextWrapping.Wrap
             };
 
             double maxBorderWidth = chronicWrapPanel.ActualWidth;
 
-            double desiredWidth = MeasureTextWidth(chronic.Name, textBlock.FontSize) + 100;
+            double desiredWidth = MeasureTextWidth(chronic.ChronicName, textBlock.FontSize) + 100;
 
             border.MinWidth = Math.Min(desiredWidth, maxBorderWidth);
 

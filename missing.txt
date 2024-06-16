@@ -26,3 +26,4 @@ TODOs:
 -Issue:
 --Link Issue with concurrent result. (idk how yet)
 
+ScanTest and Exercise and Drug to be read from ontology search selections and stored in the db for easier use later, where they will be prompted on search before results from ontology API.

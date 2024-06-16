@@ -1,19 +1,13 @@
-﻿using clinical.BaseClasses;
-using clinical.Pages.reciptionistPages;
+﻿using clinical.Pages.reciptionistPages;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -22,7 +16,10 @@ namespace clinical.Pages
     /// </summary>
     public partial class ReceptionistDashboard : Page
     {
-        private DateTime currentDayIndex=DateTime.Now;
+        private DateTime currentDayIndex = DateTime.Now;
+        VisitService visitService = new VisitService();
+        PatientService patientService = new PatientService();
+        UserService userService = new UserService();
         public ReceptionistDashboard(User employee)
         {
             InitializeComponent();
@@ -31,10 +28,10 @@ namespace clinical.Pages
             signedInTB.Text = $"Welcome, {employee.FirstName}";
         }
 
-        void updateDayAppointments()
+        async void updateDayAppointments()
         {
             todayAppointmentsStackPanel.Children.Clear();
-            List<Visit> visits = DB.GetAllVisitsOnDate(currentDayIndex);
+            List<Visit> visits = await visitService.GetVisitsByDateAsync(currentDayIndex);
             numberOfAppointmentsTB.Text = visits.Count.ToString();
 
             foreach (var i in visits)
@@ -98,7 +95,7 @@ namespace clinical.Pages
 
         void createDayUI(DateTime date)
         {
-            
+
             Border border = new Border
             {
                 Style = (Style)Application.Current.Resources["theLinedBorder"],
@@ -165,28 +162,47 @@ namespace clinical.Pages
             currentDayIndex = currentDayIndex.AddDays(1);
             UpdateDayBorders();
         }
-
-        private void UpdateDayBorders()
+        
+        private async void UpdateDayBorders()
         {
-           
-            if (allPanelCB.IsChecked == true &&(currentDayIndex.DayOfYear!=DateTime.Now.DayOfYear ))
+
+            if (allPanelCB.IsChecked == true && (currentDayIndex.DayOfYear != DateTime.Now.DayOfYear))
             {
+                
                 DoctorsDGTitleTB.Text = currentDayIndex.ToString("M") + "' Doctors";
                 patientsDGTitleTB.Text = currentDayIndex.ToString("M") + "' Patients";
                 selectedDayTB.Text = currentDayIndex.ToString("D");
-                List<Patient> patients = DB.GetPatientsWithVisitsOnDate(currentDayIndex);
-                List<User> Doctors = DB.GetDoctorsWithVisitsOnDate(currentDayIndex);
+                List<Visit>visitsOnDay = await visitService.GetVisitsByDateAsync(currentDayIndex);
+                List<Patient> patients = new List<Patient>();
+                List<User> Doctors = new List<User>();
+                foreach (var i in visitsOnDay)
+                {
+                    patients.Add(await patientService.GetPatientByIdAsync(i.PatientID));
+                }
+                foreach(var i in visitsOnDay)
+                {
+                    Doctors.Add(await userService.GetUserByIdAsync(i.DoctorID));
+                }
                 patientsDataGrid.ItemsSource = patients;
                 DoctorsDataGrid.ItemsSource = Doctors;
                 numberOfDoctorsTB.Text = Doctors.Count.ToString();
             }
             else
-            {  
+            {
                 DoctorsDGTitleTB.Text = "Today's Doctors";
                 patientsDGTitleTB.Text = "Today's Patients";
-                selectedDayTB.Text = currentDayIndex.ToString("M")+", Today";
-                List<Patient> patients = DB.GetPatientsWithVisitsOnDate(DateTime.Now);
-                List<User> Doctors = DB.GetDoctorsWithVisitsOnDate(DateTime.Now);
+                selectedDayTB.Text = currentDayIndex.ToString("M") + ", Today";
+                List<Visit> visitsOnDay = await visitService.GetVisitsByDateAsync(DateTime.Now);
+                List<Patient> patients = new List<Patient>();
+                List<User> Doctors = new List<User>();
+                foreach (var i in visitsOnDay)
+                {
+                    patients.Add(await patientService.GetPatientByIdAsync(i.PatientID));
+                }
+                foreach (var i in visitsOnDay)
+                {
+                    Doctors.Add(await userService.GetUserByIdAsync(i.DoctorID));
+                }
                 patientsDataGrid.ItemsSource = patients;
                 DoctorsDataGrid.ItemsSource = Doctors;
                 numberOfDoctorsTB.Text = Doctors.Count.ToString();
@@ -196,7 +212,7 @@ namespace clinical.Pages
                 dayStack.Children.Clear();
 
             //DateTime time = currentDayIndex;
-            for (int i = - 2; i <= 2; i++)
+            for (int i = -2; i <= 2; i++)
             {
                 createDayUI(currentDayIndex.AddDays(i));
             }
@@ -209,11 +225,11 @@ namespace clinical.Pages
             UpdateDayBorders();
         }
 
-        
+
 
         private void dpDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            currentDayIndex = (DateTime)dp.SelectedDate; 
+            currentDayIndex = (DateTime)dp.SelectedDate;
             UpdateDayBorders();
         }
 

@@ -1,10 +1,11 @@
-﻿using clinical.BaseClasses;
-using MahApps.Metro.IconPacks;
+﻿using MahApps.Metro.IconPacks;
 using Microsoft.Win32;
-using NuGet.Protocol.Plugins;
+using NeuroSpec.Shared.Globals;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,24 +21,33 @@ namespace clinical.Pages
     /// </summary>
     public partial class newRecordPage : System.Windows.Controls.Page
     {
-        Patient patient;   
+        Patient patient;
+        PatientService PatientService = new PatientService();
         public newRecordPage(MedicalRecord medicalRecord)
         {
             InitializeComponent();
-            this.patient = DB.GetPatientById(medicalRecord.PatientID);
+            initAsync();
             patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
             reportTXT.IsEnabled = false;
             DoctorNotesTXT.IsEnabled = false;
-            images = medicalRecord.Images;
+            images = new List<string>();
+            foreach (var i in medicalRecord.VisualAttachments)
+            {
+                images.Add(i.url);
+            }
             refresh();
             DoctorNotesTXT.Text = medicalRecord.DoctorNotes;
-            reportTXT.Text=medicalRecord.Report;
+            reportTXT.Text = medicalRecord.Report;
+        }
+        private async void initAsync()
+        {
+            this.patient = await PatientService.GetPatientByIdAsync(patient.PatientID);
         }
         public newRecordPage(Patient patient)
         {
             InitializeComponent();
             this.patient = patient;
-            patientNameMainTxt.Text = patient.FirstName+" "+patient.LastName;
+            patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
             reportTXT.IsEnabled = false;
             DoctorNotesTXT.IsEnabled = false;
         }
@@ -63,15 +73,15 @@ namespace clinical.Pages
         private void refresh()
         {
             scannedScansStackPanel.Children.Clear();
-            foreach(string s in images)
+            foreach (string s in images)
             {
                 if (s != null)
                 {
-                    createImageObj(s,"");
+                    createImageObj(s, "");
                 }
             }
         }
-        private void createImageObj(string filePath,string type)
+        private void createImageObj(string filePath, string type)
         {
             Grid mainGrid = new Grid();
             mainGrid.Margin = new Thickness(10);
@@ -92,9 +102,9 @@ namespace clinical.Pages
 
 
             Image image = new Image();
-            if (Path.GetExtension(filePath)?.ToLower() == ".dcm") {
+            if (Path.GetExtension(filePath)?.ToLower() == ".dcm")
+            {
                 image.Source = new BitmapImage(new Uri("C:\\Users\\TOP\\Desktop\\clinicalMain\\clinical\\images\\dicom.JPG"));////
-
             }
             else
             {
@@ -124,7 +134,7 @@ namespace clinical.Pages
             image.MouseDown += new MouseButtonEventHandler((s, e) => Image_MouseDown(s, e, filePath));
 
 
-            PackIconMaterial deleteIcon= new PackIconMaterial();
+            PackIconMaterial deleteIcon = new PackIconMaterial();
             deleteIcon.Kind = PackIconMaterialKind.Delete;
             deleteIcon.MouseDown += new MouseButtonEventHandler((s, e) => deleteImage(s, e, filePath));
             deleteIcon.Foreground = (Brush)Application.Current.Resources["lightFontColor"];
@@ -154,31 +164,33 @@ namespace clinical.Pages
         {
             string filePath = readImage();
             string type = "Medical Record";
-            if(filePath!="")createImageObj(filePath,type);
-           
+            if (filePath != "") createImageObj(filePath, type);
+
         }
 
-        private void attemptOCR(object sender, MouseButtonEventArgs e,string filePath)
+        private void attemptOCR(object sender, MouseButtonEventArgs e, string filePath)
         {
-            if (Path.GetExtension(filePath)?.ToLower()==".dcm") { return; }
+            if (Path.GetExtension(filePath)?.ToLower() == ".dcm") { return; }
             string resultText = PerformOCR(filePath);
             resultText = resultText.Trim();
             reportTXT.Text += resultText;
         }
 
-       
+
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e, string filePath)
         {
-            if (Path.GetExtension(filePath)?.ToLower() == ".dcm") {
-                dicomViewer viewer=new dicomViewer(filePath);
+            if (Path.GetExtension(filePath)?.ToLower() == ".dcm")
+            {
+                dicomViewer viewer = new dicomViewer(filePath);
                 viewer.Show();
             }
-            else {
+            else
+            {
                 viewImage view = new viewImage(filePath);
-                view.Show(); 
+                view.Show();
             }
-            
+
         }
 
         string PerformOCR(string imagePath)
@@ -192,7 +204,7 @@ namespace clinical.Pages
                         using (var page = engine.Process(img))
                         {
                             var text = page.GetText();
-                            
+
                             return text;
                         }
                     }
@@ -200,7 +212,7 @@ namespace clinical.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);    
+                MessageBox.Show(ex.Message);
                 return "Cannot transcribe";
             }
         }
@@ -210,13 +222,32 @@ namespace clinical.Pages
             reportTXT.IsEnabled = !reportTXT.IsEnabled;
 
         }
-
-        private void save(object sender, MouseButtonEventArgs e)
+        MedicalRecordService medicalRecordService = new MedicalRecordService();
+        private async void save(object sender, MouseButtonEventArgs e)
         {
-            int recID = globals.generateNewRecordID(patient.PatientID);
-            MedicalRecord record = new MedicalRecord(
-                recID,"Record",DateTime.Now,reportTXT.Text.Trim(),images,patient.PatientID,DoctorNotesTXT.Text.Trim());
-            DB.InsertMedicalRecord(record);
+            int recID = IDGeneration.generateNewRecordID(patient.PatientID);
+            List<Attachment> attachments = new List<Attachment>();
+            foreach (string s in images)
+            {
+                Attachment attachment = new Attachment
+                {
+                    url = s,
+                    title = "Attachment",
+                    contentType = "image"
+                };
+                attachments.Add(attachment);
+            }
+            MedicalRecord record = new MedicalRecord
+            {
+                RecordID = recID,
+                Type = "Record",
+                TimeStamp = DateTime.Now,
+                Report = reportTXT.Text.Trim(),
+                VisualAttachments = attachments,
+                PatientID = patient.PatientID,
+                DoctorNotes = DoctorNotesTXT.Text.Trim()
+            };
+            await medicalRecordService.InsertMedicalRecordAsync(record);
             MessageBox.Show("Record saved, Record ID: " + recID);
             NavigationService.GoBack();
 
@@ -232,7 +263,7 @@ namespace clinical.Pages
                 string text = PerformOCR(filePath);
                 DoctorNotesTXT.Text += text.Trim();
             }
-            
+
 
         }
 
@@ -250,8 +281,8 @@ namespace clinical.Pages
 
         private void goBackPage(object sender, MouseButtonEventArgs e)
         {
-            if(NavigationService.CanGoBack)
-            NavigationService.GoBack();
+            if (NavigationService.CanGoBack)
+                NavigationService.GoBack();
 
         }
 

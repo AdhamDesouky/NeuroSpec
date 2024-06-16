@@ -1,11 +1,11 @@
-﻿using clinical.BaseClasses;
-using Org.BouncyCastle.Asn1.X509;
+﻿using NeuroSpec.Shared.Globals;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace clinical.Pages
@@ -15,8 +15,9 @@ namespace clinical.Pages
     /// </summary>
     public partial class newEmployeePage : Page
     {
-        List<int> selectedDays = new List<int>();
         bool IsDoctor;
+        UserService userService = new UserService();
+
         public newEmployeePage(bool isDoctor)
         {
             InitializeComponent();
@@ -24,18 +25,8 @@ namespace clinical.Pages
             IsDoctor = isDoctor;
             bdDatePicker.SelectedDate = DateTime.Now;
             hiringDatePicker.SelectedDate = DateTime.Now;
-            sundayCB.IsChecked = true;
-            mondayCB.IsChecked = true;
-            tuesdayCB.IsChecked = true;
-            wednesdayCB.IsChecked = true;
-            thursdayCB.IsChecked = true;
-            selectedDays.Add(2);
-            selectedDays.Add(3);
-            selectedDays.Add(4);
-            selectedDays.Add(5);
-            selectedDays.Add(6);
         }
-        private void save(object sender, MouseButtonEventArgs e)
+        private async void save(object sender, MouseButtonEventArgs e)
         {
             string fn = firstNameTextBox.Text;
             string ln = lastNameTextBox.Text;
@@ -80,7 +71,7 @@ namespace clinical.Pages
                 MessageBox.Show("Invalid Email", "Error");
                 return;
             }
-            if (DB.GetUserByNID(nid) != null)
+            if (userService.GetUserByNIDAsync(nid) != null)
             {
                 MessageBox.Show("National ID already exists", "Error");
                 return;
@@ -99,14 +90,25 @@ namespace clinical.Pages
 
             if (IsDoctor)
             {
-                id = globals.generateNewDoctorID(nid);
+                id = IDGeneration.generateNewDoctorID(nid);
             }
-            else id = globals.generateNewEmployeeID(nid);
+            else id = IDGeneration.generateNewEmployeeID(nid);
 
-            User user = new User(id, fn.Trim(), ln.Trim(), gender.Trim(), hd, bd, address.Trim(), phone.Trim(), email.Trim(), nid.Trim(), password);
-            DB.InsertUser(user);
-            selectedDays = selectedDays.Distinct().ToList();
-            DB.updateUserWorkDays(user.UserID, selectedDays);
+            User user = new User
+            {
+                UserID = id,
+                FirstName = fn.Trim(),
+                LastName = ln.Trim(),
+                Email = email.Trim(),
+                Gender = gender.Trim() == "Male",
+                Address = address.Trim(),
+                PhoneNumber = phone.Trim(),
+                NationalID = nid.Trim(),
+                Password = password,
+                HireDate = hd,
+                Birthdate = bd
+            };
+            await userService.InsertUserAsync(user);
 
 
             MessageBox.Show("Successfully added new User, ID: " + user.UserID, "Success");
@@ -126,71 +128,6 @@ namespace clinical.Pages
 
         }
 
-        private void selectDay(object sender, RoutedEventArgs e)
-        {
-
-            if (((CheckBox)sender).Content == "Saturday")
-            {
-                selectedDays.Add(1);
-            }
-            else if (((CheckBox)sender).Content == "Sunday")
-            {
-                selectedDays.Add(2);
-            }
-            else if (((CheckBox)sender).Content == "Monday")
-            {
-                selectedDays.Add(3);
-            }
-            else if (((CheckBox)sender).Content == "Tuesday")
-            {
-                selectedDays.Add(4);
-            }
-            else if (((CheckBox)sender).Content == "Wednesday")
-            {
-                selectedDays.Add(5);
-            }
-            else if (((CheckBox)sender).Content == "Thursday")
-            {
-                selectedDays.Add(6);
-            }
-            else if (((CheckBox)sender).Content == "Friday")
-            {
-                selectedDays.Add(7);
-            }
-        }
-
-        private void unSelectDay(object sender, RoutedEventArgs e)
-        {
-            if (((CheckBox)sender).Content == "Saturday")
-            {
-                selectedDays.Remove(1);
-            }
-            else if (((CheckBox)sender).Content == "Sunday")
-            {
-                selectedDays.Remove(2);
-            }
-            else if (((CheckBox)sender).Content == "Monday")
-            {
-                selectedDays.Remove(3);
-            }
-            else if (((CheckBox)sender).Content == "Tuesday")
-            {
-                selectedDays.Remove(4);
-            }
-            else if (((CheckBox)sender).Content == "Wednesday")
-            {
-                selectedDays.Remove(5);
-            }
-            else if (((CheckBox)sender).Content == "Thursday")
-            {
-                selectedDays.Remove(6);
-            }
-            else if (((CheckBox)sender).Content == "Friday")
-            {
-                selectedDays.Remove(7);
-            }
-
-        }
 
         private void TogglePassword(object sender, MouseButtonEventArgs e)
         {

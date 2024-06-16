@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 
 namespace clinical.Pages
 {
@@ -19,20 +20,22 @@ namespace clinical.Pages
     /// </summary>
     public partial class adminDashboardPage : Page
     {
+        UserService UserService = new UserService();
+        VisitService VisitService = new VisitService();
+        PaymentService PaymentService = new PaymentService();
         public adminDashboardPage(User admin)
         {
             InitializeComponent();
             refresh();
 
         }
-        public void refresh()
+        public async void refresh()
         {
-            DoctorsDataGrid.ItemsSource = DB.GetAllDoctors();
-            employeesDataGrid.ItemsSource= DB.GetAllEmployees();
-            hereNowDataGrid.ItemsSource=DB.GetAllUserswRecordsByDate(DateTime.Now);
-            List<Visit> todayVisits = DB.GetTodayVisits();
+            DoctorsDataGrid.ItemsSource = await UserService.GetAllDoctorsAsync();
+            employeesDataGrid.ItemsSource= await UserService.GetAllEmployeesAsync();
+            //hereNowDataGrid.ItemsSource=DB.GetAllUserswRecordsByDate(DateTime.Now);
             UpdateFinancesChart();
-            List<Visit> visits = DB.GetAllVisitsOnDate(DateTime.Now);
+            List<Visit> visits = await VisitService.GetVisitsByDateAsync(DateTime.Now);
             foreach (var i in visits)
             {
                 appointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
@@ -55,9 +58,9 @@ namespace clinical.Pages
                 NavigationService.Navigate(new patientViewMainPage(patient));
             }
         }
-        private void UpdateFinancesChart()
+        private async void UpdateFinancesChart()
         {
-            List<Payment> payments = DB.GetAllPayments();
+            List<Payment> payments = await PaymentService.GetAllPaymentsAsync();
 
             SeriesCollection s = new LiveCharts.SeriesCollection();
             financesChart.Series = s; // Set the series collection for the specific chart
@@ -72,7 +75,7 @@ namespace clinical.Pages
 
                 ColumnSeries columnSeries = new ColumnSeries
                 {
-                    Title = $"Dr. {DB.GetUserById(DoctorId).FullName}",
+                    Title = $"Dr. {(await UserService.GetUserByIdAsync(DoctorId)).FullName}",
                     Values = new ChartValues<double> { paymentsForDoctor.Sum(payment => payment.Amount) },
                     LabelPoint = point => point.Y.ToString("C"),
                     Fill = barColors[colorInd] // Customize the color if needed
@@ -82,7 +85,7 @@ namespace clinical.Pages
             }
 
             // Set the X-axis labels dynamically based on Doctor IDs
-            financesChart.AxisX[0].Labels = distinctDoctorIds.Select(id => $"Dr. {DB.GetUserById(id).FullName}").ToArray();
+            //financesChart.AxisX[0].Labels = distinctDoctorIds.Select(async id => $"Dr. {(await UserService.GetUserByIdAsync(id)).FullName}").ToArray();
             financesChart.AxisY[0].LabelFormatter = value => value.ToString("C"); // Use currency format if applicable
 
 
@@ -138,7 +141,7 @@ namespace clinical.Pages
             MessageBoxResult result=MessageBox.Show($"Are you sure you want to delete {selectedUser.FirstName} {selectedUser.LastName} ?","Delete User",MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes)
             {
-                DB.DeleteUser(selectedUser.UserID);
+                UserService.DeleteUserAsync(selectedUser.UserID);
                 MessageBox.Show($"{selectedUser.FirstName} data has been deleted successfully.");
             }
 

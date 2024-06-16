@@ -1,18 +1,9 @@
-﻿using clinical.BaseClasses;
+﻿using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages.adminSettingsNewPages
 {
@@ -21,6 +12,8 @@ namespace clinical.Pages.adminSettingsNewPages
     /// </summary>
     public partial class newAppointmentTypePage : Page
     {
+
+        AppointmentTypeService service = new AppointmentTypeService();
         public newAppointmentTypePage()
         {
             InitializeComponent();
@@ -40,7 +33,7 @@ namespace clinical.Pages.adminSettingsNewPages
             costTextBox.Text = type.Cost.ToString();
         }
 
-        private void save(object sender, MouseButtonEventArgs e)
+        private async void save(object sender, MouseButtonEventArgs e)
         {
             int id = int.Parse(idTextBox.Text);
             string description = descriptionTextBox.Text;
@@ -48,17 +41,24 @@ namespace clinical.Pages.adminSettingsNewPages
             int time = int.Parse(timeTextBox.Text);
             double cost = Double.Parse(costTextBox.Text); ;
 
-            AppointmentType ap = new AppointmentType(id,name,description,time,cost);
+            AppointmentType ap = new AppointmentType
+            {
+                TypeID = id,
+                Description = description,
+                Name = name,
+                TimeInMinutes = time,
+                Cost = cost
+            };
 
             if (viewing)
             {
-                DB.UpdateAppointmentType(ap);
+                await service.UpdateAppointmentTypeAsync(ap.TypeID,ap);
 
                 MessageBox.Show("Appointment Type updated, ID: " + id.ToString());
             }
             else
             {
-                DB.InsertAppointmentType(ap);
+                await service.InsertAppointmentTypeAsync(ap);
 
                 MessageBox.Show("New Appointment Type added, ID: " + id.ToString());
             }

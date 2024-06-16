@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Globals\IDGeneration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Globals\StaticFunctions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ChatBot\ChatMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\AppointmentType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\AttendanceRecord.cs" />
@@ -21,11 +22,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Exercise.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Issue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\IssueDrug.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\IssueExercise.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\IssueTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\IssueSNOMED.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\MedicalRecord.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\OntologyTerm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Patient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\PatientChronic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Payment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Prescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\ScanTest.cs" />
@@ -33,18 +33,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Visit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\HUB\ChatHub.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Ontology\DrugOntology.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Ontology\SNOMEDOntology.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\AppointmentTypeService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\AttendanceRecordService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\BookAppointmentService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\CalendarEventService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueDrugService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueExerciseService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PatientChronicService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OntologyService\DrugOntologyService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\EvaluationTestFeedbackService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\EvaluationTestService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueTestService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\MedicalRecordService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\OntologyTermService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PatientService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PaymentService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PrescriptionService.cs" />
@@ -52,8 +52,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\UserService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\VisitService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Firebase_Service\FirebaseService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Services\OntologyService\" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\OntologyService\SNOMEDOntologyService.cs" />
   </ItemGroup>
 </Project>

@@ -19,12 +19,12 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             _baseApi = "http://neurospec.somee.com/api/EvaluationTestFeedback";
         }
 
-        public async Task<IEnumerable<EvaluationTestFeedBack>> GetAllFeedbackAsync()
+        public async Task<List<EvaluationTestFeedBack>> GetAllFeedbackAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<EvaluationTestFeedBack>>(content);
+            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content);
         }
 
         public async Task<EvaluationTestFeedBack> GetFeedbackByIdAsync(int feedbackId)
@@ -35,20 +35,20 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<EvaluationTestFeedBack>(content);
         }
 
-        public async Task<IEnumerable<EvaluationTestFeedBack>> GetFeedbackByPatientAsync(int patientId)
+        public async Task<List<EvaluationTestFeedBack>> GetFeedbackByPatientAsync(int patientId)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPatient/{patientId}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<EvaluationTestFeedBack>>(content);
+            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content);
         }
 
-        public async Task<IEnumerable<EvaluationTestFeedBack>> GetFeedbackByVisitAsync(int visitId)
+        public async Task<List<EvaluationTestFeedBack>> GetFeedbackByVisitAsync(int visitId)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByVisit/{visitId}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<EvaluationTestFeedBack>>(content);
+            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content);
         }
 
         public async Task<EvaluationTestFeedBack> InsertFeedbackAsync(EvaluationTestFeedBack feedback)

@@ -1,20 +1,8 @@
-﻿using clinical.BaseClasses;
-using clinical.Pages;
-using clinical.userControls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using clinical.Pages;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical
 {
@@ -24,10 +12,12 @@ namespace clinical
     public partial class patientView : Window
     {
         Patient selectedPatient;
+
+        PatientService PatientService = new PatientService();
         public patientView(Patient patient)
         {
             InitializeComponent();
-            selectedPatient= patient;
+            selectedPatient = patient;
             mainFrame.Navigate(new patientViewMainPage(selectedPatient));
             sideFrame.Navigate(new DoctorSideBar());
 
@@ -35,7 +25,7 @@ namespace clinical
         public patientView(MedicalRecord medicalRecord)
         {
             InitializeComponent();
-            selectedPatient=DB.GetPatientById(medicalRecord.PatientID);
+            selectedPatient = PatientService.GetPatientByIdAsync(medicalRecord.PatientID).Result;
             mainFrame.Navigate(new newRecordPage(medicalRecord));
             sideFrame.Navigate(new DoctorSideBar());
 
@@ -56,7 +46,8 @@ namespace clinical
 
         }
 
-        private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e){
+        private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e)
+        {
             Window.GetWindow(this).Close();
 
         }

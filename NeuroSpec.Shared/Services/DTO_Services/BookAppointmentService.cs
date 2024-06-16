@@ -1,8 +1,10 @@
 ﻿using NeuroSpec.Shared.Models.DTO;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace NeuroSpec.Shared.Services.DTO_Services
 {

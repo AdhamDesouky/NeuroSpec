@@ -81,5 +81,18 @@ namespace NeuroSpecBackend.Controllers
             var count = await _calendarEvents.CountDocumentsAsync(ce => ce.EventID == eventID);
             return count > 0;
         }
+
+        [HttpGet("ByUserIDAndDate/{userID}/{dateTime}")]
+        public async Task<ActionResult<List<CalendarEvent>>> GetCalendarEventsByUserIDAndDate(int userID, System.DateTime dateTime)
+        {
+            var calendarEvents = await _calendarEvents.Find(ce => ce.UserID == userID && ce.EventStartTime.Date == dateTime.Date).ToListAsync();
+
+            if (calendarEvents == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(calendarEvents);
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MahApps.Metro.IconPacks;
 using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 
 namespace clinical
 {
@@ -17,6 +18,8 @@ namespace clinical
         User loggedIn;
         int state;
         int selectedTab=0;
+
+        UserService userService = new UserService();
         public MainWindow(int stat,User user)
         {
             loggedIn=user;
@@ -31,15 +34,15 @@ namespace clinical
             homeBTN.Focus();
             settingsBtn.Visibility=Visibility.Hidden;
             which();
-            List<User> users = DB.GetAllUsers();
+            //List<User> users = userService.GetAllUsersAsync().Result;
 
 
-            for (int j = 0; j < users.Count; j++)
-            {
-                if (globals.signedIn.UserID == users[j].UserID || globals.signedIn.UserID == 0 || users[j].UserID == 0) { continue; }
-                DB.InsertChatRoom(new ChatRoom(globals.generateNewChatRoomID(globals.signedIn.UserID, users[j].UserID), globals.signedIn.UserID, users[j].UserID, users[j].FirstName, DateTime.Now));
+            //for (int j = 0; j < users.Count; j++)
+            //{
+            //    if (globals.signedIn.UserID == users[j].UserID || globals.signedIn.UserID == 0 || users[j].UserID == 0) { continue; }
+            //    DB.InsertChatRoom(new ChatRoom(globals.generateNewChatRoomID(globals.signedIn.UserID, users[j].UserID), globals.signedIn.UserID, users[j].UserID, users[j].FirstName, DateTime.Now));
 
-            }
+            //}
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -135,13 +138,13 @@ namespace clinical
         {
             whichTab(3);
 
-            mainFrame.Navigate(new ChatPage(loggedIn));
+            //mainFrame.Navigate(new ChatPage(loggedIn));
 
         }
         private void settingsBtn_Click(object sender, MouseButtonEventArgs e)
         {
             whichTab(4);
-            mainFrame.Navigate(new adminSettingsPage());
+            //mainFrame.Navigate(new adminSettingsPage());
 
         }
 

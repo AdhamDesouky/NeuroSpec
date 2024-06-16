@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NeuroSpec.Shared.Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using NeuroSpec.Shared.Models.DTO;
 
 namespace NeuroSpecCompanion.Shared.Services.DTO_Services
 {
@@ -19,12 +19,12 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             _baseApi = "http://neurospec.somee.com/api/AttendanceRecord";
         }
 
-        public async Task<IEnumerable<AttendanceRecord>> GetAllAttendanceRecordsAsync()
+        public async Task<List<AttendanceRecord>> GetAllAttendanceRecordsAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<AttendanceRecord>>(content);
+            return JsonSerializer.Deserialize<List<AttendanceRecord>>(content);
         }
 
         public async Task<AttendanceRecord> GetAttendanceRecordByIDAsync(int recordID)
@@ -35,20 +35,20 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<AttendanceRecord>(content);
         }
 
-        public async Task<IEnumerable<AttendanceRecord>> GetAttendanceRecordsByDateAsync(DateTime date)
+        public async Task<List<AttendanceRecord>> GetAttendanceRecordsByDateAsync(DateTime date)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/date/{date:yyyy-MM-dd}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<AttendanceRecord>>(content);
+            return JsonSerializer.Deserialize<List<AttendanceRecord>>(content);
         }
 
-        public async Task<IEnumerable<AttendanceRecord>> GetUserAttendanceRecordsAsync(int userID)
+        public async Task<List<AttendanceRecord>> GetUserAttendanceRecordsAsync(int userID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/user/{userID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<AttendanceRecord>>(content);
+            return JsonSerializer.Deserialize<List<AttendanceRecord>>(content);
         }
 
         public async Task<AttendanceRecord> InsertAttendanceRecordAsync(AttendanceRecord attendanceRecord)

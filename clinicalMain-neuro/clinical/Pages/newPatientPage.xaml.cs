@@ -7,6 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using NeuroSpec.Shared.Globals;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
+using NeuroSpec.Shared.Services.OntologyServices;
+using NeuroSpec.Shared.Models.Ontology;
+using NeuroSpec.Shared.Services.DTO_Services;
 
 namespace clinical.Pages
 {
@@ -17,8 +22,11 @@ namespace clinical.Pages
     {
         bool edit = false;
         Patient patient;
-        List<OntologyTerm> selectedChronics = new List<OntologyTerm>();
-
+        List<SNOMEDOntology> selectedChronics = new List<SNOMEDOntology>();
+        UserService us = new UserService();
+        PatientService ps = new PatientService();
+        PaymentService paymentService = new PaymentService();
+        PatientChronicService pcs = new PatientChronicService(); 
         private ICollectionView injuryDataView;
         private ICollectionView chronicDataView;
 
@@ -33,20 +41,17 @@ namespace clinical.Pages
             {
                 firstNameTextBox.Text = toEdit.FirstName;
                 lastNameTextBox.Text = toEdit.LastName;
-                if (toEdit.Gender == "Male") maleRB.IsChecked = true;
-                else maleRB.IsChecked = false;
-                addressTextBox.Text = toEdit.Address;
+                maleRB.IsChecked = toEdit.Gender;
+                if(toEdit.Address!=null)
+                addressTextBox.Text = toEdit.Address.ToString();
                 phoneTextBox.Text = toEdit.PhoneNumber;
-                ageTextBox.Text = toEdit.Age.ToString();
+                ageTextBox.Text = StaticFunctions.CalculateAge(toEdit.DateOfBirth).ToString();
             }
         }
         public newPatientPage()
         {
             InitializeComponent();
-
-            assignedPhys.ItemsSource = DB.GetAllDoctors();
-            ontology oi=new ontology();
-            allChronicsDataGrid.ItemsSource = oi.GetFirstTenOntologies();
+            asyncInit();
             assignedPhys.SelectedIndex = 0;
             selectedChronicsDataGrid.ItemsSource = selectedChronics;
             referredCB.Checked += CheckBox_Checked;
@@ -55,21 +60,29 @@ namespace clinical.Pages
             referringTextBox.IsEnabled = false;
             referringPNTextBox.IsEnabled = false;
 
-
-
-            chronicDataView = CollectionViewSource.GetDefaultView(DB.GetAllTerms());
             searchChronicDiseaseTXTBOX.TextChanged += SearchChronicTextBox_TextChanged;
 
 
         }
-
-        private void SearchChronicTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void asyncInit()
+        {
+            List<User>doctors=await us.GetAllDoctorsAsync();
+            assignedPhys.ItemsSource = doctors;
+        }
+        SNOMEDOntologyService ontologyService = new SNOMEDOntologyService();
+        private async void SearchChronicTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (searchChronicDiseaseTXTBOX.Text.Length < 4)
             {
                 return;
             }
-            allChronicsDataGrid.ItemsSource = DB.GetTermsLikeName(searchChronicDiseaseTXTBOX.Text);
+            List<SNOMEDOntology>searchResults=await ontologyService.SearchSNOMEDOntologyAsync(searchChronicDiseaseTXTBOX.Text);
+            if (searchResults.Count == 0)
+            {
+                return;
+            }
+            
+            allChronicsDataGrid.ItemsSource = searchResults;
             //chronicDataView.Filter = item => FilterItem(item, searchChronicDiseaseTXTBOX.Text);
 
         }
@@ -112,7 +125,7 @@ namespace clinical.Pages
             referringPNTextBox.IsEnabled = false;
         }
 
-        private void save(object sender, MouseButtonEventArgs e)
+        private async void save(object sender, MouseButtonEventArgs e)
         {
             string fn = firstNameTextBox.Text;
             string ln = lastNameTextBox.Text;
@@ -124,7 +137,7 @@ namespace clinical.Pages
             else gender = "Female";
             string address = addressTextBox.Text;
             string phone = phoneTextBox.Text;
-            DateTime bd = globals.CalculateBirthdate(int.Parse(ageTextBox.Text));
+            DateTime bd = StaticFunctions.CalculateBirthdate(int.Parse(ageTextBox.Text));
             string em = emailTextBox.Text;
             User phys = (User)(assignedPhys.SelectedItem);
             bool isRef = (bool)referredCB.IsChecked;
@@ -136,41 +149,54 @@ namespace clinical.Pages
                 refPN = referringPNTextBox.Text;
 
             }
-            int id = globals.generateNewPatientID(phone);
+            int id = IDGeneration.generateNewPatientID(phone);
 
 
             double due = Double.Parse(dueTB.Text);
 
-            Patient newPatient = new(
-                id,
-                fn,
-                ln,
-                bd,
-                gender,
-                phone,
-                em,
-                address,
-                phys.UserID,
-                isRef,
-                prevSessions,
-                Convert.ToDouble(heightTextBox.Text),
-                Convert.ToDouble(weightTextBox.Text),
-                due,
-                refName,
-                refPN);
-            DB.InsertPatient(newPatient);
+            Patient newPatient = new Patient
+            {
+                PatientID = id,
+                FirstName = fn,
+                LastName = ln,
+                DateOfBirth = bd,
+                Gender = gender == "Male",
+                PhoneNumber = phone,
+                Email = em,
+                Address = new Address
+                {
+                    Street = address
+                },
+                Height = Convert.ToDouble(heightTextBox.Text),
+                Weight = Convert.ToDouble(weightTextBox.Text),
+                DominantHand = true
+            };
+            await ps.InsertPatientAsync(newPatient);            
 
 
             MessageBox.Show("New patient added, ID: " + id.ToString());
 
             foreach (var ch in selectedChronics)
             {
-                DB.InsertPatientDiseases(ch.Name, newPatient.PatientID);
+                PatientChronic newPc=new PatientChronic
+                {
+                    ChronicName = ch.SNOMEDName,
+                    ChronicDescription=ch.SNOMEDID,
+                    PatientID = id
+                };
+                await pcs.InsertPatientChronicAsync(newPc);
             }
 
             double paid= Double.Parse(paidTB.Text);
-            Payment payment = new Payment(globals.generateNewPaymentID(id, DateTime.Now), paid, DateTime.Now, phys.UserID, id);
-            DB.InsertPayment(payment);
+            Payment payment = new Payment
+            {
+                PaymentID = IDGeneration.generateNewPaymentID(id, DateTime.Now),
+                Amount = paid,
+                TimeStamp = DateTime.Now,
+                DoctorID = phys.UserID,
+                PatientID = id
+            };
+            await paymentService.InsertPaymentAsync(payment);
 
 
             Window.GetWindow(this).Close();
@@ -183,14 +209,14 @@ namespace clinical.Pages
 
         private void removeChronic(object sender, RoutedEventArgs e)
         {
-            selectedChronics.Remove((OntologyTerm)selectedChronicsDataGrid.SelectedItem);
+            selectedChronics.Remove((SNOMEDOntology)selectedChronicsDataGrid.SelectedItem);
             refresh();
 
         }
 
         private void addChronic(object sender, RoutedEventArgs e)
         {
-            OntologyTerm selectedChronic = (OntologyTerm)allChronicsDataGrid.SelectedItem;
+            SNOMEDOntology selectedChronic = (SNOMEDOntology)allChronicsDataGrid.SelectedItem;
             if (!selectedChronics.Contains(selectedChronic)) selectedChronics.Add(selectedChronic);
             refresh();
         }

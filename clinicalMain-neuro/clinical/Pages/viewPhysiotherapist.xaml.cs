@@ -1,21 +1,15 @@
-﻿using clinical.BaseClasses;
+﻿using LiveCharts;
 using LiveCharts.Wpf;
-using LiveCharts;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -25,15 +19,17 @@ namespace clinical.Pages
     public partial class viewDoctor : Page
     {
         User currDoctor;
+        PatientService patientService = new PatientService();
+        VisitService visitService = new VisitService();
         public viewDoctor(User user)
         {
             InitializeComponent();
-            currDoctor=user;
+            currDoctor = user;
             if (user == null) return;
 
             firstNameTextBox.Text = user.FullName;
             addressTextBox.Text = user.Address;
-            genderTextBox.Text = user.Gender;
+            genderTextBox.Text = user.Gender?"Male":"Female";
             emailTextBox.Text = user.Email;
             NIDTextBox.Text = user.NationalID;
             phoneTextBox.Text = user.PhoneNumber;
@@ -48,12 +44,13 @@ namespace clinical.Pages
             phoneTextBox.IsEnabled = false;
             hiringDatePicker.IsEnabled = false;
             bdDatePicker.IsEnabled = false;
-            
-            List<Patient> patients = DB.GetAllPatientsByDoctorID(user.UserID);
-            patientsDataGrid.ItemsSource= patients;
 
-            List<Visit> visits = DB.GetAllVisitsByDoctorID(user.UserID);
-            foreach(var i in visits)
+
+            List<Patient> patients = patientService.GetPatientsByDoctorAsync(user.UserID).Result;
+            patientsDataGrid.ItemsSource = patients;
+
+            List<Visit> visits = visitService.GetDoctorVisitsOnDate(user.UserID,DateTime.Now).Result;
+            foreach (var i in visits)
             {
                 appointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
             }
@@ -65,10 +62,10 @@ namespace clinical.Pages
 
         }
 
-
+        AttendanceRecordService AttendanceRecordService=new AttendanceRecordService();
         private void UpdateAttendanceChart()
         {
-            List<AttendanceRecord> attendanceRecords = DB.GetUserAttendanceRecords(currDoctor.UserID);
+            List<AttendanceRecord> attendanceRecords = AttendanceRecordService.GetUserAttendanceRecordsAsync(currDoctor.UserID).Result;
 
             SeriesCollection s = new LiveCharts.SeriesCollection();
             attendanceChart.Series = s;
@@ -121,10 +118,10 @@ namespace clinical.Pages
         }
 
 
-
+        PaymentService paymentService = new PaymentService();
         private void UpdateFinancesChart()
         {
-            List<Payment> payments = DB.GetDoctorPayments(currDoctor.UserID); // Assuming currDoctor is the current Doctor
+            List<Payment> payments = paymentService.GetDoctorPaymentsAsync(currDoctor.UserID).Result; 
 
             var distinctPatientIds = payments.Select(payment => payment.PatientID).Distinct();
 
@@ -144,7 +141,7 @@ namespace clinical.Pages
 
                 LineSeries lineSeries = new LineSeries
                 {
-                    Title = $"{DB.GetPatientById(patientId).FullName}",
+                    Title = $"{patientService.GetPatientByIdAsync(patientId).Result.FirstName}",
                     Values = new ChartValues<double>(groupedData.SelectMany(group => group.Select(payment => payment.Amount))),
                     PointGeometry = null // This removes the point marker
                 };
@@ -156,13 +153,15 @@ namespace clinical.Pages
             financesChart.AxisX[0].Labels = payments.Select(payment => payment.TimeStamp.ToString("MMM")).Distinct().OrderBy(month => DateTime.ParseExact(month, "MMM", CultureInfo.InvariantCulture).Month).ToArray();
             financesChart.AxisY[0].LabelFormatter = value => value.ToString("C"); // Use currency format if applicable
         }
-        void viewVisit(Visit visit) {
+        void viewVisit(Visit visit)
+        {
             if (visit != null)
             {
                 NavigationService.Navigate(new visit(visit));
             }
         }
-        void viewPatient(Patient patient) {
+        void viewPatient(Patient patient)
+        {
             if (patient != null)
             {
                 NavigationService.Navigate(new patientViewMainPage(patient));

@@ -1,4 +1,7 @@
 ﻿using Firebase.Storage;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace NeuroSpec.Shared.Services.Firebase_Service
 {

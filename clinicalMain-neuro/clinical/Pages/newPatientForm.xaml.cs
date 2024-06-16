@@ -1,5 +1,5 @@
-﻿using clinical.BaseClasses;
-using clinical.Pages.adminSettingsNewPages;
+﻿using clinical.Pages.adminSettingsNewPages;
+using NeuroSpec.Shared.Models.DTO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -42,24 +42,7 @@ namespace clinical.Pages
             //    formTitle.Content = "New Chronic Disease";
             //    mainFrame.Navigate(new newChronic());
             //}
-            
-            else if (type == 10) //new access request
-            {
-                window.Height = 321;
-                window.Width = 500;
 
-                formTitle.Content = "New Access Request";
-                mainFrame.Navigate(new accessRequestPage());
-            }
-
-            else if (type == 11)
-            {
-                window.Height = 282;
-                window.Width = 480;
-
-                formTitle.Content = "New Patient Evaluation Test";
-                mainFrame.Navigate(new newEvaluationTestPage());
-            }
             else if (type == 12)
             {
                 window.Height = 321;
@@ -103,17 +86,6 @@ namespace clinical.Pages
             mainFrame.Navigate(new newAppointmentTypePage(toView));
         }
 
-        
-
-        //view test
-        public newPatientForm(EvaluationTest toView)
-        {
-            InitializeComponent();
-            window.Height = 282;
-            window.Width = 480;
-            formTitle.Content = "View Test";
-            mainFrame.Navigate(new newEvaluationTestPage(toView));
-        }
 
         private void closeBTN(object sender, MouseButtonEventArgs e)
         {

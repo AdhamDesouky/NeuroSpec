@@ -18,12 +18,12 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             _baseApi = "http://neurospec.somee.com/api/IssueDrug";
         }
 
-        public async Task<IEnumerable<IssueDrug>> GetAllIssueDrugsAsync()
+        public async Task<List<IssueDrug>> GetAllIssueDrugsAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<IssueDrug>>(content);
+            return JsonSerializer.Deserialize<List<IssueDrug>>(content);
         }
 
         public async Task<IssueDrug> GetIssueDrugByIdAsync(int issueID)
@@ -34,20 +34,20 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<IssueDrug>(content);
         }
 
-        public async Task<IEnumerable<IssueDrug>> GetAllIssueDrugsByPatientIDAsync(int patientID)
+        public async Task<List<IssueDrug>> GetAllIssueDrugsByPatientIDAsync(int patientID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPatient/{patientID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<IssueDrug>>(content);
+            return JsonSerializer.Deserialize<List<IssueDrug>>(content);
         }
 
-        public async Task<IEnumerable<IssueDrug>> GetAllIssueDrugsByPrescriptionIDAsync(int prescriptionID)
+        public async Task<List<IssueDrug>> GetAllIssueDrugsByPrescriptionIDAsync(int prescriptionID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPrescription/{prescriptionID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<IssueDrug>>(content);
+            return JsonSerializer.Deserialize<List<IssueDrug>>(content);
         }
 
         public async Task<IssueDrug> InsertIssueDrugAsync(IssueDrug IssueDrug)

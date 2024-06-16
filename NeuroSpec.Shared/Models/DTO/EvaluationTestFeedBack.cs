@@ -1,5 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Text.Json.Serialization;
 
@@ -15,7 +15,7 @@ namespace NeuroSpec.Shared.Models.DTO
         public int Severity { get; set; }
         public int VisitID { get; set; }
         public int PatientID { get; set; }
-        public int TestID { get; set; }
+        public string TestName { get; set; }
         public string Notes { get; set; }
         public DateTime TimeStamp { get; set; }
         

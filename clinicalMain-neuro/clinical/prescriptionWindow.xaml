@@ -27,11 +27,8 @@
             <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0,0,45,4" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
             <Grid Grid.Row="1" Background="#FFA7AEB6" Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="60"/>
                 </Grid.RowDefinitions>
-                <Image Source="C:\Users\TOP\Desktop\clinicalMain\clinical\images\topRosheta.jpg" Stretch="Fill" />
                 <Grid Margin="10" Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -81,10 +78,15 @@
                                 </Border>-->
                             </StackPanel>
                         </ScrollViewer>
-                        <Border Style="{StaticResource theBorder}" BorderBrush="{StaticResource darkerColor}" Width="250" BorderThickness="2" CornerRadius="5" Margin="10" MouseDown="newExcersice">
-                            <Label Content="Add New Test/Drug" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-                        </Border>
-
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Border Style="{StaticResource theBorder}" BorderBrush="{StaticResource darkerColor}" Width="220" BorderThickness="2" CornerRadius="5" Margin="10" MouseDown="newTestExercise">
+                                <Label Content="Add New Test / Exercise" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                            </Border>
+                            <Border Style="{StaticResource theBorder}" BorderBrush="{StaticResource darkerColor}" Width="220" BorderThickness="2" CornerRadius="5" Margin="10" MouseDown="newDrug">
+                                <Label Content="Add New Drug" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                            </Border>
+                            
+                        </StackPanel>
                     </StackPanel>
 
 
@@ -97,8 +99,6 @@
                         <Label Content="Print" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="0,-3,0,0"/>
                     </Border>
                 </Grid>
-
-                <Image Grid.Row="2" Source="C:\Users\TOP\Desktop\clinicalMain\clinical\images\bottomRosheta.jpg" Stretch="Fill" />
 
             </Grid>
             <Frame Name="mainFrame" Grid.Row="1" Grid.RowSpan="3" Visibility="Hidden"/>

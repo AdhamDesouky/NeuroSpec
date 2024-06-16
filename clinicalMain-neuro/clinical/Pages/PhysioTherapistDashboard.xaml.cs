@@ -1,5 +1,8 @@
-﻿using clinical.BaseClasses;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpec.Shared.Models.Ontology;
+using NeuroSpec.Shared.Services.OntologyServices;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -18,6 +21,7 @@ namespace clinical.Pages
     {
         private DateTime currentDayIndex = DateTime.Now;
         private User Doctor;
+        VisitService VisitService = new VisitService();
         public DoctorDashboard(User therapist)
         {
             InitializeComponent();
@@ -27,15 +31,15 @@ namespace clinical.Pages
             leftSideFrame.NavigationService.Navigate(new DashBoardPage());
             signedInTB.Text = $"Welcome, Dr. {therapist.FirstName}";
             PopulateArticleDataGrid();
-            PopulateOntology();
-            PopulateOntlogyFilters();
 
 
         }
+
+        
         void updateDayAppointments()
         {
             todayAppointmentsStackPanel.Children.Clear();
-            List<Visit> visits = DB.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex);
+            List<Visit> visits = VisitService.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex).Result;
             numberOfAppointmentsTB.Text = visits.Count.ToString();
 
             foreach (var i in visits)
@@ -145,15 +149,14 @@ namespace clinical.Pages
             currentDayIndex = currentDayIndex.AddDays(1);
             UpdateDayBorders();
         }
-
+        PatientService patientService = new PatientService();
         private void UpdateDayBorders()
         {
 
-            List<Patient> patients = new List<Patient>();
+            List<Patient> patients = patientService.GetPatientsByDoctorAsync(Doctor.UserID).Result;
 
             if (allPanelCB.IsChecked == true && (currentDayIndex.DayOfYear != DateTime.Now.DayOfYear))
             {
-                patients = DB.GetPatientsWithVisitsOnDateByDoctorID(Doctor.UserID, currentDayIndex);
                 numberOfDoctorsTB.Text = patients.Count.ToString();
                 if (patients.Count == 0)
                 {
@@ -166,8 +169,6 @@ namespace clinical.Pages
             }
             else
             {
-                patients = DB.GetPatientsWithVisitsOnDateByDoctorID(Doctor.UserID, DateTime.Now);
-                numberOfDoctorsTB.Text = patients.Count.ToString();
                 articlesTitleTB.Text = "General Articles";
             }
 
@@ -311,7 +312,6 @@ namespace clinical.Pages
         private async void search(string query)
         {
             articlesStackPanel.Children.Clear();
-
             if (!string.IsNullOrEmpty(query))
             {
                 string url = $"https://www.news-medical.net/medical/search?q={query}";
@@ -325,83 +325,23 @@ namespace clinical.Pages
         }
 
 
-        ///ontology section
-        void PopulateOntology()
+        
+
+        private void ontologySearchButton_Click(object sender, RoutedEventArgs e)
         {
-            List<OntologyTerm> terms = DB.GetAllTerms();
+            string query = ontologySearchTB.Text;
+            searchOntology(query);
+        }
+        SNOMEDOntologyService sNOMEDOntologyService = new SNOMEDOntologyService();
+        private void searchOntology(string query)
+        {
+            ontologiesStackPanel.Children.Clear();
+            List<SNOMEDOntology> terms = sNOMEDOntologyService.SearchSNOMEDOntologyAsync(query).Result;
             foreach (var i in terms)
             {
                 ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
             }
-        }
-        void PopulateOntlogyFilters()
-        {
-            List<string> filters = new()
-            {
-                "DOID",
-                "Name",
-                "Def. Keywords",
-                "Parent",
-                "Synonyms"
-            };
-            ontologyFilters.ItemsSource = filters;
-            ontologyFilters.SelectedIndex = 0;
-        }
 
-        private void ontologySearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            int filter= ontologyFilters.SelectedIndex;
-            string query = ontologySearchTB.Text;
-            searchOntology(query, filter);
-        }
-
-        private void searchOntology(string query, int filter)
-        {
-            if(filter == 0)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeID(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if(filter == 1)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeName(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if(filter == 2)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeDef(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if(filter == 3)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeParent(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if(filter == 4)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeSynonyms(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
         }
     }
 

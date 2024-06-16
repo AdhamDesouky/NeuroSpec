@@ -1,6 +1,7 @@
-﻿using clinical.BaseClasses;
-using MahApps.Metro.IconPacks;
+﻿using MahApps.Metro.IconPacks;
 using MySqlX.XDevAPI.Relational;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,8 @@ namespace clinical.Pages
     public partial class reciptionistViewDoctor : Page
     {
         User Doctor;
-
+        PatientService patientService = new PatientService();  
+        VisitService visitService = new VisitService();
         public reciptionistViewDoctor(User Doctor)
         {
             InitializeComponent();
@@ -25,11 +27,11 @@ namespace clinical.Pages
             emailTextBox.Text = Doctor.Email;
             phoneTextBox.Text = Doctor.PhoneNumber;
 
-            List<Patient> patientList = DB.GetAllPatientsByDoctorID(Doctor.UserID);
+            List<Patient> patientList = patientService.GetPatientsByDoctorAsync(Doctor.UserID).Result;
 
             patientsDataGrid.ItemsSource = patientList;
 
-            List<Visit> DoctorUpcomingVisits = DB.GetFutureDoctorVisits(Doctor.UserID);
+            List<Visit> DoctorUpcomingVisits = visitService.GetFutureDoctorVisits(Doctor.UserID).Result;
             foreach (var i in DoctorUpcomingVisits)
             {
                 upcomingAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));

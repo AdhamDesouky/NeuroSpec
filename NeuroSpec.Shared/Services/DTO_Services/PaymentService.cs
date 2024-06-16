@@ -19,12 +19,12 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             _baseApi = "http://neurospec.somee.com/api/Payment";
         }
 
-        public async Task<IEnumerable<Payment>> GetAllPaymentsAsync()
+        public async Task<List<Payment>> GetAllPaymentsAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<Payment>>(content);
+            return JsonSerializer.Deserialize<List<Payment>>(content);
         }
 
         public async Task<Payment> GetPaymentByIDAsync(int paymentID)
@@ -35,20 +35,20 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<Payment>(content);
         }
 
-        public async Task<IEnumerable<Payment>> GetPatientPaymentsAsync(int patientID)
+        public async Task<List<Payment>> GetPatientPaymentsAsync(int patientID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPatient/{patientID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<Payment>>(content);
+            return JsonSerializer.Deserialize<List<Payment>>(content);
         }
 
-        public async Task<IEnumerable<Payment>> GetDoctorPaymentsAsync(int doctorID)
+        public async Task<List<Payment>> GetDoctorPaymentsAsync(int doctorID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByDoctor/{doctorID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<Payment>>(content);
+            return JsonSerializer.Deserialize<List<Payment>>(content);
         }
 
         public async Task<Payment> InsertPaymentAsync(Payment payment)

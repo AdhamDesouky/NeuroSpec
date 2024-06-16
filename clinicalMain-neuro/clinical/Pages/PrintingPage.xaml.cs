@@ -1,4 +1,5 @@
-﻿using clinical.BaseClasses;
+﻿using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,25 +11,25 @@ namespace clinical.Pages
     public partial class PrintingPage : Page
     {
         
-        
+        IssueService issueService = new IssueService();
         public PrintingPage(Prescription plan)
         {
             InitializeComponent();
-            List<IssueScan> IssueScan = DB.GetAllIssueScansByPrescriptionID(plan.PrescriptionID);
-            foreach (var i in IssueScan)
+            List<Issue> Issues = issueService.GetAllIssuesByPrescriptionIDAsync(plan.PrescriptionID).Result;
+            foreach (var i in Issues)
             {
                 mainStackPanel.Children.Add(CreatePrescripedObject(i));
             }
 
         }
-        public TextBlock CreatePrescripedObject(IssueScan issue)
+        public TextBlock CreatePrescripedObject(Issue issue)
         {
             TextBlock prescripedTextBlock = new TextBlock
             {
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
                 FontWeight = FontWeights.SemiBold,
                 TextWrapping = TextWrapping.Wrap,
-                Text = $"-{DB.GetScanTestById(issue.ScanTestID).ScanTestID}, {issue.Notes}",
+                Text = $"-{issue.IssueID}, {issue.Notes}",
 
                 Margin = new Thickness(5)
             };

@@ -19,12 +19,12 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             _baseApi = "http://neurospec.somee.com/api/CalendarEvent";
         }
 
-        public async Task<IEnumerable<CalendarEvent>> GetAllCalendarEventsAsync()
+        public async Task<List<CalendarEvent>> GetAllCalendarEventsAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<CalendarEvent>>(content);
+            return JsonSerializer.Deserialize<List<CalendarEvent>>(content);
         }
 
         public async Task<CalendarEvent> GetCalendarEventByIDAsync(int eventID)
@@ -57,6 +57,14 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         {
             var response = await _httpClient.DeleteAsync($"{_baseApi}/{eventID}");
             response.EnsureSuccessStatusCode();
+        }
+
+        internal async Task<List<CalendarEvent>> GetCalendarEventsByUserIDAndDate(int userID, DateTime dateTime)
+        {
+            var response = await _httpClient.GetAsync($"{_baseApi}/ByUserIDAndDate/{userID}/{dateTime}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<CalendarEvent>>(content);
         }
     }
 }

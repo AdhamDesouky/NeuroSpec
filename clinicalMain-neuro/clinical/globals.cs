@@ -1,23 +1,18 @@
-﻿using NeuroSpec.Shared.Models.DTO;
-using clinical.Pages;
+﻿using clinical.Pages;
 using MahApps.Metro.IconPacks;
-using Org.BouncyCastle.Tls;
-using PdfSharp.Drawing;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpec.Shared.Models.Ontology;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
+using Syncfusion.Compression.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO.Packaging;
-using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Xps.Packaging;
-using System.Xml;
-using PdfSharp.Pdf;
 
 namespace clinical
 {
@@ -28,7 +23,7 @@ namespace clinical
         public static User signedIn = null;
         public static Patient selectedPatient = null;
 
-        
+
 
         ///////////////////////////////////////////
         /// Creating UI
@@ -60,7 +55,7 @@ namespace clinical
             tb.MouseLeave += (sender, e) => tb.TextDecorations = null;
         }
 
-        public static Border CreateOntologyUIObject(OntologyTerm oi)
+        public static Border CreateOntologyUIObject(SNOMEDOntology oi)
         {
             Border border = new Border
             {
@@ -80,7 +75,7 @@ namespace clinical
 
             TextBlock DOID = new TextBlock
             {
-                Text = $"{oi.Id}",
+                Text = $"{oi.SNOMEDID}",
                 Margin = new Thickness(5, 0, 5, 0),
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -92,7 +87,7 @@ namespace clinical
 
             TextBlock ontologyTitle = new TextBlock
             {
-                Text = $"{oi.Lbl}",
+                Text = $"{oi.SNOMEDName}",
                 Margin = new Thickness(5, 3, 5, 0),
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -103,7 +98,7 @@ namespace clinical
 
             TextBlock ontologyDef = new TextBlock
             {
-                Text = $"{oi.Meta.Definition.Val}",
+                Text = $"{oi.SNOMEDDescription}",
                 Margin = new Thickness(5, 2, 5, 0),
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -122,10 +117,7 @@ namespace clinical
                 FontSize = 12,
             };
 
-            if (oi.Meta.Synonyms != null && oi.Meta.Synonyms.Count > 0)
-            {
-                ontologySynonyms.Text = $"Synonyms: {string.Join(", ", oi.Meta.Synonyms.Select(s => s.Val))}";
-            }
+
 
             Grid.SetRow(DOID, 0);
             Grid.SetRow(ontologyTitle, 1);
@@ -136,33 +128,22 @@ namespace clinical
             grid.Children.Add(ontologyTitle);
             grid.Children.Add(ontologyDef);
             grid.Children.Add(ontologySynonyms);
-            DOID.MouseDown += (sender, e) => ViewOntologyTermByDOID(oi);
             border.Child = grid;
 
-            if (oi.Meta.Xrefs != null && oi.Meta.Xrefs.Count > 0)
-            {
-                makeItLookClickable(border);
-                border.MouseDown += (sender, e) => ViewOntologyTerm(oi);
-            }
+            
 
             return border;
         }
 
-        private static void ViewOntologyTermByDOID(OntologyTerm oi)
-        {
-            oi.Id = oi.Id.Replace(":", "_");
-            string s2 = $"https://www.ebi.ac.uk/ols/ontologies/doid/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F{oi.Id}";
-            Process.Start(new ProcessStartInfo(s2) { UseShellExecute = true });
-        }
 
-        private static void ViewOntologyTerm(OntologyTerm oi)
+        private static void ViewOntologyTerm(SNOMEDOntology oi)
         {
-            string s = oi.Meta.Xrefs[0].Val;
+            string s = oi.SNOMEDID;
             s = s.Replace("http\\:", "http:").Replace("https\\:", "https:");
             Process.Start(new ProcessStartInfo(s) { UseShellExecute = true });
         }
 
-        public static Border CreatePrescriptionUI(Prescription prescription)
+        public async static Task<Border> CreatePrescriptionUI(Prescription prescription)
         {
             Border borderedGrid = new Border
             {
@@ -179,11 +160,12 @@ namespace clinical
 
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(72) });
             grid.ColumnDefinitions.Add(new ColumnDefinition());
+            UserService userService = new UserService();
 
             TextBlock DoctorNameTextBlock = CreatePrescribedTextBlock("Doctor Name:", 0, 0, 5, 5);
             TextBlock timestampTextBlock = CreatePrescribedTextBlock("Timestamp:", 1, 0, 5, 5);
             TextBlock prescribedTextBlock = CreatePrescribedTextBlock("Prescribed:", 2, 0, 7.5, 5);
-            string physName = DB.GetUserById(prescription.UserID).FullName;
+            string physName = (await userService.GetUserByIdAsync(prescription.DoctorID)).FullName;
 
             TextBlock DoctorNameTB = CreatePrescribedTextBlock($"Dr. {physName}", 0, 1, 0, 5);
             TextBlock timestampTB = CreatePrescribedTextBlock(prescription.TimeStamp.ToString("g"), 1, 1, 0, 5);
@@ -192,11 +174,11 @@ namespace clinical
             {
                 Margin = new Thickness(5)
             };
-
-            List<IssueScan> issues = DB.GetAllIssueScansByPrescriptionID(prescription.PrescriptionID);
+            IssueService issueService = new IssueService();
+            List<Issue> issues = await issueService.GetAllIssuesByPrescriptionIDAsync(prescription.PrescriptionID);
             foreach (var i in issues)
             {
-                TextBlock prescriptionItem = CreatePrescribedTextBlock($"-{DB.GetScanTestById(i.ScanTestID).ScanTestName}, {i.Notes}", 2, 1, 2.5, 0);
+                TextBlock prescriptionItem = CreatePrescribedTextBlock($"-{i.IssueID}, {i.Notes}", 2, 1, 2.5, 0);
                 stackPanel.Children.Add(prescriptionItem);
             }
 
@@ -270,12 +252,15 @@ namespace clinical
             return textBlock;
         }
 
-        public static Border createAppointmentUIObject(Visit visit, Action<Visit> viewVisit, Action<Patient> viewPatient)
+        public async static Task<Border> createAppointmentUIObject(Visit visit, Action<Visit> viewVisit, Action<Patient> viewPatient)
         {
             if (visit == null) { return null; }
+            PatientService patientService = new PatientService();
+            UserService userService = new UserService();
+            AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
 
-            Patient patient = DB.GetPatientById(visit.PatientID);
-            User Doctor = DB.GetUserById(visit.DoctorID);
+            Patient patient = await patientService.GetPatientByIdAsync(visit.PatientID);
+            User Doctor = await userService.GetUserByIdAsync(visit.DoctorID);
             if (patient == null) { return null; }
             Border border = new Border
             {
@@ -324,7 +309,7 @@ namespace clinical
 
             TextBlock visitType = new TextBlock
             {
-                Text = $"{visit.Type} with ",
+                Text = $"{(await appointmentTypeService.GetAppointmentTypeByIDAsync( visit.AppointmentTypeID)).Name} with ",
                 VerticalAlignment = VerticalAlignment.Center,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
                 FontSize = 14
@@ -446,12 +431,15 @@ namespace clinical
             return border;
         }
 
-        public static Border createAppointmentUIObject(Visit visit, Action<Visit> viewVisit)
+        public async static Task<Border> createAppointmentUIObject(Visit visit, Action<Visit> viewVisit)
         {
-            if (visit == null) { return null; }
+            PatientService patientService = new PatientService();
+            UserService userService = new UserService();
+            AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
 
-            Patient patient = DB.GetPatientById(visit.PatientID);
-            User Doctor = DB.GetUserById(visit.DoctorID);
+            if (visit == null) { return null; }
+            Patient patient = await patientService.GetPatientByIdAsync(visit.PatientID);
+            User Doctor = await userService.GetUserByIdAsync(visit.DoctorID);
             if (patient == null) { return null; }
             Border border = new Border
             {
@@ -484,7 +472,7 @@ namespace clinical
 
             TextBlock patientName = new TextBlock
             {
-                Text = $"{patient.Name[0].Text} {patient.Name[0].Family}",
+                Text = $"{patient.FirstName} {patient.LastName}",
                 Margin = new Thickness(10, 5, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = FontWeights.Bold,
@@ -500,7 +488,7 @@ namespace clinical
 
             TextBlock visitType = new TextBlock
             {
-                Text = $"{visit.Type} with ",
+                Text = $"{(await appointmentTypeService.GetAppointmentTypeByIDAsync(visit.AppointmentTypeID)).Name} with ",
                 VerticalAlignment = VerticalAlignment.Center,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
                 FontSize = 14
@@ -533,7 +521,7 @@ namespace clinical
 
             TextBlock patientPhone = new TextBlock
             {
-                Text = patient.Telecom?.FirstOrDefault(cp => cp.System == "phone")?.Value ?? "No phone number",
+                Text = patient.PhoneNumber,
                 Margin = new Thickness(5, 0, 5, 0),
                 FontWeight = FontWeights.SemiBold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
@@ -679,11 +667,12 @@ namespace clinical
 
         // Scheduling part
 
-        public static void ScheduleVisit(Visit newVisit)
+        public async static void ScheduleVisit(Visit newVisit)
         {
-            if (CanBookVisit(newVisit))
+            VisitService visitService = new VisitService();
+            if (await CanBookVisit(newVisit))
             {
-                DB.InsertVisit(newVisit);
+                await visitService.InsertVisitAsync(newVisit);
             }
             else
             {
@@ -691,56 +680,64 @@ namespace clinical
             }
         }
 
-        static bool CanBookVisit(Visit visit)
+        static async Task<bool> CanBookVisit(Visit visit)
         {
+            VisitService visitService = new VisitService();
+            AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
+
             Visit fakeVisit = visit;
-            List<DateTime> proposedSlots = GenerateTimeSlots(visit.TimeStamp, fakeVisit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration()));
-            List<Visit> existingVisits = DB.GetFutureDoctorVisits(visit.DoctorID);
+            List<DateTime> proposedSlots = GenerateTimeSlots(visit.TimeStamp, fakeVisit.TimeStamp.AddMinutes((await appointmentTypeService.GetAppointmentTypeByIDAsync(visit.AppointmentTypeID)).TimeInMinutes), TimeSpan.FromMinutes(30));//TODO: get slot duration from DB
+            List<Visit> existingVisits = await visitService.GetDoctorVisits(visit.DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
-                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(v.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(60), TimeSpan.FromMinutes(30)))
                 .ToList();
 
             bool hasConflicts = proposedSlots.Intersect(unavailableSlots).Any();
             return !hasConflicts;
         }
 
-        public static DateTime FindFirstFreeSlot(int DoctorID, DateTime when)
+        public static async Task<DateTime> FindFirstFreeSlot(int DoctorID, DateTime when)
         {
-            List<DateTime> availableSlots = FindAvailableTimeSlots(DoctorID, when);
+            List<DateTime> availableSlots = await FindAvailableTimeSlots(DoctorID, when);
             while (availableSlots.Count == 0)
             {
                 when = when.AddDays(7);
-                availableSlots = FindAvailableTimeSlots(DoctorID, when);
+                availableSlots = await FindAvailableTimeSlots(DoctorID, when);
             }
             return availableSlots[0];
         }
 
-        static List<DateTime> FindAvailableTimeSlots(int DoctorID, DateTime when)
+        static async Task<List<DateTime>> FindAvailableTimeSlots(int DoctorID, DateTime when)
         {
+            VisitService visitService = new VisitService();
+            AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
+
             List<DateTime> allSlots = GenerateAllPossibleTimeSlots(when);
-            List<Visit> existingVisits = DB.GetFutureDoctorVisits(DoctorID);
+            List<Visit> existingVisits = await visitService.GetFutureDoctorVisits(DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
-                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(v.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(60), TimeSpan.FromMinutes(30)))
                 .ToList();
 
             List<DateTime> availableSlots = allSlots.Except(unavailableSlots).ToList();
             return availableSlots;
         }
 
-        public static List<string> GetAvailableTimeSlotsOnDay(DateTime selectedDay, int DoctorID)
+        public static async Task<List<string>> GetAvailableTimeSlotsOnDayAsync(DateTime selectedDay, int DoctorID)
         {
-            DateTime dayStartTime = selectedDay.Date.AddHours(DB.GetOpeningTime());
-            DateTime dayEndTime = selectedDay.Date.AddHours(DB.GetClosingTime());
-            TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
+            DateTime dayStartTime = selectedDay.Date.AddHours(9);//TODO: get opening time from DB
+            DateTime dayEndTime = selectedDay.Date.AddHours(18);//TODO: get closing time from DB
+            TimeSpan slotDuration = TimeSpan.FromMinutes(30);//TODO: get slot duration from DB
+            VisitService visitService = new VisitService();
+            AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
 
             List<DateTime> allSlots = GenerateTimeSlots(dayStartTime, dayEndTime, slotDuration);
-            List<Visit> existingVisits = DB.GetFutureDoctorVisits(DoctorID);
+            List<Visit> existingVisits = await visitService.GetFutureDoctorVisits(DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
                 .Where(v => v.TimeStamp.Date == selectedDay.Date)
-                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(v.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(120), TimeSpan.FromMinutes(30)))
                 .ToList();
 
             List<DateTime> availableSlots = allSlots.Except(unavailableSlots).ToList();
@@ -756,14 +753,14 @@ namespace clinical
         {
             DateTime startDate = when;
             DateTime endDate = when.AddDays(7);
-            TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
+            TimeSpan slotDuration = TimeSpan.FromMinutes(30);
 
             List<DateTime> allSlots = new List<DateTime>();
 
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
-                DateTime clinicStartTime = date.AddHours(DB.GetOpeningTime());
-                DateTime clinicEndTime = date.AddHours(DB.GetClosingTime());
+                DateTime clinicStartTime = date.AddHours(9);
+                DateTime clinicEndTime = date.AddHours(18);
 
                 for (DateTime time = clinicStartTime; time < clinicEndTime; time += slotDuration)
                 {

@@ -1,6 +1,8 @@
-﻿using clinical.BaseClasses;
-using HtmlAgilityPack;
-using Org.BouncyCastle.Bcpg;
+﻿using HtmlAgilityPack;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpec.Shared.Models.Ontology;
+using NeuroSpec.Shared.Services.OntologyServices;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -53,8 +55,7 @@ namespace clinical.Pages
         {
             hideAllBorders();
             ontologyBorder.Visibility = Visibility.Visible;
-            PopulateOntology();
-            PopulateOntlogyFilters();
+
 
         }
 
@@ -105,9 +106,10 @@ namespace clinical.Pages
 
         //patient search
         private ICollectionView PatientDataView;
+        PatientService patientService = new PatientService();
         void initPatientSearch()
         {
-            patientsDataGrid.ItemsSource = DB.GetAllPatientsByDoctorID(globals.signedIn.UserID);
+            patientsDataGrid.ItemsSource = patientService.GetPatientsByDoctorAsync(globals.signedIn.UserID).Result;
         
 
             PatientDataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);
@@ -252,93 +254,35 @@ namespace clinical.Pages
 
 
 
-        //ontology
-        void PopulateOntology()
+
+        private void ontologySearchButton_Click(object sender, RoutedEventArgs e)
         {
-            List<OntologyTerm> terms = DB.GetAllTerms();
+            string query = ontologySearchTB.Text;
+            searchOntology(query);
+        }
+        SNOMEDOntologyService sNOMEDOntologyService = new SNOMEDOntologyService();
+        private void searchOntology(string query)
+        {
+            ontologiesStackPanel.Children.Clear();
+            List<SNOMEDOntology> terms = sNOMEDOntologyService.SearchSNOMEDOntologyAsync(query).Result;
             foreach (var i in terms)
             {
                 ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
             }
-        }
-        void PopulateOntlogyFilters()
-        {
-            List<string> filters = new()
-            {
-                "DOID",
-                "Name",
-                "Def. Keywords",
-                "Parent",
-                "Synonyms"
-            };
-            ontologyFilters.ItemsSource = filters;
-            ontologyFilters.SelectedIndex = 0;
-        }
-        private void ontologySearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            int filter = ontologyFilters.SelectedIndex;
-            string query = ontologySearchTB.Text;
-            searchOntology(query, filter);
-        }
-        private void searchOntology(string query, int filter)
-        {
-            if (filter == 0)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeID(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if (filter == 1)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeName(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if (filter == 2)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeDef(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if (filter == 3)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeParent(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
-            else if (filter == 4)
-            {
-                ontologiesStackPanel.Children.Clear();
-                List<OntologyTerm> terms = DB.GetTermsLikeSynonyms(query);
-                foreach (var i in terms)
-                {
-                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
-                }
-            }
+
         }
 
 
         //records
         ICollectionView RecordsDataView;
+        MedicalRecordService medicalRecordService = new MedicalRecordService();
         void initRecordSearch()
         {
-            List<Patient> patients = DB.GetAllPatientsByDoctorID(globals.signedIn.UserID);
+            List<Patient> patients = patientService.GetPatientsByDoctorAsync(globals.signedIn.UserID).Result;
             List<MedicalRecord> records = new List<MedicalRecord>();
             foreach (var i in patients)
             {
-                records.AddRange(DB.GetAllPatientRecords(i.PatientID));
+                records.AddRange(medicalRecordService.GetAllPatientRecordsAsync(i.PatientID).Result);
             }
             recordsDataGrid.ItemsSource = records;
 

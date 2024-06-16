@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using System.Text.Json.Serialization;
+using System;
 
 namespace NeuroSpec.Shared.Models.DTO
 {
@@ -17,6 +18,8 @@ namespace NeuroSpec.Shared.Models.DTO
         public int PatientID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string? ReferringDoctor { get; set; }
+        public int? AssignedDoctorID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? Email { get; set; }

@@ -21,32 +21,32 @@ namespace NeuroSpecBackend.Model
             Prescriptions = _database.GetCollection<Prescription>("Prescriptions");
             CalendarEvents = _database.GetCollection<CalendarEvent>("CalendarEvents");
             EvaluationTests = _database.GetCollection<EvaluationTest>("EvaluationTests");
+            Exercises = _database.GetCollection<Exercise>("Exercises");
             EvaluationTestFeedbacks = _database.GetCollection<EvaluationTestFeedBack>("EvaluationTestFeedbacks");
-            OntologyTerms = _database.GetCollection<OntologyTerm>("OntologyTerms");
-            IssueTests = _database.GetCollection<IssueTest>("IssueTests");
-            IssueExercises = _database.GetCollection<IssueExercise>("IssueExercises");
+            IssueSNOMEDs = _database.GetCollection<IssueSNOMED>("IssueSNOMEDs");
             IssueDrugs = _database.GetCollection<IssueDrug>("IssueDrugs");
             MedicalRecords = _database.GetCollection<MedicalRecord>("MedicalRecords");
             Payments = _database.GetCollection<Payment>("Payments");
             ScanTests = _database.GetCollection<ScanTest>("ScanTests");
+            PatientChronics = _database.GetCollection<PatientChronic>("PatientChronics");
         }
 
         public IMongoCollection<User> Users { get; }
         public IMongoCollection<Patient> Patients { get; }
         public IMongoCollection<Visit> Visits { get; }
         public IMongoCollection<AppointmentType> AppointmentTypes { get; }
-        public IMongoCollection<OntologyTerm> OntologyTerms { get; }
         public IMongoCollection<AttendanceRecord> AttendanceRecords { get; }
         public IMongoCollection<Prescription> Prescriptions { get; }
         public IMongoCollection<BookAppointmentRequest> BookAppointmentRequests { get; }
         public IMongoCollection<CalendarEvent> CalendarEvents { get; }
         public IMongoCollection<EvaluationTest> EvaluationTests { get; }
+        public IMongoCollection<Exercise> Exercises{ get; }
         public IMongoCollection<EvaluationTestFeedBack> EvaluationTestFeedbacks { get; }
-        public IMongoCollection<IssueTest> IssueTests { get; }
         public IMongoCollection<IssueDrug> IssueDrugs { get; }
-        public IMongoCollection<IssueExercise> IssueExercises { get; }
+        public IMongoCollection<IssueSNOMED> IssueSNOMEDs { get; }
         public IMongoCollection<MedicalRecord> MedicalRecords { get; }
         public IMongoCollection<Payment> Payments { get; }
+        public IMongoCollection<PatientChronic> PatientChronics { get; }
         public IMongoCollection<ScanTest> ScanTests { get; }
     }
 }

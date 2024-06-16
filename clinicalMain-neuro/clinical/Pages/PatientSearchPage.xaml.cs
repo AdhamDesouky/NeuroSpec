@@ -1,4 +1,6 @@
-﻿using NeuroSpec.Shared.Models.DTO;
+﻿using NeuroSpec.Shared.Globals;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,20 +23,25 @@ namespace clinical.Pages
         {
             InitializeComponent();
             newPatientButton.Visibility = Visibility.Hidden;
-            if (globals.signedIn.isReciptionist|| globals.signedIn.isAdmin)
-            {
-                patientsDataGrid.ItemsSource = DB.GetAllPatients();
-                newPatientButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                patientsDataGrid.ItemsSource = DB.GetAllPatientsByDoctorID(globals.signedIn.UserID);
-            }
+            
             
             dataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);
             textBoxFilter.TextChanged += SearchTextBox_TextChanged;
         }
-
+        PatientService patientService = new PatientService();
+        private async void initAsync()
+        {
+            List<Patient> patients = await patientService.GetAllPatientsAsync();
+            if (globals.signedIn.isReciptionist || globals.signedIn.isAdmin)
+            {
+                patientsDataGrid.ItemsSource = patients;
+                newPatientButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                patientsDataGrid.ItemsSource = await patientService.GetPatientsByDoctorAsync(globals.signedIn.UserID);
+            }
+        }
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             dataView.Filter = item => FilterItem(item, textBoxFilter.Text);
@@ -82,17 +89,24 @@ namespace clinical.Pages
             form.Show();
         }
 
-        private void allPatients(object sender, MouseButtonEventArgs e)
+        private async void allPatients(object sender, MouseButtonEventArgs e)
         {
-            patientsDataGrid.ItemsSource = DB.GetAllPatients();
+            patientsDataGrid.ItemsSource = await patientService.GetAllPatientsAsync();
             patientsDataGrid.Items.Refresh();
 
 
         }
+        VisitService visitService = new VisitService();
 
-        private void todaysPatients(object sender, MouseButtonEventArgs e)
+        private async void todaysPatients(object sender, MouseButtonEventArgs e)
         {
-            patientsDataGrid.ItemsSource = DB.GetAllPatientsToday();
+            List<Visit>todaysVisits= await visitService.GetDoctorVisitsOnDate(globals.signedIn.UserID,DateTime.Now);
+            List<Patient> todaysPatients = new List<Patient>();
+            foreach (Visit visit in todaysVisits)
+            {
+                todaysPatients.Add(await patientService.GetPatientByIdAsync(visit.PatientID));
+            }
+            patientsDataGrid.ItemsSource = todaysPatients;
             patientsDataGrid.Items.Refresh();
 
         }

@@ -1,4 +1,6 @@
-﻿using clinical.BaseClasses;
+﻿using NeuroSpec.Shared.Globals;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,31 +32,33 @@ namespace clinical
         AppointmentType selectedType;
 
         List<string> times = new List<string>();
-
-
+        PatientService patientService = new PatientService();
+        UserService userService = new UserService();
+        AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
         public newAppointmentWindow()
         {
             InitializeComponent();
 
-            for (int i = DB.GetOpeningTime(); i <= DB.GetClosingTime(); i++) //slots here
+            for (int i = 9; i <= 18; i++) //slots here //todo: get from db
             {
                 times.Add($"{i}:00");
                 times.Add($"{i}:30");
 
             }
 
-            List<Patient> list = DB.GetAllPatients();
+            List<Patient> list = patientService.GetAllPatientsAsync().Result;
             foreach (Patient pat in list)
             {
-                User phys = DB.GetUserById(pat.DoctorID);
-                pat.DoctorName = phys.FirstName + " " + phys.LastName;
+                User phys;
+                if(pat.AssignedDoctorID != null)
+                    phys = userService.GetUserByIdAsync((int)pat.AssignedDoctorID).Result;
             }
             allPatientsDataGrid.ItemsSource = list;
             dataView = CollectionViewSource.GetDefaultView(allPatientsDataGrid.ItemsSource);
             textBoxFilter.TextChanged += textBoxFilter_TextChanged;
 
             datePicker.SelectedDate = DateTime.Now;
-            List<AppointmentType> types = DB.GetAllAppointmentTypes();
+            List<AppointmentType> types = appointmentTypeService.GetAllAppointmentTypesAsync().Result;
 
             visitTypeCB.ItemsSource = types;
             timePicker.ItemsSource = times;
@@ -62,7 +66,7 @@ namespace clinical
             visitTypeCB.SelectedIndex = 0;
 
 
-            DoctorPicker.ItemsSource = DB.GetAllDoctors();
+            DoctorPicker.ItemsSource = userService.GetAllDoctorsAsync().Result;
 
         }
 
@@ -91,9 +95,9 @@ namespace clinical
         {
             selectedPatient = (Patient)allPatientsDataGrid.SelectedItem;
             patientName.Text = selectedPatient.FirstName + " " + selectedPatient.LastName;
-            DoctorName.Text = selectedPatient.DoctorName;
-            selectedDoctor = DB.GetUserById(selectedPatient.DoctorID);
-            patientDueTB.Text = selectedPatient.DueAmount.ToString();
+            selectedDoctor = userService.GetUserByIdAsync((int)selectedPatient.AssignedDoctorID).Result;
+
+            DoctorName.Text = selectedDoctor.FullName;
             handleFinances();
             Refresh();
 
@@ -124,32 +128,48 @@ namespace clinical
 
             return false; // No match found
         }
-
-        private void saveClicked(object sender, MouseButtonEventArgs e)
+        PaymentService paymentService = new PaymentService();
+        private async void saveClicked(object sender, MouseButtonEventArgs e)
         {
             if (selectedPatient == null) { return; }
-            MessageBoxResult result = MessageBox.Show("Book " + selectedPatient.FullName + " a reservation on " + selectedDateTime.ToString("g"), "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Book " + selectedPatient.FirstName + " a reservation on " + selectedDateTime.ToString("g"), "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             // Check the user's response
             if (result == MessageBoxResult.Yes)
             {
-                int id = globals.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
+                int id = IDGeneration.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
                 AppointmentType ap = (AppointmentType)visitTypeCB.SelectedItem;
-                Visit visit = new Visit(id, selectedDoctor.UserID, selectedPatient.PatientID,  selectedDateTime, "", selectedPatient.Height, selectedPatient.Weight, false, ap.TypeID);
-
+                Visit visit = new Visit { 
+                    VisitID = id, 
+                    DoctorID = selectedDoctor.UserID, 
+                    PatientID = selectedPatient.PatientID, 
+                    TimeStamp = selectedDateTime, 
+                    TherapistNotes = "",
+                    Height = selectedPatient.Height, 
+                    Weight = selectedPatient.Weight, 
+                    AppointmentTypeID= ap.TypeID
+                };
+                
                 globals.ScheduleVisit(visit);
 
                 //updating patient
 
-                selectedPatient.DueAmount = Double.Parse(patientDueTB.Text);
+                //selectedPatient.DueAmount = Double.Parse(patientDueTB.Text);
 
-                DB.UpdatePatient(selectedPatient);
+                //DB.UpdatePatient(selectedPatient);
 
                 double paid = Double.Parse(paidTB.Text.Trim());
 
-                Payment payment = new Payment(globals.generateNewPaymentID(selectedPatient.PatientID, DateTime.Now), paid, DateTime.Now, selectedDoctor.UserID, selectedPatient.PatientID);
-                DB.InsertPayment(payment);
-
+                Payment payment = new Payment 
+                {
+                    PaymentID = IDGeneration.generateNewPaymentID(selectedPatient.PatientID, DateTime.Now), 
+                    Amount = paid, 
+                    TimeStamp = DateTime.Now, 
+                    DoctorID = selectedDoctor.UserID, 
+                    PatientID = selectedPatient.PatientID 
+                };
+                    
+                await paymentService.InsertPaymentAsync(payment);
                 Window.GetWindow(this).Close();
             }
 
@@ -217,7 +237,7 @@ namespace clinical
         void Refresh()
         {
             if (selectedDoctor == null) return;
-            List<string> availTimes = globals.GetAvailableTimeSlotsOnDay(datePicker.SelectedDate.Value, selectedDoctor.UserID);
+            List<string> availTimes = globals.GetAvailableTimeSlotsOnDayAsync(datePicker.SelectedDate.Value, selectedDoctor.UserID);
             if (availTimes.Count == 0)
             {
                 datePicker.SelectedDate.Value.AddDays(1);
@@ -236,7 +256,7 @@ namespace clinical
             {
                 {
                     double price = selectedType.Cost;
-                    double patientDueAmount = price + selectedPatient.DueAmount;
+                    double patientDueAmount = price;
                     double visitDueAmount = price;
 
                     if (paidTB.Text != null && paidTB.Text != "")

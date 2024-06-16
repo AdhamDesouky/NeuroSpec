@@ -1,37 +1,33 @@
-﻿using NeuroSpec.Shared.Models.DTO;
+﻿using NeuroSpec.Shared.Globals;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace clinical
 {
 
     public partial class loginPage : Window
     {
+        UserService userService = new UserService();
+        AttendanceRecordService attendanceRecordService = new AttendanceRecordService();
         public loginPage()
         {
-            new globals();
+            //new globals();
             InitializeComponent();
-            new DB();
+            
+            //new DB();
             txtEmail.Focus();
             //ontology oi = new ontology();
             //foreach(var i in oi.GetAllOntologies())
             //{
             //    DB.InsertTerm(i);
             //}
-            
+
         }
+
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -67,7 +63,7 @@ namespace clinical
             if (e.Key == Key.Enter) { login(); }
         }
 
-        void login()
+        async void login()
         {
             if (passwordTB.Password.Length == 0 || txtEmail.Text.Length == 0)
             {
@@ -86,7 +82,7 @@ namespace clinical
             }
 
 
-            User user = DB.GetUserById(id);
+            User user = await userService.GetUserByIdAsync(id);
             if (user != null)
             {
                 string password = passwordTB.Password;
@@ -111,7 +107,13 @@ namespace clinical
             globals.signedIn = user;
 
             MainWindow mainWindow = new MainWindow(s, user);
-            DB.InsertAttendanceRecord(new AttendanceRecord(globals.generateNewAttendanceRecordID(user.UserID), DateTime.Now, user.UserID, true));
+            await attendanceRecordService.InsertAttendanceRecordAsync(new AttendanceRecord
+            {
+                RecordID = IDGeneration.generateNewAttendanceRecordID(user.UserID),
+                TimeStamp = DateTime.Now,
+                UserID = user.UserID,
+                IsPresent = true
+            });
             mainWindow.Show();
             this.Close();
         }

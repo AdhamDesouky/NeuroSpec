@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NeuroSpecBackend.Model;
-using NeuroSpec.Shared.Models.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MongoDB.Driver;
+using NeuroSpec.Shared.Models.DTO;
+using NeuroSpecBackend.Model;
 
 namespace NeuroSpecBackend.Controllers
 {
@@ -130,5 +126,54 @@ namespace NeuroSpecBackend.Controllers
             }
             return availableTimeSlots;
         }
+
+        //get all visits on day
+        [HttpGet("byDate/{selectedDay}")]
+        public async Task<ActionResult<List<Visit>>> GetAllVisitsOnDate(DateTime selectedDay)
+        {
+            var visits = await _visits.Find(v => v.TimeStamp.Date == selectedDay.Date).ToListAsync();
+
+            if (visits == null)
+            {
+                return NotFound();
+            }
+
+            return visits;
+        }
+
+        //get all visits by doctor id on date
+        [HttpGet("byDoctorID/{doctorID}/onDate/{dateTime}")]
+        public async Task<ActionResult<List<Visit>>> GetAllVisitsByDoctorIDOnDate(int doctorID, DateTime dateTime)
+        {
+            var visits = await _visits.Find(v => v.DoctorID == doctorID && v.TimeStamp.Date == dateTime.Date).ToListAsync();
+
+            if (visits == null)
+            {
+                return NotFound();
+            }
+
+            return visits;
+        }
+
+
+
+        //get future doctor visits
+        [HttpGet("futureVisitsByDoctorID/{doctorID}")]
+        public async Task<ActionResult<List<Visit>>> GetFutureDoctorVisits(int doctorID)
+        {
+            var visits = await _visits.Find(v => v.DoctorID == doctorID && v.TimeStamp.Date >= DateTime.Now.Date).ToListAsync();
+
+            if (visits == null)
+            {
+                return NotFound();
+            }
+
+            return visits;
+        }
+
+
+
+
+
     }
 }
