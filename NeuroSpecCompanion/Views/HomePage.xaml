@@ -45,12 +45,12 @@
                                     <TapGestureRecognizer Tapped="HistorySquareClicked" />
                                 </Frame.GestureRecognizers>
                                 <VerticalStackLayout VerticalOptions="Center">
-                                    <Image Source="plane" Margin="5,10,5,5" >
+                                    <Image Source="appoints" Margin="5,5,5,5" >
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
                                     </Image>
-                                    <Label Text="Appointments" FontSize="15"
+                                    <Label Text="Appoints" FontSize="15"
                                            Margin="5,5,5,10"
                                HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
@@ -61,7 +61,7 @@
                                     <VerticalStackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnMedicsClicked"/>
                                     </VerticalStackLayout.GestureRecognizers>
-                                    <Image Source="train" Margin="5,10,5,5">
+                                    <Image Source="pills" Margin="5,10,5,5">
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
@@ -71,31 +71,34 @@
                             </Frame>
 
                             <Frame Margin="5" Grid.Column="2"
-                       BackgroundColor="{StaticResource Primary}" Padding="0">
+                   BackgroundColor="{StaticResource Primary}" Padding="0">
                                 <VerticalStackLayout VerticalOptions="Center">
-                                    <Image Source="hotels" Margin="5,10,5,5">
+                                    <Image Source="reminder" Margin="5,10,5,5">
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
                                     </Image>
                                     <Label Text="Reminder" FontSize="15"
-                                           Margin="5,5,5,10"
-                               HorizontalOptions="Center"/>
+                           Margin="5,5,5,10"
+                           HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnReminderClicked" />
+                                </Frame.GestureRecognizers>
                             </Frame>
 
-                            <Frame Margin="5" Grid.Column="3"
-                       BackgroundColor="{StaticResource Primary}" Padding="0">
+                            <Frame Margin="5" Grid.Column="3" BackgroundColor="{StaticResource Primary}" Padding="0">
                                 <VerticalStackLayout VerticalOptions="Center">
-                                    <Image Source="dotsmore" Margin="5,10,5,5">
+                                    <Image Source="contact_doctor" Margin="5,10,5,5">
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
                                     </Image>
-                                    <Label Text="Contact Doctor" FontSize="15"
-                                           Margin="5,5,5,10"
-                               HorizontalOptions="Center"/>
+                                    <Label Text="Contact Doctor" FontSize="15" Margin="5,5,5,10" HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnContactDoctorClicked" />
+                                </Frame.GestureRecognizers>
                             </Frame>
 
                         </Grid>
