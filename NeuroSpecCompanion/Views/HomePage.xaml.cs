@@ -8,11 +8,11 @@ namespace NeuroSpecCompanion.Views;
 
 public partial class HomePage : ContentPage
 {
-	public HomePage()
-	{
-		InitializeComponent();
-        hellolbl.Text = $"Hello, {LoggedInPatientService.LoggedInPatient.FirstName}";        
-	}
+    public HomePage()
+    {
+        InitializeComponent();
+        hellolbl.Text = $"Hello, {LoggedInPatientService.LoggedInPatient.FirstName}";
+    }
 
     private void RestingTremorClicked(object sender, TappedEventArgs e)
     {
@@ -49,5 +49,10 @@ public partial class HomePage : ContentPage
         Shell.Current.GoToAsync("//MainPage");
 
 
+    }
+
+    private async void OnMedicsClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new PillsPage());
     }
 }

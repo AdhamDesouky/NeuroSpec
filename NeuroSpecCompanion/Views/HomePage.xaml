@@ -56,17 +56,17 @@
                                 </VerticalStackLayout>
                             </Frame>
 
-                            <Frame Margin="5" Grid.Column="1"
-                       BackgroundColor="{StaticResource Primary}" Padding="0">
+                            <Frame Margin="5" Grid.Column="1" BackgroundColor="{StaticResource Primary}" Padding="0">
                                 <VerticalStackLayout VerticalOptions="Center">
+                                    <VerticalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnMedicsClicked"/>
+                                    </VerticalStackLayout.GestureRecognizers>
                                     <Image Source="train" Margin="5,10,5,5">
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
                                     </Image>
-                                    <Label Text="Train" FontSize="15"
-                                           Margin="5,5,5,10"
-                               HorizontalOptions="Center"/>
+                                    <Label Text="Medics" FontSize="15" Margin="5,5,5,10" HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
                             </Frame>
 
@@ -78,7 +78,7 @@
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
                                     </Image>
-                                    <Label Text="Hotel" FontSize="15"
+                                    <Label Text="Reminder" FontSize="15"
                                            Margin="5,5,5,10"
                                HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
@@ -92,7 +92,7 @@
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
                                     </Image>
-                                    <Label Text="More" FontSize="15"
+                                    <Label Text="Contact Doctor" FontSize="15"
                                            Margin="5,5,5,10"
                                HorizontalOptions="Center"/>
                                 </VerticalStackLayout>
