@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="NeuroSpecCompanion.Views.ContactDoctorPage"
+             Title="Contact Doctor"
+             BackgroundColor="{StaticResource Primary}">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Call Doctor -->
+            <Frame BackgroundColor="{StaticResource Secondary}" Padding="20" CornerRadius="10" HasShadow="True">
+                <HorizontalStackLayout>
+                    <Image Source="call.svg" WidthRequest="40" HeightRequest="40"/>
+                    <VerticalStackLayout>
+                        <Label Text="Call Doctor" FontSize="20" TextColor="Black"/>
+                        <Button Text="Call Now" Clicked="OnCallDoctorClicked" BackgroundColor="LightGray" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Email Doctor -->
+            <Frame BackgroundColor="{StaticResource Secondary}" Padding="20" CornerRadius="10" HasShadow="True">
+                <HorizontalStackLayout>
+                    <Image Source="email.svg" WidthRequest="40" HeightRequest="40"/>
+                    <VerticalStackLayout>
+                        <Label Text="Email Doctor" FontSize="20" TextColor="Black"/>
+                        <Button Text="Send Email" Clicked="OnEmailDoctorClicked" BackgroundColor="LightGray" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Video Call Doctor -->
+            <Frame BackgroundColor="{StaticResource Secondary}" Padding="20" CornerRadius="10" HasShadow="True">
+                <HorizontalStackLayout>
+                    <Image Source="video.svg" WidthRequest="40" HeightRequest="40"/>
+                    <VerticalStackLayout>
+                        <Label Text="Video Call" FontSize="20" TextColor="Black"/>
+                        <Button Text="Start Video Call" Clicked="OnVideoCallDoctorClicked" BackgroundColor="LightGray" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Request Alternative Prescription -->
+            <Frame BackgroundColor="{StaticResource Secondary}" Padding="20" CornerRadius="10" HasShadow="True">
+                <HorizontalStackLayout>
+                    <VerticalStackLayout>
+                        <Label Text="Request Alter Prescription" FontSize="20" TextColor="Black"/>
+                        <Button Text="Request Now" Clicked="OnRequestAlternativeClicked" BackgroundColor="LightGray" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Emergency Call Ambulance -->
+            <Frame BackgroundColor="DarkRed" Padding="20" CornerRadius="10" HasShadow="True">
+                <HorizontalStackLayout>
+                    <Image Source="ambulance.svg" WidthRequest="40" HeightRequest="40"/>
+                    <VerticalStackLayout>
+                        <Label Text="Emergency Call" FontSize="20" TextColor="White"/>
+                        <Button Text="Call Ambulance" Clicked="OnEmergencyCallClicked" BackgroundColor="LightGray" TextColor="Black"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeuroSpecCompanion.Views.RemindersPage"
+             Title="Reminders"
+             BackgroundColor="{StaticResource Primary}">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Add Reminder Section -->
+            <Frame BackgroundColor="White" Padding="20" CornerRadius="10" HasShadow="True">
+                <VerticalStackLayout Spacing="15">
+                    <Entry x:Name="ReminderTitle" Placeholder="Reminder Title" />
+
+                    <Picker x:Name="ReminderCategory" Title="Select Category">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Medication</x:String>
+                                <x:String>Appointment</x:String>
+                                <x:String>Other</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+
+                    <TimePicker x:Name="ReminderTime" />
+
+                    <Button 
+                        Text="Add Reminder" 
+                        BackgroundColor="{StaticResource Primary}" 
+                        TextColor="White" 
+                        Clicked="OnAddReminderClicked" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Reminders List -->
+            <CollectionView x:Name="RemindersList" ItemsSource="{Binding Reminders}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,10" Padding="10" BackgroundColor="White" CornerRadius="10" HasShadow="True">
+                            <StackLayout>
+                                <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                                <Label Text="{Binding Category}" FontSize="16" TextColor="Gray" />
+                                <Label Text="{Binding Time, StringFormat='{0:HH:mm}'}" FontSize="16" TextColor="Gray" />
+                                <Button Text="Delete" Clicked="OnDeleteReminderClicked" CommandParameter="{Binding .}" BackgroundColor="Red" TextColor="White" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

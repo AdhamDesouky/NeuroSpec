@@ -158,6 +158,12 @@
 	  <MauiXaml Update="Views\HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\HomePage\ContactDoctorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\HomePage\RemindersPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\MedicalHistoryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -195,6 +201,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Icons\" />
+	  <Folder Include="Resources\Images\ContactDoctorPage\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -225,6 +232,15 @@
 		<MauiImage Include="Resources\Images\MemoryGame\elephant.jpg" />
 		<MauiImage Include="Resources\Images\MemoryGame\bunny.jpg" />
 		<MauiImage Include="Resources\Images\UserProfile\camerasolid.svg" />
+		<MauiImage Include="Resources\Images\HomeIcons\appoints.svg" />
+		<MauiImage Include="Resources\Images\HomeIcons\contact_doctor.svg" />
+		<MauiImage Include="Resources\Images\HomeIcons\pills.svg" />
+		<MauiImage Include="Resources\Images\HomeIcons\reminder.svg" />
+		<MauiImage Include="Resources\Images\ContactDoctorPage\ambulance.svg" />
+		<MauiImage Include="Resources\Images\ContactDoctorPage\call.svg" />
+		<MauiImage Include="Resources\Images\ContactDoctorPage\video.svg" />
+		<MauiImage Include="Resources\Images\ContactDoctorPage\email.svg" />
+
 
 
 
