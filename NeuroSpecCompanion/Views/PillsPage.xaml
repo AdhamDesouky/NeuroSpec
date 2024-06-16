@@ -6,19 +6,14 @@
              BackgroundColor="{StaticResource Primary}">
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
-            <Label 
-                Text="Medications"
-                FontSize="24"
-                FontAttributes="Bold"
-                TextColor="{StaticResource Secondary}"
-                HorizontalOptions="Center" />
+            
 
-            <CollectionView x:Name="MedicationsList" ItemsSource="{Binding Visits}">
+            <CollectionView x:Name="MedicationsList" ItemsSource="{Binding Assessments}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="0,10" Padding="10" BackgroundColor="White" CornerRadius="10" HasShadow="True">
+                        <Frame Margin="0,10" Padding="10" BackgroundColor="Black" CornerRadius="10" HasShadow="True">
                             <StackLayout>
-                                <Label Text="{Binding VisitDate}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Secondary}" />
+                                <Label Text="{Binding AssessmentDate}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Secondary}" />
 
                                 <CollectionView ItemsSource="{Binding Medications}">
                                     <CollectionView.ItemTemplate>

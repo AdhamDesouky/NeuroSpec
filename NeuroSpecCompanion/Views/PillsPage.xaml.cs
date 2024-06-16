@@ -6,49 +6,49 @@ namespace NeuroSpecCompanion.Views
 {
     public partial class PillsPage : ContentPage
     {
-        public ObservableCollection<Visit> Visits { get; set; }
+        public ObservableCollection<Assessment> Assessments { get; set; }
 
         public PillsPage()
         {
             InitializeComponent();
-            Visits = new ObservableCollection<Visit>
+            Assessments = new ObservableCollection<Assessment>
             {
-                new Visit
+                new Assessment
                 {
-                    VisitDate = "June 15, 2023",
+                    AssessmentDate = "June 15, 2023",
                     Medications = new ObservableCollection<Medication>
                     {
                         new Medication { Name = "Aspirin", Frequency = "100mg, once daily" },
                         new Medication { Name = "Vitamin D", Frequency = "2000 IU, once daily" }
                     }
                 },
-                new Visit
+                new Assessment
                 {
-                    VisitDate = "July 20, 2023",
+                    AssessmentDate = "July 20, 2023",
                     Medications = new ObservableCollection<Medication>
                     {
                         new Medication { Name = "Metformin", Frequency = "500mg, twice daily" }
                     }
                 },
-                new Visit
+                new Assessment
                 {
-                    VisitDate = "August 18, 2023",
+                    AssessmentDate = "August 18, 2023",
                     Medications = new ObservableCollection<Medication>
                     {
                         new Medication { Name = "Lisinopril", Frequency = "10mg, once daily" }
                     }
                 },
-                new Visit
+                new Assessment
                 {
-                    VisitDate = "September 22, 2023",
+                    AssessmentDate = "September 22, 2023",
                     Medications = new ObservableCollection<Medication>
                     {
                         new Medication { Name = "Atorvastatin", Frequency = "20mg, once daily" }
                     }
                 },
-                new Visit
+                new Assessment
                 {
-                    VisitDate = "October 10, 2023",
+                    AssessmentDate = "October 10, 2023",
                     Medications = new ObservableCollection<Medication>
                     {
                         new Medication { Name = "Amlodipine", Frequency = "5mg, once daily" }
@@ -60,9 +60,9 @@ namespace NeuroSpecCompanion.Views
         }
     }
 
-    public class Visit
+    public class Assessment
     {
-        public string VisitDate { get; set; }
+        public string AssessmentDate { get; set; }
         public ObservableCollection<Medication> Medications { get; set; }
     }
 
