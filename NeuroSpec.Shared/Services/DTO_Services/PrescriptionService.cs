@@ -16,7 +16,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public PrescriptionService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/Prescription";
+            _baseApi = "http://neurospec.runasp.net/api/Prescription";
         }
 
         public async Task<List<Prescription>> GetAllPrescriptionsAsync()

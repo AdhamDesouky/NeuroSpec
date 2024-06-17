@@ -65,7 +65,7 @@ namespace clinical.Pages
 
             foreach (var i in await visitService.GetVisitsByPatientIDAsync(currPatient.PatientID))
             {
-                prevVisitsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit));
+                prevVisitsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit));
             }
 
             medicalRecordsDataGrid.ItemsSource = await medicalRecordService.GetAllPatientRecordsAsync(currPatient.PatientID);

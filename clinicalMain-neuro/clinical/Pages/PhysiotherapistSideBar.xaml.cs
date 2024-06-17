@@ -107,9 +107,9 @@ namespace clinical.Pages
         //patient search
         private ICollectionView PatientDataView;
         PatientService patientService = new PatientService();
-        void initPatientSearch()
+        async void initPatientSearch()
         {
-            patientsDataGrid.ItemsSource = patientService.GetPatientsByDoctorAsync(globals.signedIn.UserID).Result;
+            patientsDataGrid.ItemsSource = await patientService.GetPatientsByDoctorAsync(globals.signedIn.UserID);
         
 
             PatientDataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);
@@ -261,10 +261,10 @@ namespace clinical.Pages
             searchOntology(query);
         }
         SNOMEDOntologyService sNOMEDOntologyService = new SNOMEDOntologyService();
-        private void searchOntology(string query)
+        private async void searchOntology(string query)
         {
             ontologiesStackPanel.Children.Clear();
-            List<SNOMEDOntology> terms = sNOMEDOntologyService.SearchSNOMEDOntologyAsync(query).Result;
+            List<SNOMEDOntology> terms = await sNOMEDOntologyService.SearchSNOMEDOntologyAsync(query);
             foreach (var i in terms)
             {
                 ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
@@ -276,13 +276,13 @@ namespace clinical.Pages
         //records
         ICollectionView RecordsDataView;
         MedicalRecordService medicalRecordService = new MedicalRecordService();
-        void initRecordSearch()
+        async void initRecordSearch()
         {
-            List<Patient> patients = patientService.GetPatientsByDoctorAsync(globals.signedIn.UserID).Result;
+            List<Patient> patients = await patientService.GetPatientsByDoctorAsync(globals.signedIn.UserID);
             List<MedicalRecord> records = new List<MedicalRecord>();
             foreach (var i in patients)
             {
-                records.AddRange(medicalRecordService.GetAllPatientRecordsAsync(i.PatientID).Result);
+                records.AddRange(await medicalRecordService.GetAllPatientRecordsAsync(i.PatientID));
             }
             recordsDataGrid.ItemsSource = records;
 

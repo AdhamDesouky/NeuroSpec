@@ -55,11 +55,11 @@ namespace clinical.Pages.reciptionistPages
             //List<Visit> previousVisits = DB.GetPatientPrevVisits(patient.PatientID);
             foreach (var i in upcomingVisits)
             {
-                upcomingAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit));
+                upcomingAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit));
             }
             foreach (var i in upcomingVisits)
             {
-                previousAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit));
+                previousAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit));
             }
 
             List<User> Doctors = await userService.GetAllDoctorsAsync();

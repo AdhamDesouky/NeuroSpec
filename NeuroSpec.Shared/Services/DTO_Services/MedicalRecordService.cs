@@ -21,7 +21,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public MedicalRecordService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/MedicalRecord";
+            _baseApi = "http://neurospec.runasp.net/api/MedicalRecord";
         }
 
         public async Task<IEnumerable<MedicalRecord>> GetAllMedicalRecordsAsync()

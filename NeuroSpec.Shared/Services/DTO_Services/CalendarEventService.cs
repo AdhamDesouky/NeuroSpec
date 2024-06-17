@@ -16,7 +16,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public CalendarEventService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/CalendarEvent";
+            _baseApi = "http://neurospec.runasp.net/api/CalendarEvent";
         }
 
         public async Task<List<CalendarEvent>> GetAllCalendarEventsAsync()
@@ -59,7 +59,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             response.EnsureSuccessStatusCode();
         }
 
-        internal async Task<List<CalendarEvent>> GetCalendarEventsByUserIDAndDate(int userID, DateTime dateTime)
+        public async Task<List<CalendarEvent>> GetCalendarEventsByUserIDAndDate(int userID, DateTime dateTime)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByUserIDAndDate/{userID}/{dateTime}");
             response.EnsureSuccessStatusCode();

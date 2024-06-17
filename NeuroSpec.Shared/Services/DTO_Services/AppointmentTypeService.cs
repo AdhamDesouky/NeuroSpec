@@ -15,7 +15,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public AppointmentTypeService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/AppointmentType";
+            _baseApi = "http://neurospec.runasp.net/api/appointmenttype";
         }
 
         public async Task<List<AppointmentType>> GetAllAppointmentTypesAsync()

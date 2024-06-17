@@ -45,20 +45,25 @@ namespace clinical
                 times.Add($"{i}:30");
 
             }
+            initAsync();
+            
+        }
 
-            List<Patient> list = patientService.GetAllPatientsAsync().Result;
+        async void initAsync()
+        {
+            List<Patient> list = await patientService.GetAllPatientsAsync();
             foreach (Patient pat in list)
             {
                 User phys;
-                if(pat.AssignedDoctorID != null)
-                    phys = userService.GetUserByIdAsync((int)pat.AssignedDoctorID).Result;
+                if (pat.AssignedDoctorID != null)
+                    phys = await userService.GetUserByIdAsync((int)pat.AssignedDoctorID);
             }
             allPatientsDataGrid.ItemsSource = list;
             dataView = CollectionViewSource.GetDefaultView(allPatientsDataGrid.ItemsSource);
             textBoxFilter.TextChanged += textBoxFilter_TextChanged;
 
             datePicker.SelectedDate = DateTime.Now;
-            List<AppointmentType> types = appointmentTypeService.GetAllAppointmentTypesAsync().Result;
+            List<AppointmentType> types = await appointmentTypeService.GetAllAppointmentTypesAsync();
 
             visitTypeCB.ItemsSource = types;
             timePicker.ItemsSource = times;
@@ -66,7 +71,7 @@ namespace clinical
             visitTypeCB.SelectedIndex = 0;
 
 
-            DoctorPicker.ItemsSource = userService.GetAllDoctorsAsync().Result;
+            DoctorPicker.ItemsSource = await userService.GetAllDoctorsAsync();
 
         }
 
@@ -91,11 +96,11 @@ namespace clinical
         }
 
 
-        private void view(object sender, RoutedEventArgs e)
+        private async void view(object sender, RoutedEventArgs e)
         {
             selectedPatient = (Patient)allPatientsDataGrid.SelectedItem;
             patientName.Text = selectedPatient.FirstName + " " + selectedPatient.LastName;
-            selectedDoctor = userService.GetUserByIdAsync((int)selectedPatient.AssignedDoctorID).Result;
+            selectedDoctor = await userService.GetUserByIdAsync((int)selectedPatient.AssignedDoctorID);
 
             DoctorName.Text = selectedDoctor.FullName;
             handleFinances();
@@ -198,14 +203,14 @@ namespace clinical
             selectedDateTime = new DateTime(selectedDateTime.Year, selectedDateTime.Month, selectedDateTime.Day, int.Parse(hr), int.Parse(min), 0);
 
         }
-        private void first_avail(object sender, RoutedEventArgs e)
+        private async void first_avail(object sender, RoutedEventArgs e)
         {
 
             if (selectedPatient == null || selectedDoctor == null)
             {
                 return;
             }
-            DateTime firstFree = globals.FindFirstFreeSlot(selectedDoctor.UserID, DateTime.Today);
+            DateTime firstFree = await globals.FindFirstFreeSlot(selectedDoctor.UserID, DateTime.Today);
             datePicker.IsEnabled = false;
             timePicker.IsEnabled = false;
             datePicker.SelectedDate = firstFree;
@@ -234,10 +239,10 @@ namespace clinical
             handleFinances();
         }
 
-        void Refresh()
+        async void Refresh()
         {
             if (selectedDoctor == null) return;
-            List<string> availTimes = globals.GetAvailableTimeSlotsOnDayAsync(datePicker.SelectedDate.Value, selectedDoctor.UserID);
+            List<string> availTimes = await globals.GetAvailableTimeSlotsOnDayAsync(datePicker.SelectedDate.Value, selectedDoctor.UserID);
             if (availTimes.Count == 0)
             {
                 datePicker.SelectedDate.Value.AddDays(1);

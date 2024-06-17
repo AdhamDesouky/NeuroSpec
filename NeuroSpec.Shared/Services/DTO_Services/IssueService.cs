@@ -15,7 +15,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public IssueService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/Issue";
+            _baseApi = "http://neurospec.runasp.net/api/Issue";
         }
 
         public async Task<List<Issue>> GetAllIssuesAsync()

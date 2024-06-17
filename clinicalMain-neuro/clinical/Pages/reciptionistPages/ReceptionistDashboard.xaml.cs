@@ -36,7 +36,7 @@ namespace clinical.Pages
 
             foreach (var i in visits)
             {
-                todayAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+                todayAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
             }
         }
 

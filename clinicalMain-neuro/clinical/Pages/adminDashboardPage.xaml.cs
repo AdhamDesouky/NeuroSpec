@@ -35,11 +35,11 @@ namespace clinical.Pages
             employeesDataGrid.ItemsSource= await UserService.GetAllEmployeesAsync();
             //hereNowDataGrid.ItemsSource=DB.GetAllUserswRecordsByDate(DateTime.Now);
             UpdateFinancesChart();
-            List<Visit> visits = await VisitService.GetVisitsByDateAsync(DateTime.Now);
-            foreach (var i in visits)
-            {
-                appointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
-            }
+            //List<Visit> visits = await VisitService.GetVisitsByDateAsync(DateTime.Parse("2024-06-17"));
+            //foreach (var i in visits)
+            //{
+            //    appointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+            //}
 
 
         }

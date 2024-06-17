@@ -34,7 +34,7 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpGet("{issueID:int}")]
-        public async Task<ActionResult<IssueDrug>> GetIssueDrugById(int issueID)
+        public async Task<ActionResult<IssueDrug>> GetIssueDrugById(string issueID)
         {
             var IssueDrug = await _IssueDrugs.Find(i => i.IssueID == issueID).FirstOrDefaultAsync();
 
@@ -61,7 +61,7 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpPut("{issueID:int}")]
-        public async Task<IActionResult> UpdateIssueDrug(int issueID, IssueDrug IssueDrug)
+        public async Task<IActionResult> UpdateIssueDrug(string issueID, IssueDrug IssueDrug)
         {
             if (issueID != IssueDrug.IssueID)
             {
@@ -79,7 +79,7 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpDelete("{issueID:int}")]
-        public async Task<IActionResult> DeleteIssueDrug(int issueID)
+        public async Task<IActionResult> DeleteIssueDrug(string issueID)
         {
             var result = await _IssueDrugs.DeleteOneAsync(i => i.IssueID == issueID);
 
@@ -91,7 +91,7 @@ namespace NeuroSpecBackend.Controllers
             return NoContent();
         }
 
-        private bool IssueDrugExists(int issueID)
+        private bool IssueDrugExists(string issueID)
         {
             return _IssueDrugs.Find(i => i.IssueID == issueID).Any();
         }

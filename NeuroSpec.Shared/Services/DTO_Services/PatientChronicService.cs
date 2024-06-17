@@ -15,7 +15,7 @@ namespace NeuroSpec.Shared.Services.DTO_Services
         public PatientChronicService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/PatientChronic";
+            _baseApi = "http://neurospec.runasp.net/api/PatientChronic";
         }
 
         public async Task<List<PatientChronic>> GetAllPatientChronicsAsync()

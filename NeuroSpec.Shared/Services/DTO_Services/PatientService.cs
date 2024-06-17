@@ -18,7 +18,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public PatientService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/Patient";
+            _baseApi = "http://neurospec.runasp.net/api/Patient";
             options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true

@@ -57,13 +57,13 @@ namespace clinical.Pages.reciptionistPages
             List<Prescription> visitPrescriptions = await prescriptionService.GetAllPrescriptionsByVisitIDAsync(currVisit.VisitID);
             foreach (var i in visitPrescriptions)
             {
-                prescriptionsStackPanel.Children.Add(globals.CreatePrescriptionUI(i));
+                prescriptionsStackPanel.Children.Add(await globals.CreatePrescriptionUI(i));
             }
         }
 
-        void Refresh()
+        async void Refresh()
         {
-            List<string> availTimes = globals.GetAvailableTimeSlotsOnDayAsync(dpDatePicker.SelectedDate.Value, currVisit.DoctorID);
+            List<string> availTimes = await globals.GetAvailableTimeSlotsOnDayAsync(dpDatePicker.SelectedDate.Value, currVisit.DoctorID);
             if (availTimes.Count == 0)
             {
                 dpDatePicker.SelectedDate.Value.AddDays(1);

@@ -16,7 +16,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public AttendanceRecordService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/AttendanceRecord";
+            _baseApi = "http://neurospec.runasp.net/api/attendancerecord";
         }
 
         public async Task<List<AttendanceRecord>> GetAllAttendanceRecordsAsync()

@@ -49,7 +49,7 @@ namespace clinical.Pages
             List<Prescription> prescriptions = await PrescriptionService.GetAllPrescriptionsByVisitIDAsync(currVisit.VisitID);
             foreach (Prescription p in prescriptions)
             {
-                prescriptionsStackPanel.Children.Add(globals.CreatePrescriptionUI(p));
+                prescriptionsStackPanel.Children.Add(await globals.CreatePrescriptionUI(p));
             }
 
             List<EvaluationTestFeedBack> testFeedBacks = await EvaluationTestFeedbackService.GetFeedbackByVisitAsync(currVisit.VisitID);

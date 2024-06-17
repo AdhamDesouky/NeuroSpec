@@ -15,7 +15,7 @@ namespace NeuroSpec.Shared.Services.DTO_Services
         public BookAppointmentService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/BookAppointment";
+            _baseApi = "http://neurospec.runasp.net/api/bookappointment";
         }
         public async Task<BookAppointmentRequest> InsertBookAppointmentRequestAsync(BookAppointmentRequest bookAppointmentRequest)
         {

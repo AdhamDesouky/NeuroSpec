@@ -12,7 +12,7 @@ namespace clinical
     public partial class patientView : Window
     {
         Patient selectedPatient;
-
+        MedicalRecord medicalRecord;
         PatientService PatientService = new PatientService();
         public patientView(Patient patient)
         {
@@ -25,9 +25,15 @@ namespace clinical
         public patientView(MedicalRecord medicalRecord)
         {
             InitializeComponent();
-            selectedPatient = PatientService.GetPatientByIdAsync(medicalRecord.PatientID).Result;
+            this.medicalRecord = medicalRecord;
+            initAsync();
             mainFrame.Navigate(new newRecordPage(medicalRecord));
             sideFrame.Navigate(new DoctorSideBar());
+
+        }
+        async void initAsync()
+        {
+            selectedPatient = await PatientService.GetPatientByIdAsync(medicalRecord.PatientID);
 
         }
         public patientView(User viewDoctor)

@@ -26,20 +26,25 @@ namespace clinical.Pages
             nameTextBox.Text = Doctor.FullName;
             emailTextBox.Text = Doctor.Email;
             phoneTextBox.Text = Doctor.PhoneNumber;
+            initAsync();
+            
 
-            List<Patient> patientList = patientService.GetPatientsByDoctorAsync(Doctor.UserID).Result;
+            
+        }
+        async void initAsync()
+        {
+
+            List<Patient> patientList = await patientService.GetPatientsByDoctorAsync(Doctor.UserID);
 
             patientsDataGrid.ItemsSource = patientList;
-
-            List<Visit> DoctorUpcomingVisits = visitService.GetFutureDoctorVisits(Doctor.UserID).Result;
+            List<Visit> DoctorUpcomingVisits = await visitService.GetFutureDoctorVisits(Doctor.UserID);
             foreach (var i in DoctorUpcomingVisits)
             {
-                upcomingAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+                upcomingAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
 
 
             }
         }
-
         private void viewPatient(Patient patient)
         {
 

@@ -35,16 +35,17 @@ namespace clinical.Pages
 
         }
 
+
         
-        void updateDayAppointments()
+        async void updateDayAppointments()
         {
             todayAppointmentsStackPanel.Children.Clear();
-            List<Visit> visits = VisitService.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex).Result;
+            List<Visit> visits = await VisitService.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex);
             numberOfAppointmentsTB.Text = visits.Count.ToString();
 
             foreach (var i in visits)
             {
-                todayAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+                todayAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
             }
         }
         private void viewPatient(Patient patient)
@@ -150,10 +151,10 @@ namespace clinical.Pages
             UpdateDayBorders();
         }
         PatientService patientService = new PatientService();
-        private void UpdateDayBorders()
+        private async void UpdateDayBorders()
         {
 
-            List<Patient> patients = patientService.GetPatientsByDoctorAsync(Doctor.UserID).Result;
+            List<Patient> patients = await patientService.GetPatientsByDoctorAsync(Doctor.UserID);
 
             if (allPanelCB.IsChecked == true && (currentDayIndex.DayOfYear != DateTime.Now.DayOfYear))
             {
@@ -330,13 +331,13 @@ namespace clinical.Pages
         private void ontologySearchButton_Click(object sender, RoutedEventArgs e)
         {
             string query = ontologySearchTB.Text;
-            searchOntology(query);
+            _ = searchOntologyAsync(query);
         }
         SNOMEDOntologyService sNOMEDOntologyService = new SNOMEDOntologyService();
-        private void searchOntology(string query)
+        private async Task searchOntologyAsync(string query)
         {
             ontologiesStackPanel.Children.Clear();
-            List<SNOMEDOntology> terms = sNOMEDOntologyService.SearchSNOMEDOntologyAsync(query).Result;
+            List<SNOMEDOntology> terms = await sNOMEDOntologyService.SearchSNOMEDOntologyAsync(query);
             foreach (var i in terms)
             {
                 ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));

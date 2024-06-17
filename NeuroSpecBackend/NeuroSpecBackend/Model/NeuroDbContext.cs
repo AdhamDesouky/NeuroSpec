@@ -25,6 +25,8 @@ namespace NeuroSpecBackend.Model
             EvaluationTestFeedbacks = _database.GetCollection<EvaluationTestFeedBack>("EvaluationTestFeedbacks");
             IssueSNOMEDs = _database.GetCollection<IssueSNOMED>("IssueSNOMEDs");
             IssueDrugs = _database.GetCollection<IssueDrug>("IssueDrugs");
+            Issues = _database.GetCollection<Issue>("Issues");
+
             MedicalRecords = _database.GetCollection<MedicalRecord>("MedicalRecords");
             Payments = _database.GetCollection<Payment>("Payments");
             ScanTests = _database.GetCollection<ScanTest>("ScanTests");
@@ -44,6 +46,8 @@ namespace NeuroSpecBackend.Model
         public IMongoCollection<EvaluationTestFeedBack> EvaluationTestFeedbacks { get; }
         public IMongoCollection<IssueDrug> IssueDrugs { get; }
         public IMongoCollection<IssueSNOMED> IssueSNOMEDs { get; }
+        public IMongoCollection<Issue> Issues { get; }
+
         public IMongoCollection<MedicalRecord> MedicalRecords { get; }
         public IMongoCollection<Payment> Payments { get; }
         public IMongoCollection<PatientChronic> PatientChronics { get; }

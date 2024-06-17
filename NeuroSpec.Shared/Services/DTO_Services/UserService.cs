@@ -16,7 +16,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public UserService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/User";
+            _baseApi = "http://neurospec.runasp.net/api/user";
             options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true

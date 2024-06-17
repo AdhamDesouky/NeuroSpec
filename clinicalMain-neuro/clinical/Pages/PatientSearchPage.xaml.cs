@@ -23,7 +23,7 @@ namespace clinical.Pages
         {
             InitializeComponent();
             newPatientButton.Visibility = Visibility.Hidden;
-            
+            initAsync();
             
             dataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);
             textBoxFilter.TextChanged += SearchTextBox_TextChanged;

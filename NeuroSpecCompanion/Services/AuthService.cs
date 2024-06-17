@@ -18,7 +18,7 @@ namespace NeuroSpecCompanion.Services
         public AuthService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/Patient";
+            _baseApi = "http://neurospec.runasp.net/api/Patient";
         }
         public async Task<Patient> GetPatientByIdAsync(int patientID)
         {

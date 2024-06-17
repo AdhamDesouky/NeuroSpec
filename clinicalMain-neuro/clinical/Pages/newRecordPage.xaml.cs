@@ -23,11 +23,12 @@ namespace clinical.Pages
     {
         Patient patient;
         PatientService PatientService = new PatientService();
+        MedicalRecord mr = new MedicalRecord();
         public newRecordPage(MedicalRecord medicalRecord)
         {
             InitializeComponent();
+            mr=medicalRecord;
             initAsync();
-            patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
             reportTXT.IsEnabled = false;
             DoctorNotesTXT.IsEnabled = false;
             images = new List<string>();
@@ -41,7 +42,9 @@ namespace clinical.Pages
         }
         private async void initAsync()
         {
-            this.patient = await PatientService.GetPatientByIdAsync(patient.PatientID);
+            this.patient = await PatientService.GetPatientByIdAsync(mr.PatientID);
+            patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
+
         }
         public newRecordPage(Patient patient)
         {

@@ -16,7 +16,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public EvaluationTestService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/EvaluationTest";
+            _baseApi = "http://neurospec.runasp.net/api/EvaluationTest";
         }
 
         public async Task<IEnumerable<EvaluationTest>> GetAllTestsAsync()

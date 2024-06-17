@@ -46,26 +46,31 @@ namespace clinical.Pages
             bdDatePicker.IsEnabled = false;
 
 
-            List<Patient> patients = patientService.GetPatientsByDoctorAsync(user.UserID).Result;
-            patientsDataGrid.ItemsSource = patients;
-
-            List<Visit> visits = visitService.GetDoctorVisitsOnDate(user.UserID,DateTime.Now).Result;
-            foreach (var i in visits)
-            {
-                appointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
-            }
-
-
+            initAsync();
 
             UpdateFinancesChart();
             UpdateAttendanceChart();
 
         }
 
-        AttendanceRecordService AttendanceRecordService=new AttendanceRecordService();
-        private void UpdateAttendanceChart()
+        async void initAsync()
         {
-            List<AttendanceRecord> attendanceRecords = AttendanceRecordService.GetUserAttendanceRecordsAsync(currDoctor.UserID).Result;
+            List<Patient> patients = await patientService.GetPatientsByDoctorAsync(currDoctor.UserID);
+            patientsDataGrid.ItemsSource = patients;
+
+            List<Visit> visits = await visitService.GetDoctorVisitsOnDate(currDoctor.UserID, DateTime.Now);
+            foreach (var i in visits)
+            {
+                appointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+            }
+
+
+        }
+
+        AttendanceRecordService AttendanceRecordService=new AttendanceRecordService();
+        private async void UpdateAttendanceChart()
+        {
+            List<AttendanceRecord> attendanceRecords = await AttendanceRecordService.GetUserAttendanceRecordsAsync(currDoctor.UserID);
 
             SeriesCollection s = new LiveCharts.SeriesCollection();
             attendanceChart.Series = s;
@@ -119,9 +124,9 @@ namespace clinical.Pages
 
 
         PaymentService paymentService = new PaymentService();
-        private void UpdateFinancesChart()
+        private async void UpdateFinancesChart()
         {
-            List<Payment> payments = paymentService.GetDoctorPaymentsAsync(currDoctor.UserID).Result; 
+            List<Payment> payments = await paymentService.GetDoctorPaymentsAsync(currDoctor.UserID); 
 
             var distinctPatientIds = payments.Select(payment => payment.PatientID).Distinct();
 
@@ -141,7 +146,7 @@ namespace clinical.Pages
 
                 LineSeries lineSeries = new LineSeries
                 {
-                    Title = $"{patientService.GetPatientByIdAsync(patientId).Result.FirstName}",
+                    Title = $"{(await patientService.GetPatientByIdAsync(patientId)).FirstName}",
                     Values = new ChartValues<double>(groupedData.SelectMany(group => group.Select(payment => payment.Amount))),
                     PointGeometry = null // This removes the point marker
                 };

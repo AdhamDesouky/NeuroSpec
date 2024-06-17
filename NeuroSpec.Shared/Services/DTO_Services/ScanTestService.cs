@@ -16,7 +16,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public ScanTestService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.somee.com/api/ScanTest";
+            _baseApi = "http://neurospec.runasp.net/api/ScanTest";
         }
 
         public async Task<IEnumerable<ScanTest>> GetAllScanTestsAsync()
