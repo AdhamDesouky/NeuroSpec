@@ -2,21 +2,21 @@ TODOs:
 
 -Medical Record:
 --Print in view record page
---Multiple VisualAttachements upload and viewing in each record
+--Multiple VisualAttachements uploaded and viewed in each record
 --Edit the front end for the view records pages
 
 -Register Page:
--- Center the upload image and move it to the top
--- Check functionality of image upload
+-- Center the uploaded image and move it to the top
+-- Check the functionality of image upload
 
 -Login Page:
--- add a loading screen on program startup, where everything is called from db and autologin is done
--- add a logo
+-- Add a loading screen on program startup, where everything is called from db and autologin is done
+-- Add a logo
 -- login by username or id not just id
 
 -Home Page:
 -- the flight hotel buttons up, either remove them or do something about them
--- add a side bar?
+-- add a sidebar?
 -- notifications button logs out!
 
 -Prescription:
@@ -24,6 +24,20 @@ TODOs:
 -- Past Prescriptions
 
 -Issue:
---Link Issue with concurrent result. (idk how yet)
+--Link Issue with concurrent result. (I don't know how yet)
 
-ScanTest and Exercise and Drug to be read from ontology search selections and stored in the db for easier use later, where they will be prompted on search before results from ontology API.
+ScanTest, Exercise, and Drug are to be read from ontology search selections and stored in the DB for easier use later, where they will be prompted to search before results from ontology API.
+
+
+- path game 
+- progress tracker
+- check appointment booking 
+- resolve icon size 
+- color of the system
+- working pages
+- slow demo with voice-over 
+- more FHIR resources 
+- sending and receiving prescriptions
+- Appointment request with the receptionist (abdo 3aref)
+- emergency contact to see GPS 
+- prescription dropdown
