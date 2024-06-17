@@ -2,11 +2,61 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NeuroSpecCompanion.Views.ProgressTrackerPage"
-             Title="ProgressTrackerPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Progress Tracker"
+             BackgroundColor="{StaticResource Primary}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Styles for labels and progress bars -->
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="TextColor" Value="{StaticResource White}"/>
+                <Setter Property="Margin" Value="0,10,0,5"/>
+            </Style>
+            <Style TargetType="Frame" x:Key="FrameStyle">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="Margin" Value="0,0,0,20"/>
+                <Setter Property="Padding" Value="10"/>
+            </Style>
+            <Style x:Key="ProgressBarIndicatorStyle" TargetType="BoxView">
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="HeightRequest" Value="20"/>
+                <Setter Property="WidthRequest" Value="0"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Margin="20">
+            <!-- Progress 1 -->
+            <Label Text="Progress 1"/>
+            <Frame Style="{StaticResource FrameStyle}">
+                <BoxView x:Name="progress1Indicator" Style="{StaticResource ProgressBarIndicatorStyle}"
+                         BackgroundColor="{StaticResource PastelColor1}"/>
+            </Frame>
+
+            <!-- Progress 2 -->
+            <Label Text="Progress 2"/>
+            <Frame Style="{StaticResource FrameStyle}">
+                <BoxView x:Name="progress2Indicator" Style="{StaticResource ProgressBarIndicatorStyle}"
+                         BackgroundColor="{StaticResource PastelColor2}"/>
+            </Frame>
+
+            <!-- Progress 3 -->
+            <Label Text="Progress 3"/>
+            <Frame Style="{StaticResource FrameStyle}">
+                <BoxView x:Name="progress3Indicator" Style="{StaticResource ProgressBarIndicatorStyle}"
+                         BackgroundColor="{StaticResource PastelColor3}"/>
+            </Frame>
+
+            <!-- Progress 4 -->
+            <Label Text="Progress 4"/>
+            <Frame Style="{StaticResource FrameStyle}">
+                <BoxView x:Name="progress4Indicator" Style="{StaticResource ProgressBarIndicatorStyle}"
+                         BackgroundColor="{StaticResource PastelColor4}"/>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+
 </ContentPage>

@@ -1,20 +1,21 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:NeuroSpecCompanion"
              xmlns:converters="clr-namespace:NeuroSpecCompanion.Converters"
              x:Class="NeuroSpecCompanion.App">
+
     <Application.Resources>
         <ResourceDictionary>
+            <!-- Merge external resource dictionaries -->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Define control templates -->
             <ControlTemplate x:Key="RadioButtonTemplate">
-
                 <Border Stroke="Transparent" BackgroundColor="Transparent">
-
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroupList>
                             <VisualStateGroup x:Name="CheckedStates">
@@ -32,32 +33,27 @@
                         </VisualStateGroupList>
                     </VisualStateManager.VisualStateGroups>
 
-
                     <Grid ColumnDefinitions="30, Auto">
                         <Grid WidthRequest="22" HeightRequest="22"
-                          VerticalOptions="Center" HorizontalOptions="Center">
+                              VerticalOptions="Center" HorizontalOptions="Center">
                             <Ellipse x:Name="border_circle" StrokeThickness="5"
-                                 Stroke="{TemplateBinding BorderColor}" Fill="{StaticResource White}"
-                                 WidthRequest="18" HeightRequest="18"
-                                 HorizontalOptions="Center" VerticalOptions="Center"/>
+                                     Stroke="{TemplateBinding BorderColor}" Fill="{StaticResource White}"
+                                     WidthRequest="18" HeightRequest="18"
+                                     HorizontalOptions="Center" VerticalOptions="Center"/>
                             <Ellipse x:Name="check" Fill="{StaticResource Accent}" 
-                                 WidthRequest="8" HeightRequest="8"
-                                 VerticalOptions="Center" HorizontalOptions="Center"/>
+                                     WidthRequest="8" HeightRequest="8"
+                                     VerticalOptions="Center" HorizontalOptions="Center"/>
                         </Grid>
 
                         <Label Grid.Column="1" HorizontalTextAlignment="Start"
-                           VerticalTextAlignment="Center" FontFamily="BarlowBold"
-                           Text="{TemplateBinding Content}" TextColor="{TemplateBinding TextColor}"/>
+                               VerticalTextAlignment="Center" FontFamily="BarlowBold"
+                               Text="{TemplateBinding Content}" TextColor="{TemplateBinding TextColor}"/>
                     </Grid>
-
                 </Border>
-
-
             </ControlTemplate>
 
-            <Style TargetType="RadioButton" x:Key="RadioButtonStyle"
-                   ApplyToDerivedTypes="True">
-
+            <!-- Define styles -->
+            <Style TargetType="RadioButton" x:Key="RadioButtonStyle" ApplyToDerivedTypes="True">
                 <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}"/>
                 <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                 <Style.Triggers>
@@ -72,26 +68,32 @@
                 </Style.Triggers>
             </Style>
 
-
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource White}"/>
                 <Setter Property="FontFamily" Value="BarlowBold"/>
             </Style>
 
+            <!-- Define colors -->
+            <Color x:Key="Primary">#00123a</Color>
+            <Color x:Key="Secondary">#fdffff</Color>
+            <Color x:Key="LighterPrimary">#324161</Color>
+            <Color x:Key="LightButNotWhite">#B2B7C3</Color>
 
-            <!-- COLORS -->
-            <Color x:Key="PrimaryColor">#00123a</Color>
-            <Color x:Key="SecondaryColor">#fdffff</Color>
-            <Color x:Key="LighterPrimaryColor">#324161</Color>
-            <Color x:Key="LightButNotWhiteColor">#B2B7C3</Color>
+            <!-- Define pastel colors for progress tracker page -->
+            <Color x:Key="PastelColor1">#FFA07A</Color>
+            <!-- Light Salmon -->
+            <Color x:Key="PastelColor2">#ADD8E6</Color>
+            <!-- Light Blue -->
+            <Color x:Key="PastelColor3">#98FB98</Color>
+            <!-- Pale Green -->
+            <Color x:Key="PastelColor4">#FFB6C1</Color>
+            <!-- Light Pink -->
 
+            <!-- Define brushes -->
+            <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
+            <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />
 
-
-            <!-- BRUSHES -->
-            <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
-            <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}" />
-
-            <!-- CONVERTERS -->
+            <!-- Define converters -->
             <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         </ResourceDictionary>
     </Application.Resources>

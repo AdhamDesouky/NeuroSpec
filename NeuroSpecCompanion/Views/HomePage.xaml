@@ -135,6 +135,7 @@
                                     </Grid>
                                 </Grid>
                             </Frame>
+                            
                             <!--Memory Test-->
                             <Frame Padding="15" BackgroundColor="{StaticResource Primary}"
                             HeightRequest="140">
@@ -155,6 +156,29 @@
                                    Text="Test your immediate recall."
                                    FontFamily="BarlowRegular"/>
 
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+
+                            <!--Memory Test-->
+                            <Frame Padding="15" BackgroundColor="{StaticResource Primary}"
+                                 HeightRequest="140">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="PathGameClicked" />
+                                </Frame.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <!-- Image Box -->
+                                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
+                                        <Image Source="path_icon.png" HeightRequest="120" WidthRequest="120"/>
+                                    </Frame>
+                                    <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
+                                        <VerticalStackLayout>
+                                            <Label Text="Path Game" FontSize="24"/>
+                                        </VerticalStackLayout>
+
+                                        <Label Grid.Row="2" Margin="0, 7" FontSize="16"
+                               Text="Test your precision and control."
+                               FontFamily="BarlowRegular"/>
                                     </Grid>
                                 </Grid>
                             </Frame>

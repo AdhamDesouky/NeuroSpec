@@ -27,10 +27,16 @@ namespace NeuroSpecCompanion.Views
             Navigation.PushAsync(new MemoryGameTutorial());
         }
 
+        private void PathGameClicked(object sender, TappedEventArgs e)
+        {
+            Navigation.PushAsync(new PathGame());
+        }
+
         private void VibrationClicked(object sender, TappedEventArgs e)
         {
             Navigation.PushAsync(new VibrationTestGamePage());
         }
+
 
         private void TapTapTapClicked(object sender, TappedEventArgs e)
         {

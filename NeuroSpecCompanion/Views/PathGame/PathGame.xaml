@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="NeuroSpecCompanion.Views.PathGame"
+             BackgroundColor="{StaticResource Primary}"
+             Shell.NavBarIsVisible="False"
+             Title="Path Game">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Styles for the components -->
+            <Style TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Secondary}"/>
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+            <Style TargetType="ImageButton">
+                <Setter Property="WidthRequest" Value="30"/>
+                <Setter Property="HorizontalOptions" Value="End"/>
+                <Setter Property="Margin" Value="0,10"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+                <Setter Property="BorderWidth" Value="0"/>
+            </Style>
+            <Style TargetType="Image">
+                <Setter Property="WidthRequest" Value="30"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="0,10"/>
+            </Style>
+            <Style TargetType="BoxView" x:Key="BallStyle">
+                <Setter Property="WidthRequest" Value="50"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="Color" Value="Red"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+            </Style>
+            <Style TargetType="BoxView" x:Key="ZigzagStreetStyle">
+                <Setter Property="WidthRequest" Value="300"/>
+                <Setter Property="HeightRequest" Value="500"/>
+                <Setter Property="Color" Value="Gray"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Rotation" Value="-10"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header with Timer and Start/Stop Button -->
+        <Frame Grid.Row="0" BackgroundColor="{StaticResource Primary}" CornerRadius="0" HasShadow="True" HeightRequest="65" Padding="0, 10" BorderColor="{StaticResource Primary}">
+            <Grid VerticalOptions="Center" HeightRequest="60" Padding="10, 0">
+                <Image Source="clock" HorizontalOptions="Start">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{StaticResource Secondary}" />
+                    </Image.Behaviors>
+                </Image>
+                <Label x:Name="TimerLabel" Text="Time: 00:00" Margin="40, 10" VerticalOptions="Center" FontSize="24"/>
+                <ImageButton x:Name="StartStopBtn" Source="circle_play" Clicked="StartStopClicked">
+                    <ImageButton.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{StaticResource Secondary}" />
+                    </ImageButton.Behaviors>
+                </ImageButton>
+            </Grid>
+        </Frame>
+
+        <!-- Score Panel -->
+        <Frame Grid.Row="1" BackgroundColor="{StaticResource Primary}" Padding="10" CornerRadius="0" BorderColor="{StaticResource Primary}" HeightRequest="60">
+            <HorizontalStackLayout>
+                <Label Text="Score: " FontSize="24" TextColor="{StaticResource Secondary}" HorizontalOptions="Start"/>
+                <Label x:Name="ScoreLabel" Text="0" FontSize="23" TextColor="{StaticResource Secondary}" HorizontalOptions="Start"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <!-- Path Area with Grass Texture -->
+        <Frame Grid.Row="2" x:Name="Path" WidthRequest="300" HeightRequest="500" HorizontalOptions="Center" VerticalOptions="Center">
+            <Grid>
+                <Image Source="grass_texture.png" Aspect="AspectFill" WidthRequest="300" HeightRequest="500"/>
+
+                <!-- Red Ball -->
+                <BoxView Style="{StaticResource BallStyle}" Margin="50,0,0,0"/>
+
+                <!-- Grey Zigzag Street -->
+                <BoxView Style="{StaticResource ZigzagStreetStyle}" Margin="0,200,0,0"/>
+            </Grid>
+        </Frame>
+
+        <!-- Finish Line -->
+        <Frame Grid.Row="2" x:Name="EndPoint" WidthRequest="300" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="End" BackgroundColor="Transparent">
+            <Image Source="finish_line.png" Aspect="AspectFill" WidthRequest="300" HeightRequest="50"/>
+        </Frame>
+
+        <!-- Draggable Object (Ball) -->
+        <Frame Grid.Row="2" x:Name="DraggableObject" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Start">
+            <!-- <Frame.GestureRecognizers>
+                <local:TouchEffect TouchAction="OnDraggableObjectTouch"/>
+            </Frame.GestureRecognizers> -->
+            <Image Source="pin.png" WidthRequest="50" HeightRequest="50"/>
+        </Frame>
+    </Grid>
+</ContentPage>

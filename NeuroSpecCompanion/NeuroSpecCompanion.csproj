@@ -176,6 +176,9 @@
 	  <MauiXaml Update="Views\MemoryTest\MemoryGameTutorial.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\PathGame\PathGame.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Prescription\ViewAllPrescriptionsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -240,9 +243,6 @@
 		<MauiImage Include="Resources\Images\ContactDoctorPage\call.svg" />
 		<MauiImage Include="Resources\Images\ContactDoctorPage\video.svg" />
 		<MauiImage Include="Resources\Images\ContactDoctorPage\email.svg" />
-
-
-
 
 	</ItemGroup>
 
