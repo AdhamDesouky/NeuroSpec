@@ -1,6 +1,10 @@
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.ApplicationModel.Communication;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics; // Add this for debugging
+using System.Threading.Tasks;
+
 namespace NeuroSpecCompanion.Views
 {
     public partial class ContactDoctorPage : ContentPage
@@ -14,11 +18,20 @@ namespace NeuroSpecCompanion.Views
         {
             try
             {
-                PhoneDialer.Open("01115008374"); // Replace with the doctor's phone number
+                Debug.WriteLine("OnCallDoctorClicked called."); // Debug statement
+
+                if (PhoneDialer.Default.IsSupported)
+                {
+                    PhoneDialer.Default.Open("01110000692");
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Phone dialing is not supported on this device.", "OK");
+                }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "Unable to make a call.", "OK");
+                await DisplayAlert("Error", "Unable to make a phone call.", "OK");
             }
         }
 
@@ -44,7 +57,6 @@ namespace NeuroSpecCompanion.Views
         {
             try
             {
-                // Navigate to a page or open a video call app
                 await DisplayAlert("Video Call", "Starting a video call...", "OK");
                 // Implement actual video call functionality
             }
@@ -56,7 +68,6 @@ namespace NeuroSpecCompanion.Views
 
         private async void OnRequestAlternativeClicked(object sender, EventArgs e)
         {
-            // Implement logic for requesting alternative prescription
             await DisplayAlert("Request Alternative Prescription", "Requesting alternative prescription...", "OK");
             // Add your logic to handle the request
         }

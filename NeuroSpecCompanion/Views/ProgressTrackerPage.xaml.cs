@@ -1,7 +1,7 @@
 using Microsoft.Maui.Controls;
-using System;
+using SkiaSharp;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microcharts;
 
 namespace NeuroSpecCompanion.Views
 {
@@ -11,24 +11,33 @@ namespace NeuroSpecCompanion.Views
         {
             InitializeComponent();
 
-            // Simulate progress updates
-            UpdateProgressBars();
+            progress1Chart.Chart = CreatePieChart(70, 30);
+            progress2Chart.Chart = CreatePieChart(50, 50);
+            progress3Chart.Chart = CreatePieChart(80, 20);
+            progress4Chart.Chart = CreatePieChart(90, 10);
         }
 
-        private void UpdateProgressBars()
+        private PieChart CreatePieChart(float completed, float remaining)
         {
-            // Simulated progress data
-            Random random = new Random();
-            double progress1 = random.NextDouble();
-            double progress2 = random.NextDouble();
-            double progress3 = random.NextDouble();
-            double progress4 = random.NextDouble();
-
-            // Update progress bar widths based on simulated data
-            progress1Indicator.WidthRequest = progress1 * 300; // Multiply by max width you want
-            progress2Indicator.WidthRequest = progress2 * 300;
-            progress3Indicator.WidthRequest = progress3 * 300;
-            progress4Indicator.WidthRequest = progress4 * 300;
+            return new PieChart
+            {
+                Entries = new List<ChartEntry>
+                {
+                    new ChartEntry(completed)
+                    {
+                        Color = SKColor.Parse("#00ff00"),
+                        Label = "Completed",
+                        ValueLabel = $"{completed}%"
+                    },
+                    new ChartEntry(remaining)
+                    {
+                        Color = SKColor.Parse("#ff0000"),
+                        Label = "Remaining",
+                        ValueLabel = $"{remaining}%"
+                    }
+                },
+                BackgroundColor = SKColors.Transparent
+            };
         }
     }
 }

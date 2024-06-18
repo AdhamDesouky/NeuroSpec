@@ -56,7 +56,8 @@ namespace NeuroSpecCompanion.ViewModels
         {
             int doctorId = 0;
             SelectedDate= selectedDate;
-            List<Visit> patientVisits = await _visitService.GetVisitsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
+            
+            List<Visit> patientVisits = await _visitService.GetAllVisitsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID); //changed the GetVisitsByPatientIDAsync to GetAllVisitsByPatientIDAsync
             if (patientVisits.Count > 0)
             {
                 doctorId = patientVisits[patientVisits.Count - 1].DoctorID;
