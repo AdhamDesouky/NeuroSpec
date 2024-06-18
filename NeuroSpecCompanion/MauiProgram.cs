@@ -5,8 +5,7 @@ using NeuroSpec.Shared.Services.Firebase_Service;
 using NeuroSpecCompanion.Services.OCR_Service;
 using NeuroSpecCompanion.Services.PDF_OCR_Service;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
-
-//using NeuroSpecCompanion.Services;
+using Microcharts.Maui;
 
 namespace NeuroSpecCompanion
 {
@@ -16,13 +15,17 @@ namespace NeuroSpecCompanion
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>().UseMauiCommunityToolkitMediaElement()
+                .UseMauiApp<App>()
+                .UseMauiCommunityToolkitMediaElement()
                 .UseMauiCommunityToolkit()
+                .UseMicrocharts() // Add Microcharts
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            // Register services
             builder.Services.AddSingleton<HttpClient>();
             builder.Services.AddSingleton<ChatbotService>();
             builder.Services.AddSingleton<FirebaseService>();

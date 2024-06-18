@@ -95,6 +95,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="IronOcr" Version="2024.6.3" />
+		<PackageReference Include="Microcharts.Maui" Version="1.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.60" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
 	</ItemGroup>
@@ -115,11 +116,15 @@
 		<PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 		<PackageReference Include="Simple.GradioClient" Version="0.0.1" />
 		<PackageReference Include="SkiaSharp" Version="2.88.8" />
+		<PackageReference Include="Syncfusion.Chart.Windows" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Licensing" Version="26.1.35" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="26.1.35" />
 		<PackageReference Include="System.Collections" Version="4.3.0" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<PackageReference Include="System.Text.Encoding" Version="4.3.0" />
 		<PackageReference Include="System.Text.Json" Version="8.0.3" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<PackageReference Include="System.Threading" Version="4.3.0" />
 		<PackageReference Include="Tesseract" Version="5.2.0" />
 	</ItemGroup>

@@ -36,7 +36,7 @@ namespace NeuroSpecCompanion.ViewModels
 
         private async void LoadVisits()
         {
-            var visits = await _visitService.GetVisitsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
+            var visits = await _visitService.GetAllVisitsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
             foreach (var visit in visits)
             {
                 Visits.Add(visit);
