@@ -12,10 +12,9 @@
             <StackLayout Orientation="Horizontal" Margin="0,0,0,20" VerticalOptions="Center">
                 <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="LightGray" Padding="10">
                     <ImageButton x:Name="userImageButton" Source="camerasolid.svg" WidthRequest="60" HeightRequest="60" CornerRadius="30" BackgroundColor="Transparent" Clicked="OnUploadPhotoClicked"/>
-                    
                 </Frame>
-                
-                <Label Text="Adham" FontSize="24" VerticalOptions="Center" Margin="20,0,0,0" TextColor="{StaticResource Secondary}" />
+
+                <Label Text="Abdelrahman Saleh" FontSize="24" VerticalOptions="Center" Margin="20,0,0,0" TextColor="{StaticResource Secondary}" />
             </StackLayout>
 
             <!-- My Account Section -->
@@ -23,7 +22,7 @@
             <StackLayout Margin="20,0,0,20">
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" VerticalOptions="Center">
                     <Label Text="Username:" FontSize="18" VerticalOptions="Center" WidthRequest="150" TextColor="{StaticResource Secondary}" />
-                    <Label Text="AdhamDesouky" FontSize="18" VerticalOptions="Center" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Secondary}" />
+                    <Label Text="abdoo536" FontSize="18" VerticalOptions="Center" HorizontalOptions="StartAndExpand" TextColor="{StaticResource Secondary}" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" VerticalOptions="Center">
                     <Label Text="Full Name:" FontSize="18" VerticalOptions="Center" WidthRequest="150" TextColor="{StaticResource Secondary}" />

@@ -17,7 +17,7 @@
                            Padding="0, 10" BorderColor="{StaticResource Primary}">
                         <Grid VerticalOptions="Center" HeightRequest="50" Padding="10, 0">
 
-                            <Label x:Name="hellolbl" Text="Hello, Dess" HorizontalOptions="Start" Margin="0, 10" 
+                            <Label x:Name="hellolbl" Text="Hello, Abdelrahman" HorizontalOptions="Start" Margin="0, 10" 
                                    VerticalOptions="Center" FontSize="24"/>
 
                             <!-- Emergency Button -->
@@ -44,7 +44,7 @@
                                     <TapGestureRecognizer Tapped="HistorySquareClicked" />
                                 </Frame.GestureRecognizers>
                                 <VerticalStackLayout VerticalOptions="Center">
-                                    <Image Source="appoints" Margin="5,5,5,5" >
+                                    <Image Source="appoints" Margin="17,10,17,10" >
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
@@ -60,7 +60,7 @@
                                     <VerticalStackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnMedicsClicked"/>
                                     </VerticalStackLayout.GestureRecognizers>
-                                    <Image Source="pills" Margin="5,10,5,5">
+                                    <Image Source="pills" Margin="17,10,17,10">
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
@@ -72,7 +72,7 @@
                             <Frame Margin="5" Grid.Column="2"
                                    BackgroundColor="{StaticResource Primary}" Padding="0">
                                 <VerticalStackLayout VerticalOptions="Center">
-                                    <Image Source="reminder" Margin="5,10,5,5">
+                                    <Image Source="reminder" Margin="17,10,17,10">
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
@@ -88,7 +88,7 @@
 
                             <Frame Margin="5" Grid.Column="3" BackgroundColor="{StaticResource Primary}" Padding="0">
                                 <VerticalStackLayout VerticalOptions="Center">
-                                    <Image Source="contact_doctor" Margin="5,10,5,5">
+                                    <Image Source="contact_doctor" Margin="17,10,17,10">
                                         <Image.Behaviors>
                                             <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
                                         </Image.Behaviors>
@@ -103,26 +103,7 @@
 
                         <VerticalStackLayout Margin="5, 10" Spacing="10">
                             <Label Text="Activities" TextColor="{StaticResource Secondary}" FontSize="24"/>
-                            <!--Resting Tremor-->
-                            <Frame Padding="15" BackgroundColor="{StaticResource Primary}" HeightRequest="140">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="RestingTremorClicked" />
-                                </Frame.GestureRecognizers>
-                                <Grid ColumnDefinitions="Auto, *">
-                                    <!-- Image Box -->
-                                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
-                                        <Image Source="trembling_hand" WidthRequest="100" HeightRequest="100" />
-                                    </Frame>
-                                    <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
-                                        <VerticalStackLayout>
-                                            <Label Text="Resting Tremor" FontSize="24"/>
-                                        </VerticalStackLayout>
-                                        <Label Grid.Row="2" Margin="0, 7" FontSize="16"
-                                               Text="Determine if you have a resting tremor."
-                                               FontFamily="BarlowRegular"/>
-                                    </Grid>
-                                </Grid>
-                            </Frame>
+                            
 
                             <!--Memory Test-->
                             <Frame Padding="15" BackgroundColor="{StaticResource Primary}" HeightRequest="140">
@@ -145,26 +126,7 @@
                                 </Grid>
                             </Frame>
 
-                            <!--Path Game-->
-                            <Frame Padding="15" BackgroundColor="{StaticResource Primary}" HeightRequest="140">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="PathGameClicked" />
-                                </Frame.GestureRecognizers>
-                                <Grid ColumnDefinitions="Auto, *">
-                                    <!-- Image Box -->
-                                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
-                                        <Image Source="path_icon.png" HeightRequest="120" WidthRequest="120"/>
-                                    </Frame>
-                                    <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
-                                        <VerticalStackLayout>
-                                            <Label Text="Path Game" FontSize="24"/>
-                                        </VerticalStackLayout>
-                                        <Label Grid.Row="2" Margin="0, 7" FontSize="16"
-                                               Text="Test your precision and control."
-                                               FontFamily="BarlowRegular"/>
-                                    </Grid>
-                                </Grid>
-                            </Frame>
+                            
                             <!--Vibration-->
                             <Frame Padding="15" BackgroundColor="{StaticResource Primary}" HeightRequest="140">
                                 <Frame.GestureRecognizers>

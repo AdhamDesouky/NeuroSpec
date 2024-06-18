@@ -1,5 +1,13 @@
 using Microsoft.Maui.Storage;
 using NeuroSpec.Shared.Services.Firebase_Service;
+using NeuroSpecCompanion.Views.TapTest;
+using NeuroSpecCompanion.Views.MemoryTest;
+using NeuroSpecCompanion.Services;
+using CommunityToolkit.Maui.Core.Views;
+using NeuroSpecCompanion.Views.VibrationTest;
+using NeuroSpecCompanion.Views.BookAppointment;
+using NeuroSpecCompanion.Views;
+using Microsoft.Maui.Controls;
 
 namespace NeuroSpecCompanion.Views
 {
@@ -46,6 +54,13 @@ namespace NeuroSpecCompanion.Views
                 Console.WriteLine($"Exception: {ex.Message}");
             }
         }
-
-    }
+        private void signOut(object sender, EventArgs e)
+        {
+            LoggedInPatientService.LoggedInPatient = null;
+            SecureStorage.SetAsync("PatientID", "");
+            SecureStorage.SetAsync("Password", "");
+            Shell.Current.GoToAsync("//MainPage");
+        }
 }
+    }
+        
