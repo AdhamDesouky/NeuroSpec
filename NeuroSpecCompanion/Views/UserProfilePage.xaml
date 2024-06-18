@@ -26,11 +26,11 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" VerticalOptions="Center">
                     <Label Text="Full Name:" FontSize="18" VerticalOptions="Center" WidthRequest="150" TextColor="{StaticResource Secondary}" />
-                    <Entry Placeholder="Full Name" FontSize="18" HorizontalOptions="FillAndExpand" />
+                    <Entry Placeholder="Abdelrahman Saleh" FontSize="18" HorizontalOptions="FillAndExpand" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" VerticalOptions="Center">
                     <Label Text="Email:" FontSize="18" VerticalOptions="Center" WidthRequest="150" TextColor="{StaticResource Secondary}" />
-                    <Entry Placeholder="Email" FontSize="18" HorizontalOptions="FillAndExpand" />
+                    <Entry Placeholder="abdoo23@gmail.com" FontSize="18" HorizontalOptions="FillAndExpand" />
                 </StackLayout>
             </StackLayout>
 
@@ -39,7 +39,7 @@
             <StackLayout Margin="20,0,0,20">
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" VerticalOptions="Center">
                     <Label Text="Phone Number:" FontSize="18" VerticalOptions="Center" WidthRequest="150" TextColor="{StaticResource Secondary}" />
-                    <Entry Placeholder="Phone Number" FontSize="18" HorizontalOptions="FillAndExpand" />
+                    <Entry Placeholder="(+20) 1007952039" FontSize="18" HorizontalOptions="FillAndExpand" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" VerticalOptions="Center">
                     <Label Text="Birth Date:" FontSize="18" VerticalOptions="Center" WidthRequest="150" TextColor="{StaticResource Secondary}" />
