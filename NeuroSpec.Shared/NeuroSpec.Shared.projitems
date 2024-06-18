@@ -20,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\EvaluationTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\EvaluationTestFeedBack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Exercise.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\Issue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\IssueDrug.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\IssueSNOMED.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DTO\MedicalRecord.cs" />
@@ -38,8 +37,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\AttendanceRecordService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\BookAppointmentService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\CalendarEventService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueSNOMEDService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueDrugService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\IssueService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\PatientChronicService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\OntologyService\DrugOntologyService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DTO_Services\EvaluationTestFeedbackService.cs" />

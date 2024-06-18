@@ -7,68 +7,75 @@ using System.Threading.Tasks;
 
 namespace NeuroSpecCompanion.Shared.Services.DTO_Services
 {
-    public class IssueService
+    public class IssueSNOMEDService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
+        private readonly JsonSerializerOptions _options;
 
-        public IssueService()
+        public IssueSNOMEDService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.runasp.net/api/Issue";
+            _baseApi = "http://neurospec.runasp.net/api/IssueSNOMED";
+            _options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
-        public async Task<List<Issue>> GetAllIssuesAsync()
+        public async Task<List<IssueSNOMED>> GetAllIssuesAsync()
         {
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Issue>>(content);
+            return JsonSerializer.Deserialize<List<IssueSNOMED>>(content, _options);
         }
 
-        public async Task<Issue> GetIssueByIdAsync(int issueID)
+        public async Task<IssueSNOMED> GetIssueByIdAsync(string issueID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/{issueID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Issue>(content);
+            return JsonSerializer.Deserialize<IssueSNOMED>(content, _options);
         }
 
-        public async Task<List<Issue>> GetAllIssuesByPatientIDAsync(int patientID)
+        public async Task<List<IssueSNOMED>> GetAllIssuesByPatientIDAsync(int patientID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPatient/{patientID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Issue>>(content);
+            return JsonSerializer.Deserialize<List<IssueSNOMED>>(content, _options);
         }
 
-        public async Task<List<Issue>> GetAllIssuesByPrescriptionIDAsync(int prescriptionID)
+        public async Task<List<IssueSNOMED>> GetAllIssuesByPrescriptionIDAsync(int prescriptionID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPrescription/{prescriptionID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Issue>>(content);
+            return JsonSerializer.Deserialize<List<IssueSNOMED>>(content, _options);
         }
 
-        public async Task<Issue> InsertIssueAsync(Issue Issue)
+        public async Task<IssueSNOMED> InsertIssueAsync(IssueSNOMED issue)
         {
-            var json = JsonSerializer.Serialize(Issue);
+            var json = JsonSerializer.Serialize(issue, _options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Issue>(responseContent);
+            return JsonSerializer.Deserialize<IssueSNOMED>(responseContent, _options);
         }
 
-        public async Task UpdateIssueAsync(int issueID, Issue Issue)
+        public async Task<IssueSNOMED> UpdateIssueAsync(IssueSNOMED issue)
         {
-            var json = JsonSerializer.Serialize(Issue);
+            var json = JsonSerializer.Serialize(issue, _options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"{_baseApi}/{issueID}", content);
+            var response = await _httpClient.PostAsync(_baseApi, content);  // Changed to HttpPost as per controller
             response.EnsureSuccessStatusCode();
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<IssueSNOMED>(responseContent, _options);
         }
 
-        public async Task DeleteIssueAsync(int issueID)
+        public async Task DeleteIssueAsync(string issueID)
         {
             var response = await _httpClient.DeleteAsync($"{_baseApi}/{issueID}");
             response.EnsureSuccessStatusCode();

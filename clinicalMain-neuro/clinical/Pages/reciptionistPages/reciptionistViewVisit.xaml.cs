@@ -119,7 +119,7 @@ namespace clinical.Pages.reciptionistPages
         private async void syncInfo(object sender, MouseButtonEventArgs e)
         {
             currVisit.TimeStamp = selectedDateTime;
-            await visitService.UpdateVisitAsync(currVisit.VisitID, currVisit);
+            await visitService.UpdateVisitAsync(currVisit);
             timeCB.IsEnabled = !timeCB.IsEnabled;
             dpDatePicker.IsEnabled = !dpDatePicker.IsEnabled;
 
@@ -144,7 +144,7 @@ namespace clinical.Pages.reciptionistPages
             MessageBoxResult result = MessageBox.Show("Are you sure you want to mark this visit as done?", "Confirmation", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.No) return;
             currVisit.IsDone = !currVisit.IsDone;
-            await visitService.UpdateVisitAsync(currVisit.VisitID,currVisit);
+            await visitService.UpdateVisitAsync(currVisit);
             markDoneTB.Text = currVisit.IsDone ? "Mark as Undone" : "Mark as Done";
             MessageBox.Show("Visit Status Updated");
         }

@@ -42,11 +42,11 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<Visit>(responseContent, options);
         }
 
-        public async Task UpdateVisitAsync(int visitID, Visit visit)
+        public async Task UpdateVisitAsync(Visit visit)
         {
-            var json = JsonSerializer.Serialize(visit);
+            var json = JsonSerializer.Serialize(visit,options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"{_baseApi}/{visitID}", content);
+            var response = await _httpClient.PutAsync($"{_baseApi}/{visit.VisitID}", content);
             response.EnsureSuccessStatusCode();
         }
 

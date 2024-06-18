@@ -27,14 +27,14 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IssueDrug>>> GetAllIssueDrugs()
+        public async Task<ActionResult<List<IssueDrug>>> GetAllIssueDrugs()
         {
             var IssueDrugs = await _IssueDrugs.Find(_ => true).ToListAsync();
             return Ok(IssueDrugs);
         }
 
         [HttpGet("{issueID:int}")]
-        public async Task<ActionResult<IssueDrug>> GetIssueDrugById(string issueID)
+        public async Task<ActionResult<IssueDrug>> GetIssueDrugById(int issueID)
         {
             var IssueDrug = await _IssueDrugs.Find(i => i.IssueID == issueID).FirstOrDefaultAsync();
 
@@ -47,21 +47,21 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpGet("ByPatient/{patientID:int}")]
-        public async Task<ActionResult<IEnumerable<IssueDrug>>> GetAllIssueDrugsByPatientID(int patientID)
+        public async Task<ActionResult<List<IssueDrug>>> GetAllIssueDrugsByPatientID(int patientID)
         {
             var IssueDrugs = await _IssueDrugs.Find(i => i.PatientID == patientID).ToListAsync();
             return Ok(IssueDrugs);
         }
 
         [HttpGet("ByPrescription/{prescriptionID:int}")]
-        public async Task<ActionResult<IEnumerable<IssueDrug>>> GetAllIssueDrugsByPrescriptionID(int prescriptionID)
+        public async Task<ActionResult<List<IssueDrug>>> GetAllIssueDrugsByPrescriptionID(int prescriptionID)
         {
             var IssueDrugs = await _IssueDrugs.Find(i => i.PrescriptionID == prescriptionID).ToListAsync();
             return Ok(IssueDrugs);
         }
 
         [HttpPut("{issueID:int}")]
-        public async Task<IActionResult> UpdateIssueDrug(string issueID, IssueDrug IssueDrug)
+        public async Task<IActionResult> UpdateIssueDrug(int issueID, IssueDrug IssueDrug)
         {
             if (issueID != IssueDrug.IssueID)
             {
@@ -79,7 +79,7 @@ namespace NeuroSpecBackend.Controllers
         }
 
         [HttpDelete("{issueID:int}")]
-        public async Task<IActionResult> DeleteIssueDrug(string issueID)
+        public async Task<IActionResult> DeleteIssueDrug(int issueID)
         {
             var result = await _IssueDrugs.DeleteOneAsync(i => i.IssueID == issueID);
 
@@ -91,7 +91,7 @@ namespace NeuroSpecBackend.Controllers
             return NoContent();
         }
 
-        private bool IssueDrugExists(string issueID)
+        private bool IssueDrugExists(int issueID)
         {
             return _IssueDrugs.Find(i => i.IssueID == issueID).Any();
         }

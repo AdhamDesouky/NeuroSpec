@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,12 +26,14 @@ namespace clinical
     {
         internal string Notes { get; set; }
         internal string Test { get; set; }
-        internal string TestId { get; set; }
+        internal int TestId { get; set; }
+        internal bool IsSNOMED { get; set; }
         internal dataObj() { }
-        internal dataObj(string notes, string test)
+        internal dataObj(string notes, string test, bool isSNOMED)
         {
             Notes = notes;
             Test = test;
+            this.IsSNOMED = isSNOMED;
         }
     }
 
@@ -43,8 +46,8 @@ namespace clinical
         VisitService _visitService;
         PatientService _patientService;
         PrescriptionService _prescriptionService;
-        IssueService _issueService;
-
+        IssueSNOMEDService _issueService;
+        IssueDrugService _issueDrugService;
 
         Patient currentPatient;
         Visit currentVisit;
@@ -58,7 +61,8 @@ namespace clinical
             _visitService = new VisitService();
             _patientService = new PatientService();
             _prescriptionService = new PrescriptionService();
-            _issueService = new IssueService();
+            _issueService = new ();
+            _issueDrugService = new IssueDrugService();
 
 
 
@@ -76,7 +80,8 @@ namespace clinical
             _visitService = new VisitService();
             _patientService = new PatientService();
             _prescriptionService = new PrescriptionService();
-            _issueService = new IssueService();
+            _issueService = new ();
+            _issueDrugService = new IssueDrugService();
 
             prescriptionID = prescription.PrescriptionID;
 
@@ -87,23 +92,25 @@ namespace clinical
         {
             try
             {
-                var currentVisit = await _visitService.GetVisitByIDAsync(prescription.VisitID);
-                var currentPatient = await _patientService.GetPatientByIdAsync(prescription.PatientID);
+                currentVisit = await _visitService.GetVisitByIDAsync(prescription.VisitID);
+                currentPatient = await _patientService.GetPatientByIdAsync(prescription.PatientID);
                 todayDatePicker.SelectedDate = DateTime.Now;
                 patientNameTextBox.Text = $"{currentPatient.FirstName} {currentPatient.LastName}";
                 patientAgeTextBox.Text = StaticFunctions.CalculateAge(currentPatient.DateOfBirth).ToString();
                 mainStackPanel.Children.Clear();
-                List<Issue> IssuedDrugs = await _issueService.GetAllIssuesByPrescriptionIDAsync(prescription.PrescriptionID);
-                foreach (Issue issue in IssuedDrugs)
+                List<IssueDrug> IssuedDrugs = await _issueDrugService.GetAllIssueDrugsByPrescriptionIDAsync(prescription.PrescriptionID);
+                List<IssueSNOMED> IssuedSNom = await _issueService.GetAllIssuesByPrescriptionIDAsync(prescription.PrescriptionID);
+
+                foreach (IssueDrug issue in IssuedDrugs)
                 {
                     CreateNewIssueDrugUI(issue);
 
                 }
-                //foreach (IssueSNOMED issue in Issued)
-                //{
-                //    CreateNewIssueSNOMEDUI(issue);
+                foreach (IssueSNOMED issue in IssuedSNom)
+                {
+                    CreateNewIssueSNOMEDUI(issue);
 
-                //}
+                }
             }
             catch (Exception ex)
             {
@@ -113,7 +120,7 @@ namespace clinical
         }
 
 
-        private void CreateNewIssueExerciseUI()
+        private void CreateNewIssueSNOMEDUI()
         {
             Border border = new Border
             {
@@ -212,6 +219,7 @@ namespace clinical
             notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, obj);
             exerciseAutoCompleteBox.TextChanged += async (sender, e) => await ExerciseAutoCompleteBox_TextChangedAsync(sender, e);
             packIcon.MouseDown += (sender, e) => removeLast(obj);
+            obj.IsSNOMED = true;
 
             ObjectsList.Add(obj);
 
@@ -317,8 +325,10 @@ namespace clinical
 
             dataObj obj = new dataObj();
             obj.Test = exerciseAutoCompleteBox.Text;
-            obj.TestId = issue.SNOMEDID.ToString();
+            obj.TestId = issue.IssueID;
             obj.Notes = issue.Notes;
+            obj.IsSNOMED = true;
+
             notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, obj);
             packIcon.MouseDown += (sender, e) => removeLast(obj);
 
@@ -330,15 +340,18 @@ namespace clinical
         // Event handler for text change in the AutoCompleteBox
         private async Task ExerciseAutoCompleteBox_TextChangedAsync(object sender, RoutedEventArgs e)
         {
+            //wait for 1 second
             AutoCompleteBox autoCompleteBox = sender as AutoCompleteBox;
             if (autoCompleteBox != null && !string.IsNullOrWhiteSpace(autoCompleteBox.Text))
             {
+                await Task.Delay(2000);
+
                 var service = new SNOMEDOntologyService();
                 var results = await service.SearchSNOMEDOntologyAsync(autoCompleteBox.Text);
                 autoCompleteBox.ItemsSource = results.Select(r => r.SNOMEDName).ToList();
             }
         }
-        private void CreateNewIssueExerciseUI(dataObj elObj)
+        private void CreateNewIssueSNOMEDUI(dataObj elObj)
         {
 
 
@@ -441,7 +454,8 @@ namespace clinical
             notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, elObj);
             packIcon.MouseDown += (sender, e) => removeLast(elObj);
             exerciseAutoCompleteBox.TextChanged += async (sender, e) => await ExerciseAutoCompleteBox_TextChangedAsync(sender, e);
-
+            elObj.IsSNOMED = true;
+            
 
 
             mainStackPanel.Children.Add(border);
@@ -546,26 +560,31 @@ namespace clinical
 
             dataObj obj = new dataObj();
             notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, obj);
-            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await DrugAutoCompleteBox_TextChangedAsync(sender, e);
+            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await DrugAutoCompleteBox_TextChangedAsync(exerciseAutoCompleteBox, obj);
             packIcon.MouseDown += (sender, e) => removeLast(obj);
+            obj.IsSNOMED = false;
 
             ObjectsList.Add(obj);
 
 
             mainStackPanel.Children.Add(border);
         }
-        private async Task DrugAutoCompleteBox_TextChangedAsync(object sender, RoutedEventArgs e)
+        private async Task DrugAutoCompleteBox_TextChangedAsync(object sender, dataObj dataObject)
         {
+            //wait for 1 second
             AutoCompleteBox autoCompleteBox = sender as AutoCompleteBox;
             if (autoCompleteBox != null && !string.IsNullOrWhiteSpace(autoCompleteBox.Text))
             {
+                await Task.Delay(2000);
                 var service = new DrugOntologyService();
                 var results = await service.SearchDrugOntologyAsync(autoCompleteBox.Text);
                 autoCompleteBox.ItemsSource = results.Select(r => r.Name).ToList();
             }
+            dataObject.Test = autoCompleteBox.Text;
+
         }
 
-        private void CreateNewIssueDrugUI(Issue issue)
+        private void CreateNewIssueDrugUI(IssueDrug issue)
         {
             Border border = new Border
             {
@@ -649,9 +668,9 @@ namespace clinical
             };
             Grid.SetRow(exerciseAutoCompleteBox, 1);
             Grid.SetColumn(exerciseAutoCompleteBox, 0);
+            exerciseAutoCompleteBox.Text = issue.Name;
 
             // Attach event handler for text change
-            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await ExerciseAutoCompleteBox_TextChangedAsync(sender, e);
 
             grid.Children.Add(textBlockExercise);
             grid.Children.Add(textBlockNotes);
@@ -666,7 +685,9 @@ namespace clinical
             obj.TestId = issue.IssueID;
             obj.Notes = issue.Notes;
             notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, obj);
+            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await DrugAutoCompleteBox_TextChangedAsync(exerciseAutoCompleteBox, obj);
             packIcon.MouseDown += (sender, e) => removeLast(obj);
+            obj.IsSNOMED = false;
 
             ObjectsList.Add(obj);
 
@@ -680,14 +701,7 @@ namespace clinical
                 dataObject.Notes = textBox.Text;
             }
         }
-        private void UpdateDataObject(AutoCompleteBox textBox, dataObj dataObject)
-        {
-            if (textBox.Name == "exerciseACT")
-            {
-                dataObject.Test = textBox.Text;
-            }
-
-        }
+        
 
         private void print(object sender, MouseButtonEventArgs e)
         {
@@ -753,16 +767,34 @@ namespace clinical
             await _prescriptionService.InsertPrescriptionAsync(prescription);
             foreach (dataObj obj in ObjectsList)
             {
-                Issue issue = new Issue
+                if (obj.IsSNOMED)
                 {
-                    PrescriptionID = prescriptionID,
-                    IssueID = obj.TestId,
-                    Notes = obj.Notes,
-                    PatientID = currentPatient.PatientID,
-                    DoctorID = currentVisit.DoctorID,
-                    VisitID = currentVisit.VisitID
-                };
-                await _issueService.InsertIssueAsync(issue);
+                    IssueSNOMED issueSNOMED = new IssueSNOMED
+                    {
+                        PrescriptionID = prescriptionID,
+                        IssueID = obj.TestId,
+                        Notes = obj.Notes,
+                        SNOMEDName = obj.Test,
+                        PatientID = currentPatient.PatientID,
+                        DoctorID = currentVisit.DoctorID,
+                        VisitID = currentVisit.VisitID
+                    };
+                    await _issueService.InsertIssueAsync(issueSNOMED);
+                }
+                else
+                {
+                    IssueDrug issueDrug = new IssueDrug
+                    {
+                        PrescriptionID = prescriptionID,
+                        IssueID = obj.TestId,
+                        PatientID = currentPatient.PatientID,
+                        DoctorID = currentVisit.DoctorID,
+                        VisitID = currentVisit.VisitID,
+                        Notes = obj.Notes,
+                        Name = obj.Test
+                    };
+                    await _issueDrugService.InsertIssueDrugAsync(issueDrug);
+                }
             }
             MessageBox.Show("Prescription Saved, ID: " + prescriptionID.ToString());
         }
@@ -787,12 +819,12 @@ namespace clinical
 
         private void newDrug(object sender, MouseButtonEventArgs e)
         {
-
+            CreateNewIssueDrugUI();
         }
 
         private void newTestExercise(object sender, MouseButtonEventArgs e)
         {
-            CreateNewIssueExerciseUI();
+            CreateNewIssueSNOMEDUI();
 
         }
 
@@ -802,7 +834,7 @@ namespace clinical
             mainStackPanel.Children.Clear();
             foreach (dataObj dataObj in ObjectsList)
             {
-                CreateNewIssueExerciseUI(dataObj);
+                CreateNewIssueSNOMEDUI(dataObj);
             }
         }
 

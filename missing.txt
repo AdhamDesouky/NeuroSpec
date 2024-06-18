@@ -30,7 +30,7 @@ ScanTest, Exercise, and Drug are to be read from ontology search selections and 
 
 - path game 
 - progress tracker
-- check appointment booking 
+✅ check appointment booking 
 - resolve icon size 
 - color of the system
 - working pages

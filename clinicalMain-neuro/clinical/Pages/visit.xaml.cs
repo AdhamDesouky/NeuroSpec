@@ -426,7 +426,7 @@ namespace clinical.Pages
             currPatient.Height = w;
             hwborder.IsEnabled = false;
 
-            await VisitService.UpdateVisitAsync(currVisit.VisitID, currVisit);
+            await VisitService.UpdateVisitAsync(currVisit);
 
             await PatientService.UpdatePatientAsync(currPatient);
 
@@ -444,7 +444,7 @@ namespace clinical.Pages
                 markDoneTXT.Text = "Mark visit Done";
 
             }
-            await VisitService.UpdateVisitAsync(currVisit.VisitID, currVisit);
+            await VisitService.UpdateVisitAsync(currVisit);
         }
 
 

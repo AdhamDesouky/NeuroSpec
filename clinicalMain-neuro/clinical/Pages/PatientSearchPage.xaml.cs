@@ -1,10 +1,8 @@
-﻿using NeuroSpec.Shared.Globals;
-using NeuroSpec.Shared.Models.DTO;
+﻿using NeuroSpec.Shared.Models.DTO;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,7 +22,7 @@ namespace clinical.Pages
             InitializeComponent();
             newPatientButton.Visibility = Visibility.Hidden;
             initAsync();
-            
+
             dataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);
             textBoxFilter.TextChanged += SearchTextBox_TextChanged;
         }
