@@ -40,3 +40,44 @@ ScanTest, Exercise, and Drug are to be read from ontology search selections and 
 ✅ Appointment request with the receptionist (abdo 3aref)
 - emergency contact to see GPS 
 - prescription dropdown
+
+
+
+Admin view
+Navigate pages freely
+create new user
+notes in patient profile
+ocr in medical records
+create and save medical record
+
+
+
+not to touch:
+- dont open a prescription, just view from outside
+- dont update a prescription
+- dont create a new patient on desktop (crash)
+- dont type fast in the freq tb in prescription (crash)
+- dont add and save in calendar page as nothing happens
+- dont switch days in dashboard (crash)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

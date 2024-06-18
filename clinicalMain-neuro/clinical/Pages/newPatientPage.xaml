@@ -105,7 +105,7 @@
                         <DataGrid Grid.Row="2" VerticalScrollBarVisibility="Auto" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="2" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="allChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
                             <DataGrid.Columns>
                                 <!--<DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Id}"/>-->
-                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding SNOMEDName}" IsReadOnly="True" Width="*"/>
                                 <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -124,7 +124,7 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="2" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="selectedChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding SNOMEDName}" IsReadOnly="True" Width="*"/>
 
                                     <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
                                         <DataGridTemplateColumn.CellTemplate>

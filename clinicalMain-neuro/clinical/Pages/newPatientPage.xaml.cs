@@ -157,35 +157,43 @@ namespace clinical.Pages
             Patient newPatient = new Patient
             {
                 PatientID = id,
+                Username=id.ToString(),
+                Password="password",
+                ReferringDoctor=refName,
+                AssignedDoctorID=phys.UserID,
                 FirstName = fn,
                 LastName = ln,
-                DateOfBirth = bd,
-                Gender = gender == "Male",
-                PhoneNumber = phone,
                 Email = em,
+                PhoneNumber = phone,
                 Address = new Address
                 {
                     Street = address
                 },
+                DateOfBirth = bd,
+                Gender = gender == "Male",
                 Height = Convert.ToDouble(heightTextBox.Text),
                 Weight = Convert.ToDouble(weightTextBox.Text),
                 DominantHand = true
             };
+
+            foreach (var ch in selectedChronics)
+            {
+                PatientChronic newPc = new PatientChronic
+                {
+                    ChronicName = ch.SNOMEDName,
+                    ChronicDescription = ch.SNOMEDID,
+                    PatientID = id
+                };
+                await pcs.InsertPatientChronicAsync(newPc);
+            }
+
+
             await ps.InsertPatientAsync(newPatient);            
 
 
             MessageBox.Show("New patient added, ID: " + id.ToString());
 
-            foreach (var ch in selectedChronics)
-            {
-                PatientChronic newPc=new PatientChronic
-                {
-                    ChronicName = ch.SNOMEDName,
-                    ChronicDescription=ch.SNOMEDID,
-                    PatientID = id
-                };
-                await pcs.InsertPatientChronicAsync(newPc);
-            }
+            
 
             double paid= Double.Parse(paidTB.Text);
             Payment payment = new Payment

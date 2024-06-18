@@ -68,20 +68,6 @@ namespace clinical
             }
         }
 
-        private void Grid_MouseEnter(object sender, MouseEventArgs e)
-        {
-            //MinWidth="90"
-            //MaxWidth = "680"
-            sideGrid.Width = 680;
-            Width = 1380;
-        }
-
-        private void Grid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            sideGrid.Width = 90;
-            Width = 1180;
-
-
-        }
+       
     }
 }

@@ -12,11 +12,16 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
+        private readonly JsonSerializerOptions options;
 
         public EvaluationTestFeedbackService()
         {
             _httpClient = new HttpClient();
             _baseApi = "http://neurospec.runasp.net/api/EvaluationTestFeedback";
+            options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<List<EvaluationTestFeedBack>> GetAllFeedbackAsync()
@@ -24,7 +29,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content);
+            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content, options);
         }
 
         public async Task<EvaluationTestFeedBack> GetFeedbackByIdAsync(int feedbackId)
@@ -32,7 +37,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/{feedbackId}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<EvaluationTestFeedBack>(content);
+            return JsonSerializer.Deserialize<EvaluationTestFeedBack>(content, options);
         }
 
         public async Task<List<EvaluationTestFeedBack>> GetFeedbackByPatientAsync(int patientId)
@@ -40,7 +45,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPatient/{patientId}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content);
+            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content, options);
         }
 
         public async Task<List<EvaluationTestFeedBack>> GetFeedbackByVisitAsync(int visitId)
@@ -48,17 +53,17 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/ByVisit/{visitId}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content);
+            return JsonSerializer.Deserialize<List<EvaluationTestFeedBack>>(content, options);
         }
 
         public async Task<EvaluationTestFeedBack> InsertFeedbackAsync(EvaluationTestFeedBack feedback)
         {
-            var json = JsonSerializer.Serialize(feedback);
+            var json = JsonSerializer.Serialize(feedback, options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<EvaluationTestFeedBack>(responseContent);
+            return JsonSerializer.Deserialize<EvaluationTestFeedBack>(responseContent, options);
         }
 
         public async Task DeleteFeedbackAsync(int feedbackId)

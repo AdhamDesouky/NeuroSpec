@@ -1,62 +1,47 @@
 using System;
 using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
+using NeuroSpecCompanion.Services;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 
 namespace NeuroSpecCompanion.Views
 {
     public partial class PillsPage : ContentPage
     {
         public ObservableCollection<Assessment> Assessments { get; set; }
+        IssueDrugService drugService;
+        PrescriptionService prescriptionService;
 
         public PillsPage()
         {
             InitializeComponent();
-            Assessments = new ObservableCollection<Assessment>
-            {
-                new Assessment
-                {
-                    AssessmentDate = "June 15, 2023",
-                    Medications = new ObservableCollection<Medication>
-                    {
-                        new Medication { Name = "Aspirin", Frequency = "100mg, once daily" },
-                        new Medication { Name = "Vitamin D", Frequency = "2000 IU, once daily" }
-                    }
-                },
-                new Assessment
-                {
-                    AssessmentDate = "July 20, 2023",
-                    Medications = new ObservableCollection<Medication>
-                    {
-                        new Medication { Name = "Metformin", Frequency = "500mg, twice daily" }
-                    }
-                },
-                new Assessment
-                {
-                    AssessmentDate = "August 18, 2023",
-                    Medications = new ObservableCollection<Medication>
-                    {
-                        new Medication { Name = "Lisinopril", Frequency = "10mg, once daily" }
-                    }
-                },
-                new Assessment
-                {
-                    AssessmentDate = "September 22, 2023",
-                    Medications = new ObservableCollection<Medication>
-                    {
-                        new Medication { Name = "Atorvastatin", Frequency = "20mg, once daily" }
-                    }
-                },
-                new Assessment
-                {
-                    AssessmentDate = "October 10, 2023",
-                    Medications = new ObservableCollection<Medication>
-                    {
-                        new Medication { Name = "Amlodipine", Frequency = "5mg, once daily" }
-                    }
-                }
-            };
+            Assessments = new ObservableCollection<Assessment>();
+            drugService=new IssueDrugService();
+            prescriptionService=new PrescriptionService();
+            LoadDataAsync();
+        }
 
-            BindingContext = this;
+        private async void LoadDataAsync()
+        {
+            var prescriptions = await prescriptionService.GetAllPrescriptionsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
+            foreach(var prescription in prescriptions)
+            {
+                var drugs = await drugService.GetAllIssueDrugsByPrescriptionIDAsync(prescription.PrescriptionID);
+                var assessment = new Assessment
+                {
+                    AssessmentDate = prescription.TimeStamp.Date.ToShortDateString(),
+                    Medications = new ObservableCollection<Medication>()
+                };
+                foreach(var drug in drugs)
+                {
+                    assessment.Medications.Add(new Medication
+                    {
+                        Name = drug.Name,
+                        Frequency = drug.Frequency
+                    });
+                }
+                Assessments.Add(assessment);
+            }
         }
     }
 
