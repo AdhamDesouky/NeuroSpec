@@ -12,6 +12,7 @@ namespace NeuroSpec.Shared.Models.DTO
         public string? Id { get; set; }
         public int IssueID { get; set; }
         public int PrescriptionID { get; set; }
+        public string Frequency { get; set; }
         public int PatientID { get; set; }
         public int DoctorID { get; set; }
         public int VisitID { get; set; }

@@ -24,10 +24,13 @@ namespace clinical
     /// 
     internal class dataObj
     {
+        internal int freq { get; set;}
+        internal string period { get; set; }
         internal string Notes { get; set; }
         internal string Test { get; set; }
         internal int TestId { get; set; }
         internal bool IsSNOMED { get; set; }
+
         internal dataObj() { }
         internal dataObj(string notes, string test, bool isSNOMED)
         {
@@ -104,12 +107,6 @@ namespace clinical
                 foreach (IssueDrug issue in IssuedDrugs)
                 {
                     CreateNewIssueDrugUI(issue);
-
-                }
-                foreach (IssueSNOMED issue in IssuedSNom)
-                {
-                    CreateNewIssueSNOMEDUI(issue);
-
                 }
             }
             catch (Exception ex)
@@ -120,11 +117,13 @@ namespace clinical
         }
 
 
-        private void CreateNewIssueSNOMEDUI()
+        private void CreateNewIssueDrugUI()
         {
+            dataObj obj = new dataObj();
+
             Border border = new Border
             {
-                Height = 100,
+                Height = 150,
                 Margin = new Thickness(5),
                 CornerRadius = new CornerRadius(5),
                 BorderBrush = (Brush)FindResource("selectedColor"),
@@ -141,9 +140,10 @@ namespace clinical
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
 
 
-            PackIconMaterial packIcon = new PackIconMaterial
+            var packIcon = new PackIconMaterial
             {
                 Kind = PackIconMaterialKind.MinusBox,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -153,11 +153,12 @@ namespace clinical
                 Height = 25,
                 VerticalAlignment = VerticalAlignment.Center
             };
+            packIcon.MouseDown += (sender, e) => removeLast(obj);
 
 
             TextBlock textBlockExercise = new TextBlock
             {
-                Text = "Test or Exercise",
+                Text = "Drug",
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(0),
                 VerticalAlignment = VerticalAlignment.Center,
@@ -172,9 +173,9 @@ namespace clinical
 
 
 
-            TextBlock textBlockNotes = new TextBlock
+            TextBlock textBlockFrequency = new TextBlock
             {
-                Text = "Notes",
+                Text = "Frequency",
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(0),
                 VerticalAlignment = VerticalAlignment.Center,
@@ -183,42 +184,107 @@ namespace clinical
                 FontWeight = FontWeights.Bold,
                 Foreground = (Brush)FindResource("lightFontColor")
             };
+            Grid.SetRow(textBlockFrequency, 0);
+            Grid.SetColumn(textBlockFrequency, 1);
 
-            Grid.SetRow(textBlockNotes, 0);
-            Grid.SetColumn(textBlockNotes, 2);
+
+            Grid innerGrid = new Grid
+            {
+                Margin = new Thickness(0)
+            };
+            Grid.SetRow(innerGrid, 1);
+            Grid.SetColumn(innerGrid, 1);
+
+            innerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
+            innerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
+            innerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
+
+            TextBox numberTB = new TextBox
+            {
+                Name = "numberTB",
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(8)
+            };
+            Grid.SetRow(numberTB, 0);
+            Grid.SetColumn(numberTB, 0);
+
+            TextBlock textBlockTimesPer = new TextBlock
+            {
+                Text = " times per ",
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                FontSize = 18,
+                FontWeight = FontWeights.Bold,
+                Foreground = (Brush)FindResource("lightFontColor")
+            };
+            Grid.SetRow(textBlockTimesPer, 0);
+            Grid.SetColumn(textBlockTimesPer, 1);
+
+            ComboBox freqCB = new ComboBox
+            {
+                Name = "freqCB",
+                Margin = new Thickness(8),
+                ItemsSource = new List<string> { "Day", "Week", "Month", "Year" }
+            };
+            Grid.SetRow(freqCB, 0);
+            Grid.SetColumn(freqCB, 2);
+
+            freqCB.SelectionChanged += (sender, e) => UpdateDataObject(freqCB, obj);
+
+            innerGrid.Children.Add(numberTB);
+            innerGrid.Children.Add(textBlockTimesPer);
+            innerGrid.Children.Add(freqCB);
+
+            TextBlock textBlockNotes = new TextBlock
+            {
+                Text = "Notes",
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0),
+                VerticalAlignment = VerticalAlignment.Center,
+                FontSize = 18,
+                FontWeight = FontWeights.Bold,
+                Foreground = (Brush)FindResource("lightFontColor")
+            };
+            Grid.SetRow(textBlockNotes, 2);
+            Grid.SetColumn(textBlockNotes, 0);
 
             TextBox notesTextBox = new TextBox
             {
                 Name = "notesTXT",
-                Margin = new Thickness(8)
+                Margin = new Thickness(60, 8, 8, 8)
             };
-            Grid.SetRow(notesTextBox, 1);
-            Grid.SetColumn(notesTextBox, 2);
+            Grid.SetRow(notesTextBox, 2);
+            Grid.SetColumn(notesTextBox, 0);
+            Grid.SetColumnSpan(notesTextBox, 2);
 
             AutoCompleteBox exerciseAutoCompleteBox = new AutoCompleteBox
             {
                 Name = "exerciseACT",
                 Margin = new Thickness(8),
                 FilterMode = AutoCompleteFilterMode.Contains
-
             };
             Grid.SetRow(exerciseAutoCompleteBox, 1);
 
 
 
+            grid.Children.Add(packIcon);
             grid.Children.Add(textBlockExercise);
+            grid.Children.Add(textBlockFrequency);
+            grid.Children.Add(innerGrid);
             grid.Children.Add(textBlockNotes);
             grid.Children.Add(notesTextBox);
             grid.Children.Add(exerciseAutoCompleteBox);
-            grid.Children.Add(packIcon);
+
 
 
             border.Child = grid;
 
-            dataObj obj = new dataObj();
+            numberTB.TextChanged += (sender, e) => UpdateDataObject(numberTB, obj);
             notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, obj);
-            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await ExerciseAutoCompleteBox_TextChangedAsync(sender, e);
-            packIcon.MouseDown += (sender, e) => removeLast(obj);
+
+            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await DrugAutoCompleteBox_TextChangedAsync(sender, obj);
             obj.IsSNOMED = true;
 
             ObjectsList.Add(obj);
@@ -226,116 +292,12 @@ namespace clinical
 
             mainStackPanel.Children.Add(border);
         }
-        private void CreateNewIssueSNOMEDUI(IssueSNOMED issue)
-        {
-            Border border = new Border
-            {
-                Height = 100,
-                Margin = new Thickness(5),
-                CornerRadius = new CornerRadius(5),
-                BorderBrush = (Brush)FindResource("selectedColor"),
-                BorderThickness = new Thickness(5),
-                Background = (Brush)FindResource("darkerColor")
-            };
-
-            Grid grid = new Grid
-            {
-                Margin = new Thickness(5)
-            };
-
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
 
-            PackIconMaterial packIcon = new PackIconMaterial
-            {
-                Kind = PackIconMaterialKind.MinusBox,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Foreground = (Brush)FindResource("lightFontColor"),
-                Margin = new Thickness(8, 0, 0, 0),
-                Width = 25,
-                Height = 25,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-
-            TextBlock textBlockExercise = new TextBlock
-            {
-                Text = "Exercise",
-                TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0),
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 18,
-                FontWeight = FontWeights.Bold,
-                Foreground = (Brush)FindResource("lightFontColor")
-            };
-
-            Grid.SetRow(textBlockExercise, 0);
-            Grid.SetColumn(textBlockExercise, 0);
-
-
-
-            TextBlock textBlockNotes = new TextBlock
-            {
-                Text = "Notes",
-                TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0),
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 18,
-                FontWeight = FontWeights.Bold,
-                Foreground = (Brush)FindResource("lightFontColor")
-            };
-
-            Grid.SetRow(textBlockNotes, 0);
-            Grid.SetColumn(textBlockNotes, 1);
-
-            TextBox notesTextBox = new TextBox
-            {
-                Name = "notesTXT",
-                Margin = new Thickness(8),
-                Text = issue.Notes
-            };
-            Grid.SetRow(notesTextBox, 1);
-            Grid.SetColumn(notesTextBox, 1);
-
-            AutoCompleteBox exerciseAutoCompleteBox = new AutoCompleteBox
-            {
-                Name = "exerciseACT",
-                Margin = new Thickness(8),
-                FilterMode = AutoCompleteFilterMode.Contains,
-
-            };
-            Grid.SetRow(exerciseAutoCompleteBox, 1);
-            Grid.SetColumn(exerciseAutoCompleteBox, 0);
-
-            // Attach event handler for text change
-            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await ExerciseAutoCompleteBox_TextChangedAsync(sender, e);
-
-            grid.Children.Add(textBlockExercise);
-            grid.Children.Add(textBlockNotes);
-            grid.Children.Add(notesTextBox);
-            grid.Children.Add(exerciseAutoCompleteBox);
-            grid.Children.Add(packIcon);
-
-            border.Child = grid;
-
-            dataObj obj = new dataObj();
-            obj.Test = exerciseAutoCompleteBox.Text;
-            obj.TestId = issue.IssueID;
-            obj.Notes = issue.Notes;
-            obj.IsSNOMED = true;
-
-            notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, obj);
-            packIcon.MouseDown += (sender, e) => removeLast(obj);
-
-            ObjectsList.Add(obj);
-
-            mainStackPanel.Children.Add(border);
-        }
+        //private void CreateNewIssueDrugUI(IssueDrug issue)
+        //{
+            
+        //}
 
         // Event handler for text change in the AutoCompleteBox
         private async Task ExerciseAutoCompleteBox_TextChangedAsync(object sender, RoutedEventArgs e)
@@ -464,111 +426,6 @@ namespace clinical
 
         //create the same four above functions for IssueDrug
 
-        private void CreateNewIssueDrugUI()
-        {
-            Border border = new Border
-            {
-                Height = 100,
-                Margin = new Thickness(5),
-                CornerRadius = new CornerRadius(5),
-                BorderBrush = (Brush)FindResource("selectedColor"),
-                BorderThickness = new Thickness(5),
-                Background = (Brush)FindResource("darkerColor")
-            };
-
-            Grid grid = new Grid
-            {
-                Margin = new Thickness(5)
-            };
-
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Star) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-
-            PackIconMaterial packIcon = new PackIconMaterial
-            {
-                Kind = PackIconMaterialKind.MinusBox,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Foreground = (Brush)FindResource("lightFontColor"),
-                Margin = new Thickness(8, 0, 0, 0),
-                Width = 25,
-                Height = 25,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-
-            TextBlock textBlockExercise = new TextBlock
-            {
-                Text = "Drug",
-                TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0),
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 18,
-                FontWeight = FontWeights.Bold,
-                Foreground = (Brush)FindResource("lightFontColor")
-            };
-
-            Grid.SetRow(textBlockExercise, 0);
-            Grid.SetColumn(textBlockExercise, 0);
-
-
-
-            TextBlock textBlockNotes = new TextBlock
-            {
-                Text = "Notes",
-                TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0),
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 18,
-                FontWeight = FontWeights.Bold,
-                Foreground = (Brush)FindResource("lightFontColor")
-            };
-
-            Grid.SetRow(textBlockNotes, 0);
-            Grid.SetColumn(textBlockNotes, 2);
-
-            TextBox notesTextBox = new TextBox
-            {
-                Name = "notesTXT",
-                Margin = new Thickness(8)
-            };
-            Grid.SetRow(notesTextBox, 1);
-            Grid.SetColumn(notesTextBox, 2);
-
-            AutoCompleteBox exerciseAutoCompleteBox = new AutoCompleteBox
-            {
-                Name = "exerciseACT",
-                Margin = new Thickness(8),
-                FilterMode = AutoCompleteFilterMode.Contains
-
-            };
-            Grid.SetRow(exerciseAutoCompleteBox, 1);
-
-
-
-            grid.Children.Add(textBlockExercise);
-            grid.Children.Add(textBlockNotes);
-            grid.Children.Add(notesTextBox);
-            grid.Children.Add(exerciseAutoCompleteBox);
-            grid.Children.Add(packIcon);
-
-
-            border.Child = grid;
-
-            dataObj obj = new dataObj();
-            notesTextBox.TextChanged += (sender, e) => UpdateDataObject(notesTextBox, obj);
-            exerciseAutoCompleteBox.TextChanged += async (sender, e) => await DrugAutoCompleteBox_TextChangedAsync(exerciseAutoCompleteBox, obj);
-            packIcon.MouseDown += (sender, e) => removeLast(obj);
-            obj.IsSNOMED = false;
-
-            ObjectsList.Add(obj);
-
-
-            mainStackPanel.Children.Add(border);
-        }
         private async Task DrugAutoCompleteBox_TextChangedAsync(object sender, dataObj dataObject)
         {
             //wait for 1 second
@@ -654,7 +511,7 @@ namespace clinical
             {
                 Name = "notesTXT",
                 Margin = new Thickness(8),
-                Text = issue.Notes
+                Text = issue.Frequency+" Notes:"+issue.Notes
             };
             Grid.SetRow(notesTextBox, 1);
             Grid.SetColumn(notesTextBox, 1);
@@ -696,12 +553,28 @@ namespace clinical
 
         private void UpdateDataObject(TextBox textBox, dataObj dataObject)
         {
-            if (textBox.Name == "notesTXT")
+            if (textBox.Name == "numberTB")
+            {
+                //reject last input if not a number
+                if (!int.TryParse(textBox.Text, out int n))
+                {
+                    textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1);
+                    return;
+                }
+                dataObject.freq = int.Parse( textBox.Text);
+            }
+            else if (textBox.Name == "notesTXT")
             {
                 dataObject.Notes = textBox.Text;
             }
+            
+
         }
-        
+        private void UpdateDataObject(ComboBox textBox, dataObj dataObject)
+        {
+            dataObject.period = textBox.Text;
+        }
+
 
         private void print(object sender, MouseButtonEventArgs e)
         {
@@ -767,34 +640,19 @@ namespace clinical
             await _prescriptionService.InsertPrescriptionAsync(prescription);
             foreach (dataObj obj in ObjectsList)
             {
-                if (obj.IsSNOMED)
+                IssueDrug issueDrug = new IssueDrug
                 {
-                    IssueSNOMED issueSNOMED = new IssueSNOMED
-                    {
-                        PrescriptionID = prescriptionID,
-                        IssueID = obj.TestId,
-                        Notes = obj.Notes,
-                        SNOMEDName = obj.Test,
-                        PatientID = currentPatient.PatientID,
-                        DoctorID = currentVisit.DoctorID,
-                        VisitID = currentVisit.VisitID
-                    };
-                    await _issueService.InsertIssueAsync(issueSNOMED);
-                }
-                else
-                {
-                    IssueDrug issueDrug = new IssueDrug
-                    {
-                        PrescriptionID = prescriptionID,
-                        IssueID = obj.TestId,
-                        PatientID = currentPatient.PatientID,
-                        DoctorID = currentVisit.DoctorID,
-                        VisitID = currentVisit.VisitID,
-                        Notes = obj.Notes,
-                        Name = obj.Test
-                    };
-                    await _issueDrugService.InsertIssueDrugAsync(issueDrug);
-                }
+                    PrescriptionID = prescriptionID,
+                    IssueID = obj.TestId,
+                    PatientID = currentPatient.PatientID,
+                    DoctorID = currentVisit.DoctorID,
+                    VisitID = currentVisit.VisitID,
+                    Notes = obj.Notes!=null?obj.Notes:"",
+                    Name = obj.Test != null ? obj.Test : "",
+                    Frequency= $"{obj.freq} times per {obj.period}",
+                };
+                await _issueDrugService.InsertIssueDrugAsync(issueDrug);
+
             }
             MessageBox.Show("Prescription Saved, ID: " + prescriptionID.ToString());
         }
@@ -822,11 +680,7 @@ namespace clinical
             CreateNewIssueDrugUI();
         }
 
-        private void newTestExercise(object sender, MouseButtonEventArgs e)
-        {
-            CreateNewIssueSNOMEDUI();
-
-        }
+        
 
         private void removeLast(dataObj obj)
         {
