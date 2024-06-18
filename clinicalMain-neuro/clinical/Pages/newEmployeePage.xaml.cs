@@ -71,11 +71,11 @@ namespace clinical.Pages
                 MessageBox.Show("Invalid Email", "Error");
                 return;
             }
-            if (userService.GetUserByNIDAsync(nid) != null)
-            {
-                MessageBox.Show("National ID already exists", "Error");
-                return;
-            }
+            //if (userService.GetUserByNIDAsync(nid) != null)
+            //{
+            //    MessageBox.Show("National ID already exists", "Error");
+            //    return;
+            //}
             if (password.Length < 8)
             {
                 MessageBox.Show("Password must be at least 8 characters", "Error");

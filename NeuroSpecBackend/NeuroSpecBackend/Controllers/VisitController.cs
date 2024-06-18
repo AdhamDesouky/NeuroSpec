@@ -127,33 +127,51 @@ namespace NeuroSpecBackend.Controllers
             return availableTimeSlots;
         }
 
-        //get all visits on day
         [HttpGet("byDate/{selectedDay}")]
         public async Task<ActionResult<List<Visit>>> GetAllVisitsOnDate(DateTime selectedDay)
         {
-            var visits = await _visits.Find(v => v.TimeStamp.Date == selectedDay.Date).ToListAsync();
+            // Define the start and end of the day for the selected date
+            var startOfDay = selectedDay.Date;
+            var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
 
-            if (visits == null)
+            // Use a range query to find visits within the given date
+            var visits = await _visits.Find(v =>
+                v.TimeStamp >= startOfDay &&
+                v.TimeStamp <= endOfDay
+            ).ToListAsync();
+
+            if (visits == null || visits.Count == 0)
             {
                 return NotFound();
             }
 
             return visits;
         }
+
 
         //get all visits by doctor id on date
         [HttpGet("byDoctorID/{doctorID}/onDate/{dateTime}")]
         public async Task<ActionResult<List<Visit>>> GetAllVisitsByDoctorIDOnDate(int doctorID, DateTime dateTime)
         {
-            var visits = await _visits.Find(v => v.DoctorID == doctorID && v.TimeStamp.Date == dateTime.Date).ToListAsync();
+            // Define the start and end of the day for the given date
+            var startOfDay = dateTime.Date;
+            var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
 
-            if (visits == null)
+            // Use a range query to find visits within the given date
+            var visits = await _visits.Find(v =>
+                v.DoctorID == doctorID &&
+                v.TimeStamp >= startOfDay &&
+                v.TimeStamp <= endOfDay
+            ).ToListAsync();
+
+            if (visits == null || visits.Count == 0)
             {
                 return NotFound();
             }
 
             return visits;
         }
+
 
 
 
@@ -161,14 +179,16 @@ namespace NeuroSpecBackend.Controllers
         [HttpGet("futureVisitsByDoctorID/{doctorID}")]
         public async Task<ActionResult<List<Visit>>> GetFutureDoctorVisits(int doctorID)
         {
-            var visits = await _visits.Find(v => v.DoctorID == doctorID && v.TimeStamp.Date >= DateTime.Now.Date).ToListAsync();
+            var now = DateTime.Now;
+            var visits = await _visits.Find(v => v.DoctorID == doctorID && v.TimeStamp >= now).ToListAsync();
 
-            if (visits == null)
+            if (visits == null || visits.Count == 0)
             {
                 return NotFound();
             }
 
             return visits;
         }
+    
     }
 }
