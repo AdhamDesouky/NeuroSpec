@@ -12,6 +12,12 @@ namespace NeuroSpecCompanion.Views
             InitializeComponent();
         }
 
+
+        private async void OnBellIconClicked(object sender, EventArgs e)
+        {
+            // Implement your logic here, for example:
+            await DisplayAlert("Alert", "Notification settings or actions go here.", "OK");
+        }
         private async void OnUploadPhotoClicked(object sender, EventArgs e)
         {
             try

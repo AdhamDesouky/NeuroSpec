@@ -248,6 +248,7 @@
 		<MauiImage Include="Resources\Images\ContactDoctorPage\call.svg" />
 		<MauiImage Include="Resources\Images\ContactDoctorPage\video.svg" />
 		<MauiImage Include="Resources\Images\ContactDoctorPage\email.svg" />
+		<MauiImage Include="Resources\Images\HomeIcons\help.svg" />
 
 	</ItemGroup>
 
