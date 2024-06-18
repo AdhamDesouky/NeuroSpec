@@ -29,8 +29,8 @@
                         <ColumnDefinition Width="19*" />
 
                     </Grid.ColumnDefinitions>
-                    <icon:PackIconMaterial Kind="WheelchairAccessibility" Width="32" Height="32" Margin="15,11,0,0" Foreground="{StaticResource darkerColor}" Grid.Column="1" />
-                    <TextBlock Text="Recover360" Foreground="{StaticResource darkerColor}" Style="{StaticResource TitleText}" Grid.Column="1" Margin="36,0,0,10" />
+                    <icon:PackIconMaterial Kind="Brain" Width="32" Height="32" Margin="15,11,0,0" Foreground="{StaticResource darkerColor}" Grid.Column="1" />
+                    <TextBlock Text="NeuroSpec" Foreground="{StaticResource darkerColor}" Style="{StaticResource TitleText}" Grid.Column="1" Margin="36,0,0,10" />
 
                 </Grid>
 
