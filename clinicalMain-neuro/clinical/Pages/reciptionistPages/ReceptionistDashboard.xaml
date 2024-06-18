@@ -32,7 +32,7 @@
                 <RowDefinition Height="35*"/>
             </Grid.RowDefinitions>
             <!--Top Left-->
-            <Border Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource theLinedBorder}" Margin="5 0 5 5" >
+            <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Style="{StaticResource theLinedBorder}" Margin="5 0 5 5" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="60"/>
@@ -42,36 +42,37 @@
                     <TextBlock Name="signedInTB" Text="Welcome, Mohamed" Margin="20,17,20,0" VerticalAlignment="Top"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="28"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10 5">
                         <Border Style="{StaticResource theLinedBorder}" Margin="10" Background="{StaticResource lighterColor}">
-                            <StackPanel Orientation="Horizontal" Margin="5">
-                                <Icon:PackIconMaterial Kind="Calendar" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
-
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <Icon:PackIconMaterial Kind="Calendar" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
                                     <TextBlock Name="numberOfAppointmentsTB" Grid.Row="0" Text="66" Margin="20 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="24"/>
-                                    <TextBlock Grid.Row="1" Text="Appointments" Margin="20 5" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="16"/>
+                                </StackPanel>
+                                <TextBlock Text="Appointments" HorizontalAlignment="Center" VerticalAlignment="Top"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="16" Margin="0,46,0,0" Grid.RowSpan="2"/>
 
-                                </Grid>
-                            </StackPanel>
+                            </Grid>
 
 
                         </Border>
                         <Border Style="{StaticResource theLinedBorder}" Margin="10" Background="{StaticResource lighterColor}">
-                            <StackPanel Orientation="Horizontal" Margin="5">
-                                <Icon:PackIconMaterial Kind="Doctor" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
-
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <Icon:PackIconMaterial Kind="Doctor" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
                                     <TextBlock Name="numberOfDoctorsTB" Grid.Row="0" Text="66" Margin="20 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="24"/>
-                                    <TextBlock Grid.Row="1" Text="Doctors" Margin="20 5" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="16"/>
 
-                                </Grid>
-                            </StackPanel>
+
+
+                                </StackPanel>
+                                <TextBlock Grid.Row="1" Text="Doctors" HorizontalAlignment="Center" VerticalAlignment="Top"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="16"/>
+
+                            </Grid>
 
 
                         </Border>
@@ -82,10 +83,12 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="View My Account" Margin="20 5" VerticalAlignment="Center"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="20"/>
+                                    <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="Pending Appointments" Margin="5" VerticalAlignment="Center"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="17"/>
 
                                 </Grid>
-                                <Icon:PackIconMaterial Kind="AccountArrowRight" Margin="0 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
+                                <Icon:PackIconMaterial Kind="AccountArrowRight" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
+                                <Icon:PackIconMaterial Kind="Circle" Margin="-5 5 5 30"  VerticalAlignment="Center" Width="20" Height="20" Foreground="{StaticResource darkerColor }"/>
+                                <TextBlock Name="pendingRequestsTB" Grid.Row="0" Text="66" Margin="-25 5 5 30" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="12"/>
 
                             </StackPanel>
 
@@ -162,8 +165,8 @@
                 </Grid>
             </Border>
         </Grid>
-        
-        
+
+
         <!--top right-->
         <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource theLinedBorder}" Margin="5,0,5,5">
             <Grid Margin="10">

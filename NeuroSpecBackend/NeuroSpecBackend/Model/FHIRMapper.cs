@@ -5,6 +5,7 @@ using myPatient= NeuroSpec.Shared.Models.DTO.Patient;
 using Attachment=Hl7.Fhir.Model.Attachment;
 using NeuroSpec.Shared.Models.DTO;
 using System.Text;
+using NeuroSpecCompanion.Shared.Services.DTO_Services;
 namespace NeuroSpecBackend.Model
 {
     public static class FHIRMapper
@@ -91,6 +92,54 @@ namespace NeuroSpecBackend.Model
             };
 
             return diagnosticReport;
+        }
+        public static MedicationRequest ToHl7MedicationRequest(Prescription prescription,List<IssueDrug> issueDrugs)
+        {
+            var hl7MedicationRequest = new MedicationRequest();
+            hl7MedicationRequest.Status = MedicationRequest.MedicationrequestStatus.Active;
+            hl7MedicationRequest.Subject = new ResourceReference
+            {
+                Reference = $"Patient/{prescription.PatientID}"
+            };
+            hl7MedicationRequest.Recorder = new ResourceReference
+            {
+                Reference = $"Practitioner/{prescription.DoctorID}"
+            };
+            hl7MedicationRequest.Encounter = new ResourceReference
+            {
+                Reference = $"Appointment/{prescription.VisitID}"
+            };
+
+            hl7MedicationRequest.AuthoredOn = prescription.TimeStamp.ToLongDateString();
+            IssueDrugService issueDrugService = new IssueDrugService();
+            List<Coding> issuedDrugs = new List<Coding>();
+            foreach (var issueDrug in issueDrugs)
+            {
+                issuedDrugs.Add(new Coding
+                {
+                    System = "http://hlsemops.microsoft.com",
+                    Code = issueDrug.Name
+                }) ;
+            }
+            CodeableConcept codeableConcept = new CodeableConcept
+            {
+                Coding = issuedDrugs
+            };
+
+            hl7MedicationRequest.Medication = new CodeableReference
+            {
+                Concept = codeableConcept
+            }; ;
+            List<Annotation> notes = new List<Annotation>();
+            foreach (var issueDrug in issueDrugs)
+            {
+                notes.Add(new Annotation
+                {
+                    Text = issueDrug.Notes
+                });
+            }
+            hl7MedicationRequest.Note = notes;
+            return hl7MedicationRequest;
         }
         
     }

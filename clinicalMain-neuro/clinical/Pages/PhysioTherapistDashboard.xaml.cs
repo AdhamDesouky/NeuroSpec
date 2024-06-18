@@ -21,11 +21,12 @@ namespace clinical.Pages
     {
         private DateTime currentDayIndex = DateTime.Now;
         private User Doctor;
-        VisitService VisitService = new VisitService();
+        VisitService VisitService;
         public DoctorDashboard(User therapist)
         {
             InitializeComponent();
             if (therapist == null) throw new ArgumentNullException();
+            VisitService = new VisitService();
             Doctor = therapist;
             UpdateDayBorders();
             leftSideFrame.NavigationService.Navigate(new DashBoardPage());
@@ -37,16 +38,16 @@ namespace clinical.Pages
 
 
         
-        async void updateDayAppointments()
+        async Task updateDayAppointments()
         {
             todayAppointmentsStackPanel.Children.Clear();
-            List<Visit> visits = await VisitService.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex);
-            numberOfAppointmentsTB.Text = visits.Count.ToString();
+            //List<Visit> visits = await VisitService.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex);
+            //numberOfAppointmentsTB.Text = visits.Count.ToString();
 
-            foreach (var i in visits)
-            {
-                todayAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
-            }
+            //foreach (var i in visits)
+            //{
+            //    todayAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+            //}
         }
         private void viewPatient(Patient patient)
         {
@@ -190,7 +191,7 @@ namespace clinical.Pages
             {
                 createDayUI(currentDayIndex.AddDays(i));
             }
-            updateDayAppointments();
+            await updateDayAppointments();
 
         }
 

@@ -63,7 +63,7 @@ namespace clinical.Pages
 
 
 
-            foreach (var i in await visitService.GetVisitsByPatientIDAsync(currPatient.PatientID))
+            foreach (var i in await visitService.GetAllVisitsByPatientIDAsync(currPatient.PatientID))
             {
                 prevVisitsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit));
             }
@@ -146,7 +146,7 @@ namespace clinical.Pages
         private async void UpdateChart()
         {
             List<EvaluationTestFeedBack> feedBacks = await evaluationTestFeedbackService.GetFeedbackByPatientAsync(currPatient.PatientID);
-            List<Visit>visits=await visitService.GetVisitsByPatientIDAsync(currPatient.PatientID);
+            List<Visit>visits=await visitService.GetAllVisitsByPatientIDAsync(currPatient.PatientID);
 
             SeriesCollection = new LiveCharts.SeriesCollection();
 

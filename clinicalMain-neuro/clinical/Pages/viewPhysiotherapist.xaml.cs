@@ -24,6 +24,7 @@ namespace clinical.Pages
         public viewDoctor(User user)
         {
             InitializeComponent();
+            visitService=new VisitService();
             currDoctor = user;
             if (user == null) return;
 
@@ -55,14 +56,14 @@ namespace clinical.Pages
 
         async void initAsync()
         {
-            List<Patient> patients = await patientService.GetPatientsByDoctorAsync(currDoctor.UserID);
-            patientsDataGrid.ItemsSource = patients;
+            //List<Patient> patients = await patientService.GetPatientsByDoctorAsync(currDoctor.UserID);
+            //patientsDataGrid.ItemsSource = patients;
 
-            List<Visit> visits = await visitService.GetDoctorVisitsOnDate(currDoctor.UserID, DateTime.Now);
-            foreach (var i in visits)
-            {
-                appointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
-            }
+            //List<Visit> visits = await visitService.GetDoctorVisitsOnDate(currDoctor.UserID, DateTime.Now);
+            //foreach (var i in visits)
+            //{
+            //    appointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+            //}
 
 
         }

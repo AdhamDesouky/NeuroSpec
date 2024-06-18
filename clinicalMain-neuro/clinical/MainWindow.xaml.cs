@@ -1,12 +1,9 @@
 ﻿using clinical.Pages;
-using System.Collections.Generic;
-using System;
+using MahApps.Metro.IconPacks;
+using NeuroSpec.Shared.Models.DTO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using MahApps.Metro.IconPacks;
-using NeuroSpec.Shared.Models.DTO;
-using NeuroSpecCompanion.Shared.Services.DTO_Services;
 
 namespace clinical
 {
@@ -17,12 +14,10 @@ namespace clinical
     {
         User loggedIn;
         int state;
-        int selectedTab=0;
 
-        UserService userService = new UserService();
-        public MainWindow(int stat,User user)
+        public MainWindow(int stat, User user)
         {
-            loggedIn=user;
+            loggedIn = user;
             state = stat;
             InitializeComponent();
             globals.makeItLookClickableReverseColors(homeBTN);
@@ -32,17 +27,9 @@ namespace clinical
             globals.makeItLookClickableReverseColors(settingsBtn);
 
             homeBTN.Focus();
-            settingsBtn.Visibility=Visibility.Hidden;
+            settingsBtn.Visibility = Visibility.Hidden;
             which();
-            //List<User> users = userService.GetAllUsersAsync().Result;
 
-
-            //for (int j = 0; j < users.Count; j++)
-            //{
-            //    if (globals.signedIn.UserID == users[j].UserID || globals.signedIn.UserID == 0 || users[j].UserID == 0) { continue; }
-            //    DB.InsertChatRoom(new ChatRoom(globals.generateNewChatRoomID(globals.signedIn.UserID, users[j].UserID), globals.signedIn.UserID, users[j].UserID, users[j].FirstName, DateTime.Now));
-
-            //}
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -54,16 +41,16 @@ namespace clinical
         }
         void whichTab(int curr)
         {
-            homeBTN.BorderBrush=new SolidColorBrush(Colors.Transparent);
+            homeBTN.BorderBrush = new SolidColorBrush(Colors.Transparent);
             patientSearchBTN.BorderBrush = new SolidColorBrush(Colors.Transparent);
             calendarBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
             chatBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
             settingsBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            ((PackIconMaterial)homeBTN.Child).Foreground= (Brush)Application.Current.Resources["lightFontColor"];
-            ((PackIconMaterial)patientSearchBTN.Child).Foreground= (Brush)Application.Current.Resources["lightFontColor"];
-            ((PackIconMaterial)calendarBtn.Child).Foreground= (Brush)Application.Current.Resources["lightFontColor"];
-            ((PackIconMaterial)chatBtn.Child).Foreground= (Brush)Application.Current.Resources["lightFontColor"];
-            ((PackIconMaterial)settingsBtn.Child).Foreground= (Brush)Application.Current.Resources["lightFontColor"];
+            ((PackIconMaterial)homeBTN.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
+            ((PackIconMaterial)patientSearchBTN.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
+            ((PackIconMaterial)calendarBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
+            ((PackIconMaterial)chatBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
+            ((PackIconMaterial)settingsBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
 
             if (curr == 0)
             {
@@ -104,12 +91,12 @@ namespace clinical
                 mainFrame.Navigate(new adminDashboardPage(loggedIn));
                 settingsBtn.Visibility = Visibility.Visible;
             }
-            
+
             else if (state == 2)
             {
                 mainFrame.Navigate(new DoctorDashboard(loggedIn));
                 //new SideBarWindow().Show();
-                    
+
             }
             else mainFrame.Navigate(new ReceptionistDashboard(loggedIn));
         }
@@ -183,7 +170,7 @@ namespace clinical
 
         }
 
-        
+
 
         private void signOut(object sender, RoutedEventArgs e)
         {

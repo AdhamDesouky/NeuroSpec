@@ -41,8 +41,9 @@ namespace clinical
 
             for (int i = 9; i <= 18; i++) //slots here //todo: get from db
             {
-                times.Add($"{i}:00");
-                times.Add($"{i}:30");
+                string pt1= i < 10 ? "0" + i : i.ToString();
+                times.Add($"{pt1}:00");
+                times.Add($"{pt1}:30");
 
             }
             initAsync();
@@ -100,11 +101,16 @@ namespace clinical
         {
             selectedPatient = (Patient)allPatientsDataGrid.SelectedItem;
             patientName.Text = selectedPatient.FirstName + " " + selectedPatient.LastName;
-            selectedDoctor = await userService.GetUserByIdAsync((int)selectedPatient.AssignedDoctorID);
+            if (selectedPatient.AssignedDoctorID != null)
+            {
+                selectedDoctor = await userService.GetUserByIdAsync((int)selectedPatient.AssignedDoctorID);
+                DoctorName.Text = selectedDoctor.FullName;
 
-            DoctorName.Text = selectedDoctor.FullName;
+            }
+
             handleFinances();
             Refresh();
+
 
 
         }

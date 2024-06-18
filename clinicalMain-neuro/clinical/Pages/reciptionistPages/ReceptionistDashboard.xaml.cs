@@ -1,5 +1,6 @@
 ﻿using clinical.Pages.reciptionistPages;
 using NeuroSpec.Shared.Models.DTO;
+using NeuroSpec.Shared.Services.DTO_Services;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,11 @@ namespace clinical.Pages
     /// </summary>
     public partial class ReceptionistDashboard : Page
     {
-        private DateTime currentDayIndex = DateTime.Now;
+        public DateTime currentDayIndex = DateTime.Now;
         VisitService visitService = new VisitService();
         PatientService patientService = new PatientService();
         UserService userService = new UserService();
+        BookAppointmentService bookAppointmentRequestService = new BookAppointmentService();
         public ReceptionistDashboard(User employee)
         {
             InitializeComponent();
@@ -165,6 +167,7 @@ namespace clinical.Pages
         
         private async void UpdateDayBorders()
         {
+            pendingRequestsTB.Text= (await bookAppointmentRequestService.GetNotConfirmedBookAppointmentRequestsAsync()).Count.ToString();
 
             if (allPanelCB.IsChecked == true && (currentDayIndex.DayOfYear != DateTime.Now.DayOfYear))
             {
@@ -241,6 +244,7 @@ namespace clinical.Pages
 
         private void viewReciptionistProfile(object sender, MouseButtonEventArgs e)
         {
+            new PendingAppointments().Show();
 
         }
 

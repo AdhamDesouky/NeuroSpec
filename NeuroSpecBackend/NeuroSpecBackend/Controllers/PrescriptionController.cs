@@ -4,6 +4,7 @@ using NeuroSpecBackend.Model;
 using NeuroSpec.Shared.Models.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hl7.Fhir.Model;
 
 namespace NeuroSpecBackend.Controllers
 {
@@ -12,10 +13,12 @@ namespace NeuroSpecBackend.Controllers
     public class PrescriptionController : ControllerBase
     {
         private readonly IMongoCollection<Prescription> _prescriptions;
+        private readonly IMongoCollection<IssueDrug> _IssueDrugs;
 
         public PrescriptionController(NeuroDbContext context)
         {
             _prescriptions = context.Prescriptions;
+            _IssueDrugs = context.IssueDrugs;
         }
 
         [HttpPost]
@@ -88,6 +91,20 @@ namespace NeuroSpecBackend.Controllers
         {
             var prescriptions = await _prescriptions.Find(p => p.VisitID == visitID).ToListAsync();
             return Ok(prescriptions);
+        }
+
+        [HttpGet("onFHIR/{prescriptionID}")]
+        public async Task<ActionResult<MedicationRequest>> GetPrescriptionOnFHIR(int prescriptionID)
+        {
+            var prescription = await _prescriptions.Find(p => p.PrescriptionID == prescriptionID).FirstOrDefaultAsync();
+
+            if (prescription == null)
+            {
+                return NotFound();
+            }
+            var issueDrugs = await _IssueDrugs.Find(i => i.PrescriptionID == prescriptionID).ToListAsync();
+
+            return FHIRMapper.ToHl7MedicationRequest(prescription, issueDrugs);
         }
     }
 }

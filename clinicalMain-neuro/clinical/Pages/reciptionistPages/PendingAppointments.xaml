@@ -1,0 +1,31 @@
+﻿<Window x:Class="clinical.Pages.reciptionistPages.PendingAppointments"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:uc="clr-namespace:clinical.userControls"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
+		 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+		 xmlns:fa="http://schemas.fontawesome.io/icons/" mc:Ignorable="av" 
+        Height="510" Width="420" Background="Transparent" ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        >
+    <Border Background="{StaticResource lightFontColor}" CornerRadius="20" BorderThickness="2" BorderBrush="#ebedf3"
+        Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+
+            </Grid.RowDefinitions>
+            <Icon:PackIconMaterial Kind="WindowMinimize" MouseDown="PackIconMaterial_MouseDown_1" VerticalAlignment="Center" Height="30" HorizontalAlignment="Right" Margin="0,0,0,0" Foreground="{StaticResource darkerColor}" Width="21"/>
+            <Border Background="Transparent" Margin="-10,-10,100,1" MouseDown="Border_MouseDown"/>
+            <Border Style="{StaticResource theBorder}" Margin="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" >
+                <StackPanel Name="mainStackPanel" Orientation="Vertical" Margin="5"/>
+
+            </Border>
+
+        </Grid>
+    </Border>
+</Window>

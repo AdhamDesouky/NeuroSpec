@@ -131,9 +131,9 @@ namespace clinical.Pages
             }
             else
             {
-                todayVisits = await visitService.GetDoctorVisitsOnDate(globals.signedIn.UserID, dateTime);
+                //todayVisits = await visitService.GetDoctorVisitsOnDate(globals.signedIn.UserID, dateTime);
             }
-            calendarEvents = await calendarEventService.GetCalendarEventsByUserIDAndDate(globals.signedIn.UserID, dateTime);
+            calendarEvents = await calendarEventService.GetCalendarEventsByUserIDAndDateAsync(globals.signedIn.UserID, dateTime);
 
 
             int collectedSize = todayVisits.Count + calendarEvents.Count;

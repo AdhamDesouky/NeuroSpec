@@ -46,8 +46,6 @@ namespace clinical.Pages.reciptionistPages
             timeCB.ItemsSource = times;
             timeCB.SelectedItem = visit.TimeStamp.ToString("HH:mm");
             
-
-
         }
         async void initAsync()
         {
@@ -149,8 +147,6 @@ namespace clinical.Pages.reciptionistPages
             await visitService.UpdateVisitAsync(currVisit.VisitID,currVisit);
             markDoneTB.Text = currVisit.IsDone ? "Mark as Undone" : "Mark as Done";
             MessageBox.Show("Visit Status Updated");
-
-
         }
     }
 }

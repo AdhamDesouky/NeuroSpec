@@ -170,10 +170,5 @@ namespace NeuroSpecBackend.Controllers
 
             return visits;
         }
-
-
-
-
-
     }
 }

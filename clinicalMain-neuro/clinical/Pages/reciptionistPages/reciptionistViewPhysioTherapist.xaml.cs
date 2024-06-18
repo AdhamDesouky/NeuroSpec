@@ -18,10 +18,10 @@ namespace clinical.Pages
         User Doctor;
         PatientService patientService = new PatientService();  
         VisitService visitService = new VisitService();
-        public reciptionistViewDoctor(User Doctor)
+        public reciptionistViewDoctor(User doctor)
         {
             InitializeComponent();
-            Doctor = Doctor;
+            Doctor = doctor;
             DoctorNameMainTxt.Text = Doctor.FullName;
             nameTextBox.Text = Doctor.FullName;
             emailTextBox.Text = Doctor.Email;
@@ -37,7 +37,7 @@ namespace clinical.Pages
             List<Patient> patientList = await patientService.GetPatientsByDoctorAsync(Doctor.UserID);
 
             patientsDataGrid.ItemsSource = patientList;
-            List<Visit> DoctorUpcomingVisits = await visitService.GetFutureDoctorVisits(Doctor.UserID);
+            List<Visit> DoctorUpcomingVisits = await visitService.GetFutureDoctorVisitsAsync(Doctor.UserID);
             foreach (var i in DoctorUpcomingVisits)
             {
                 upcomingAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));

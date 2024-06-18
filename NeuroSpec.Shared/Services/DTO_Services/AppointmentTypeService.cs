@@ -11,11 +11,16 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
+        private readonly JsonSerializerOptions options;
 
         public AppointmentTypeService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.runasp.net/api/appointmenttype";
+            _baseApi = "http://neurospec.runasp.net/api/AppointmentType";
+            options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<List<AppointmentType>> GetAllAppointmentTypesAsync()
@@ -23,7 +28,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<AppointmentType>>(content);
+            return JsonSerializer.Deserialize<List<AppointmentType>>(content,options);
         }
 
         public async Task<AppointmentType> GetAppointmentTypeByIDAsync(int id)
@@ -31,7 +36,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/{id}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<AppointmentType>(content);
+            return JsonSerializer.Deserialize<AppointmentType>(content,options);
         }
 
         public async Task<AppointmentType> InsertAppointmentTypeAsync(AppointmentType appointmentType)
@@ -41,7 +46,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<AppointmentType>(responseContent);
+            return JsonSerializer.Deserialize<AppointmentType>(responseContent,options);
         }
 
         public async Task UpdateAppointmentTypeAsync(int id, AppointmentType appointmentType)

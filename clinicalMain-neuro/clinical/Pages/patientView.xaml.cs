@@ -19,7 +19,6 @@ namespace clinical
             InitializeComponent();
             selectedPatient = patient;
             mainFrame.Navigate(new patientViewMainPage(selectedPatient));
-            sideFrame.Navigate(new DoctorSideBar());
 
         }
         public patientView(MedicalRecord medicalRecord)
@@ -28,7 +27,6 @@ namespace clinical
             this.medicalRecord = medicalRecord;
             initAsync();
             mainFrame.Navigate(new newRecordPage(medicalRecord));
-            sideFrame.Navigate(new DoctorSideBar());
 
         }
         async void initAsync()
@@ -41,14 +39,12 @@ namespace clinical
             InitializeComponent();
             mainFrame.Navigate(new reciptionistViewDoctor(viewDoctor));
 
-            sideFrame.Navigate(new DoctorSideBar());
 
         }
         public patientView(Visit viewDoctor)
         {
             InitializeComponent();
             mainFrame.Navigate(new visit(viewDoctor));
-            sideFrame.Navigate(new DoctorSideBar());
 
         }
 

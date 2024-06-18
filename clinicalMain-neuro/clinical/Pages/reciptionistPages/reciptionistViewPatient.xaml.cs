@@ -51,7 +51,7 @@ namespace clinical.Pages.reciptionistPages
 
         async void initAsync()
         {
-            List<Visit> upcomingVisits = await visitService.GetVisitsByPatientIDAsync(patient.PatientID);
+            List<Visit> upcomingVisits = await visitService.GetAllVisitsByPatientIDAsync(patient.PatientID);
             //List<Visit> previousVisits = DB.GetPatientPrevVisits(patient.PatientID);
             foreach (var i in upcomingVisits)
             {

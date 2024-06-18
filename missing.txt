@@ -15,7 +15,6 @@ TODOs:
 -- login by username or id not just id
 
 -Home Page:
--- the flight hotel buttons up, either remove them or do something about them
 -- add a sidebar?
 -- notifications button logs out!
 
@@ -36,8 +35,8 @@ ScanTest, Exercise, and Drug are to be read from ontology search selections and 
 - color of the system
 - working pages
 - slow demo with voice-over 
-- more FHIR resources 
+✅ more FHIR resources (7ateet el prescription kman, kda total 3 kfaya)
 - sending and receiving prescriptions
-- Appointment request with the receptionist (abdo 3aref)
+✅ Appointment request with the receptionist (abdo 3aref)
 - emergency contact to see GPS 
 - prescription dropdown

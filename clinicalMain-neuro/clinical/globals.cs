@@ -1,4 +1,5 @@
 ﻿using clinical.Pages;
+using clinical.Pages.reciptionistPages;
 using MahApps.Metro.IconPacks;
 using NeuroSpec.Shared.Models.DTO;
 using NeuroSpec.Shared.Models.Ontology;
@@ -143,6 +144,85 @@ namespace clinical
             Process.Start(new ProcessStartInfo(s) { UseShellExecute = true });
         }
 
+
+
+        public async static Task<Border> CreateAppointmentRequestUI(BookAppointmentRequest request)
+        {
+            PatientService patientService = new PatientService();
+
+            Border borderedGrid = new Border
+            {
+                Style = (Style)Application.Current.Resources["theLinedBorder"],
+                Margin = new Thickness(5, 5, 5, 0)
+            };
+
+            Grid grid = new Grid();
+
+            for (int i = 0; i < 4; i++)
+            {
+                grid.RowDefinitions.Add(new RowDefinition());
+            }
+
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(72) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            UserService userService = new UserService();
+
+            TextBlock DoctorNameTextBlock = CreatePrescribedTextBlock("Doctor Name:", 0, 0, 5, 5);
+            TextBlock timestampTextBlock = CreatePrescribedTextBlock("Timestamp:", 1, 0, 5, 5);
+            TextBlock patientTextBlock = CreatePrescribedTextBlock("Patient Name:", 2, 0, 7.5, 5);
+
+            Patient patient = await patientService.GetPatientByIdAsync(request.PatientID);
+            TextBlock patientNameTextBlock = CreatePrescribedTextBlock($"{patient.FirstName+" "+patient.LastName}", 2, 1, 0, 5);
+
+            string physName = (await userService.GetUserByIdAsync( request.DoctorID)).FullName;
+
+            TextBlock DoctorNameTB = CreatePrescribedTextBlock($"Dr. {physName}", 0, 1, 0, 5);
+            TextBlock timestampTB = CreatePrescribedTextBlock(request.AppointmentTime.ToString("g"), 1, 1, 0, 5);
+
+            Grid.SetRow(DoctorNameTextBlock, 0);
+            Grid.SetColumn(DoctorNameTextBlock, 0);
+            Grid.SetRow(timestampTextBlock, 1);
+            Grid.SetColumn(timestampTextBlock, 0);
+            Grid.SetRow(patientTextBlock, 2);
+            Grid.SetColumn(patientTextBlock, 0);
+            Grid.SetRow(patientNameTextBlock, 2);
+            Grid.SetColumn(patientNameTextBlock, 1);
+            Grid.SetRow(DoctorNameTB, 0);
+            Grid.SetColumn(DoctorNameTB, 1);
+            Grid.SetRow(timestampTB, 1);
+            Grid.SetColumn(timestampTB, 1);
+
+
+            
+                Button viewPrescriptionBTN = new Button
+                {
+                    Content = "View Request",
+                    Margin = new Thickness(5),
+                    Background = (Brush)Application.Current.Resources["selectedColor"],
+                    Foreground = (Brush)Application.Current.Resources["lightFontColor"],
+                    BorderBrush = (Brush)Application.Current.Resources["lightFontColor"],
+                    BorderThickness = new Thickness(2),
+                    Padding = new Thickness(5),
+                };
+                viewPrescriptionBTN.Click += (sender, e) => viewAppointmentRequest(request);
+
+                Grid.SetRow(viewPrescriptionBTN, 3);
+                Grid.SetColumnSpan(viewPrescriptionBTN, 2);
+                grid.Children.Add(viewPrescriptionBTN);
+            
+
+            grid.Children.Add(DoctorNameTextBlock);
+            grid.Children.Add(timestampTextBlock);
+            grid.Children.Add(patientTextBlock);
+            grid.Children.Add(patientNameTextBlock);
+            grid.Children.Add(DoctorNameTB);
+            grid.Children.Add(timestampTB);
+
+            borderedGrid.Child = grid;
+            return borderedGrid;
+        }
+
+
         public async static Task<Border> CreatePrescriptionUI(Prescription prescription)
         {
             Border borderedGrid = new Border
@@ -226,7 +306,10 @@ namespace clinical
             borderedGrid.Child = grid;
             return borderedGrid;
         }
-
+        static void viewAppointmentRequest(BookAppointmentRequest request)
+        {
+            new reciptionistViewAppointmentRequestWindow(request).Show();
+        }
         static void viewPrescription(Prescription prescription)
         {
             new prescriptionWindow(prescription).Show();
@@ -680,14 +763,14 @@ namespace clinical
             }
         }
 
-        static async Task<bool> CanBookVisit(Visit visit)
+        public static async Task<bool> CanBookVisit(Visit visit)
         {
             VisitService visitService = new VisitService();
             AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
 
             Visit fakeVisit = visit;
             List<DateTime> proposedSlots = GenerateTimeSlots(visit.TimeStamp, fakeVisit.TimeStamp.AddMinutes((await appointmentTypeService.GetAppointmentTypeByIDAsync(visit.AppointmentTypeID)).TimeInMinutes), TimeSpan.FromMinutes(30));//TODO: get slot duration from DB
-            List<Visit> existingVisits = await visitService.GetDoctorVisits(visit.DoctorID);
+            List<Visit> existingVisits = await visitService.GetDoctorVisitsAsync(visit.DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
                 .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(60), TimeSpan.FromMinutes(30)))
@@ -714,7 +797,7 @@ namespace clinical
             AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
 
             List<DateTime> allSlots = GenerateAllPossibleTimeSlots(when);
-            List<Visit> existingVisits = await visitService.GetFutureDoctorVisits(DoctorID);
+            List<Visit> existingVisits = await visitService.GetFutureDoctorVisitsAsync(DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
                 .SelectMany(v => GenerateTimeSlots(v.TimeStamp, v.TimeStamp.AddMinutes(60), TimeSpan.FromMinutes(30)))
@@ -733,7 +816,7 @@ namespace clinical
             AppointmentTypeService appointmentTypeService = new AppointmentTypeService();
 
             List<DateTime> allSlots = GenerateTimeSlots(dayStartTime, dayEndTime, slotDuration);
-            List<Visit> existingVisits = await visitService.GetFutureDoctorVisits(DoctorID);
+            List<Visit> existingVisits = await visitService.GetFutureDoctorVisitsAsync(DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
                 .Where(v => v.TimeStamp.Date == selectedDay.Date)

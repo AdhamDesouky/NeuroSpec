@@ -12,11 +12,15 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
-
+        private readonly JsonSerializerOptions options;
         public CalendarEventService()
         {
             _httpClient = new HttpClient();
             _baseApi = "http://neurospec.runasp.net/api/CalendarEvent";
+            options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<List<CalendarEvent>> GetAllCalendarEventsAsync()
@@ -24,7 +28,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<CalendarEvent>>(content);
+            return JsonSerializer.Deserialize<List<CalendarEvent>>(content, options);
         }
 
         public async Task<CalendarEvent> GetCalendarEventByIDAsync(int eventID)
@@ -32,7 +36,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/{eventID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<CalendarEvent>(content);
+            return JsonSerializer.Deserialize<CalendarEvent>(content, options);
         }
 
         public async Task<CalendarEvent> InsertCalendarEventAsync(CalendarEvent calendarEvent)
@@ -42,7 +46,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<CalendarEvent>(responseContent);
+            return JsonSerializer.Deserialize<CalendarEvent>(responseContent, options);
         }
 
         public async Task UpdateCalendarEventAsync(int eventID, CalendarEvent calendarEvent)
@@ -59,12 +63,13 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<List<CalendarEvent>> GetCalendarEventsByUserIDAndDate(int userID, DateTime dateTime)
+        public async Task<List<CalendarEvent>> GetCalendarEventsByUserIDAndDateAsync(int userID, DateTime dateTime)
         {
-            var response = await _httpClient.GetAsync($"{_baseApi}/ByUserIDAndDate/{userID}/{dateTime}");
+            var response = await _httpClient.GetAsync($"{_baseApi}/ByUserIDAndDate/{userID}/{dateTime.ToString("yyyy-MM-dd")}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<CalendarEvent>>(content);
+            return JsonSerializer.Deserialize<List<CalendarEvent>>(content, options);
         }
+
     }
 }

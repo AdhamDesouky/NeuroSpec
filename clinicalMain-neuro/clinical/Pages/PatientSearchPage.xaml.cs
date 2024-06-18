@@ -100,13 +100,13 @@ namespace clinical.Pages
 
         private async void todaysPatients(object sender, MouseButtonEventArgs e)
         {
-            List<Visit>todaysVisits= await visitService.GetDoctorVisitsOnDate(globals.signedIn.UserID,DateTime.Now);
-            List<Patient> todaysPatients = new List<Patient>();
-            foreach (Visit visit in todaysVisits)
-            {
-                todaysPatients.Add(await patientService.GetPatientByIdAsync(visit.PatientID));
-            }
-            patientsDataGrid.ItemsSource = todaysPatients;
+            //List<Visit>todaysVisits= await visitService.GetDoctorVisitsOnDate(globals.signedIn.UserID,DateTime.Now);
+            //List<Patient> todaysPatients = new List<Patient>();
+            //foreach (Visit visit in todaysVisits)
+            //{
+            //    todaysPatients.Add(await patientService.GetPatientByIdAsync(visit.PatientID));
+            //}
+            //patientsDataGrid.ItemsSource = todaysPatients;
             patientsDataGrid.Items.Refresh();
 
         }

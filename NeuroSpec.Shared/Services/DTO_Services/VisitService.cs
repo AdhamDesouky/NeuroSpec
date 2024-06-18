@@ -17,30 +17,14 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
         public VisitService()
         {
             _httpClient = new HttpClient();
-            _baseApi = "http://neurospec.runasp.net/api/visit";
+            _baseApi = "http://neurospec.runasp.net/api/Visit";
             options = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true,
+                PropertyNameCaseInsensitive = true
             };
         }
 
-        public async Task<List<Visit>> GetAllVisitsAsync()
-        {
-            var response = await _httpClient.GetAsync(_baseApi);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonSerializer.Deserialize<List<Visit>>(content, options);
-        }
-
-        public async Task<Visit> GetVisitByIDAsync(int visitID)
-        {
-            var response = await _httpClient.GetAsync($"{_baseApi}/{visitID}");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Visit>(content, options);
-        }
-        public async Task<List<Visit>> GetVisitsByPatientIDAsync(int patientID)
+        public async Task<List<Visit>> GetAllVisitsByPatientIDAsync(int patientID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/byPatientID/{patientID}");
             response.EnsureSuccessStatusCode();
@@ -48,10 +32,9 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<List<Visit>>(content, options);
         }
 
-
         public async Task<Visit> InsertVisitAsync(Visit visit)
         {
-            var json = JsonSerializer.Serialize(visit, options);
+            var json = JsonSerializer.Serialize(visit);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
@@ -61,7 +44,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
 
         public async Task UpdateVisitAsync(int visitID, Visit visit)
         {
-            var json = JsonSerializer.Serialize(visit, options);
+            var json = JsonSerializer.Serialize(visit);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync($"{_baseApi}/{visitID}", content);
             response.EnsureSuccessStatusCode();
@@ -73,35 +56,39 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             response.EnsureSuccessStatusCode();
         }
 
-        //        [HttpGet("available-time-slots-on-day/{selectedDay}/{DoctorID}")]
-        public async Task<List<string>> GetAvailableTimeSlotsOnDayAsync(DateTime selectedDay, int DoctorID)
+        public async Task<Visit> GetVisitByIDAsync(int visitID)
         {
-            var response = await _httpClient.GetAsync($"{_baseApi}/available-time-slots-on-day/{selectedDay}/{DoctorID}");
+            var response = await _httpClient.GetAsync($"{_baseApi}/{visitID}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Visit>(content, options);
+        }
+
+        public async Task<List<string>> GetAvailableTimeSlotsOnDayAsync(DateTime selectedDay, int doctorID)
+        {
+            var response = await _httpClient.GetAsync($"{_baseApi}/available-time-slots-on-day/{selectedDay.ToString("yyyy-MM-dd")}/{doctorID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<string>>(content, options);
         }
-        //        [HttpGet("byDate/{selectedDay}")]
+
         public async Task<List<Visit>> GetVisitsByDateAsync(DateTime selectedDay)
         {
-            var response = await _httpClient.GetAsync($"{_baseApi}/byDate/{selectedDay}");
+            var response = await _httpClient.GetAsync($"{_baseApi}/byDate/{selectedDay.ToString("yyyy-MM-dd")}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<Visit>>(content, options);
         }
-        //        [HttpGet("byDoctorID/{doctorID}/onDate/{dateTime}")]
 
-        public async Task<List<Visit>> GetDoctorVisitsOnDate(int doctorID, DateTime dateTime)
+        public async Task<List<Visit>> GetDoctorVisitsOnDateAsync(int doctorID, DateTime dateTime)
         {
-            var response = await _httpClient.GetAsync($"{_baseApi}/byDoctorID/{doctorID}/onDate/{dateTime}");
+            var response = await _httpClient.GetAsync($"{_baseApi}/byDoctorID/{doctorID}/onDate/{dateTime.ToString("yyyy-MM-dd")}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<Visit>>(content, options);
         }
 
-        //        [HttpGet("byDoctorID/{doctorID}")]
-
-        public async Task<List<Visit>> GetDoctorVisits(int doctorID)
+        public async Task<List<Visit>> GetDoctorVisitsAsync(int doctorID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/byDoctorID/{doctorID}");
             response.EnsureSuccessStatusCode();
@@ -109,13 +96,13 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             return JsonSerializer.Deserialize<List<Visit>>(content, options);
         }
 
-        //        [HttpGet("futureVisitsByDoctorID/{doctorID}")]
-        public async Task<List<Visit>> GetFutureDoctorVisits(int doctorID)
+        public async Task<List<Visit>> GetFutureDoctorVisitsAsync(int doctorID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/futureVisitsByDoctorID/{doctorID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<Visit>>(content, options);
         }
+
     }
 }
