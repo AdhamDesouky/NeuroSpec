@@ -77,8 +77,8 @@
         <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
-                <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address.Street}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
                 <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>

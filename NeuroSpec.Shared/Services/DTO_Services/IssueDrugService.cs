@@ -11,11 +11,16 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
+        private readonly JsonSerializerOptions _options;
 
         public IssueDrugService()
         {
             _httpClient = new HttpClient();
             _baseApi = "http://neurospec.runasp.net/api/IssueDrug";
+            _options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<List<IssueDrug>> GetAllIssueDrugsAsync()
@@ -23,15 +28,15 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<IssueDrug>>(content);
+            return JsonSerializer.Deserialize<List<IssueDrug>>(content, _options);
         }
 
-        public async Task<IssueDrug> GetIssueDrugByIdAsync(int issueID)
+        public async Task<IssueDrug> GetIssueDrugByIdAsync(string issueID)
         {
             var response = await _httpClient.GetAsync($"{_baseApi}/{issueID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IssueDrug>(content);
+            return JsonSerializer.Deserialize<IssueDrug>(content, _options);
         }
 
         public async Task<List<IssueDrug>> GetAllIssueDrugsByPatientIDAsync(int patientID)
@@ -39,7 +44,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPatient/{patientID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<IssueDrug>>(content);
+            return JsonSerializer.Deserialize<List<IssueDrug>>(content, _options);
         }
 
         public async Task<List<IssueDrug>> GetAllIssueDrugsByPrescriptionIDAsync(int prescriptionID)
@@ -47,28 +52,28 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/ByPrescription/{prescriptionID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<IssueDrug>>(content);
+            return JsonSerializer.Deserialize<List<IssueDrug>>(content, _options);
         }
 
-        public async Task<IssueDrug> InsertIssueDrugAsync(IssueDrug IssueDrug)
+        public async Task<IssueDrug> InsertIssueDrugAsync(IssueDrug issueDrug)
         {
-            var json = JsonSerializer.Serialize(IssueDrug);
+            var json = JsonSerializer.Serialize(issueDrug, _options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IssueDrug>(responseContent);
+            return JsonSerializer.Deserialize<IssueDrug>(responseContent, _options);
         }
 
-        public async Task UpdateIssueDrugAsync(int issueID, IssueDrug IssueDrug)
+        public async Task UpdateIssueDrugAsync(string issueID, IssueDrug issueDrug)
         {
-            var json = JsonSerializer.Serialize(IssueDrug);
+            var json = JsonSerializer.Serialize(issueDrug, _options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync($"{_baseApi}/{issueID}", content);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task DeleteIssueDrugAsync(int issueID)
+        public async Task DeleteIssueDrugAsync(string issueID)
         {
             var response = await _httpClient.DeleteAsync($"{_baseApi}/{issueID}");
             response.EnsureSuccessStatusCode();

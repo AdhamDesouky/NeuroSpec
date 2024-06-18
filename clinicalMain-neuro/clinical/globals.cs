@@ -254,11 +254,19 @@ namespace clinical
             {
                 Margin = new Thickness(5)
             };
-            IssueService issueService = new IssueService();
-            List<Issue> issues = await issueService.GetAllIssuesByPrescriptionIDAsync(prescription.PrescriptionID);
+            IssueDrugService issueService = new IssueDrugService();
+            List<IssueDrug> issues = await issueService.GetAllIssueDrugsByPrescriptionIDAsync(prescription.PrescriptionID);
             foreach (var i in issues)
             {
-                TextBlock prescriptionItem = CreatePrescribedTextBlock($"-{i.IssueID}, {i.Notes}", 2, 1, 2.5, 0);
+                TextBlock prescriptionItem = CreatePrescribedTextBlock($"-{i.Name}, {i.Notes}", 2, 1, 2.5, 0);
+                stackPanel.Children.Add(prescriptionItem);
+            }
+
+            IssueSNOMEDService issueSNOMEDService = new IssueSNOMEDService();
+            List<IssueSNOMED> issuesSnom = await issueSNOMEDService.GetAllIssuesByPrescriptionIDAsync(prescription.PrescriptionID);
+            foreach (var i in issuesSnom)
+            {
+                TextBlock prescriptionItem = CreatePrescribedTextBlock($"-{i.SNOMEDName}, {i.Notes}", 2, 1, 2.5, 0);
                 stackPanel.Children.Add(prescriptionItem);
             }
 

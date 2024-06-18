@@ -221,7 +221,7 @@ namespace clinical.Pages
         async void markVisitDone(Visit visit)
         {
             visit.IsDone = !visit.IsDone;
-            await visitService.UpdateVisitAsync(visit.VisitID, visit);
+            await visitService.UpdateVisitAsync(visit);
             Refresh();
         }
 

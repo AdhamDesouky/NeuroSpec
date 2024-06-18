@@ -12,11 +12,16 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseApi;
+        private readonly JsonSerializerOptions options;
 
         public PrescriptionService()
         {
             _httpClient = new HttpClient();
             _baseApi = "http://neurospec.runasp.net/api/Prescription";
+            options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<List<Prescription>> GetAllPrescriptionsAsync()
@@ -24,7 +29,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync(_baseApi);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Prescription>>(content);
+            return JsonSerializer.Deserialize<List<Prescription>>(content,options);
         }
 
         public async Task<Prescription> GetPrescriptionByIDAsync(int prescriptionID)
@@ -32,7 +37,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/{prescriptionID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Prescription>(content);
+            return JsonSerializer.Deserialize<Prescription>(content, options);
         }
 
         public async Task<List<Prescription>> GetAllPrescriptionsByPatientIDAsync(int patientID)
@@ -40,7 +45,7 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/patient/{patientID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Prescription>>(content);
+            return JsonSerializer.Deserialize<List<Prescription>>(content, options);
         }
 
         public async Task<List<Prescription>> GetAllPrescriptionsByVisitIDAsync(int visitID)
@@ -48,22 +53,22 @@ namespace NeuroSpecCompanion.Shared.Services.DTO_Services
             var response = await _httpClient.GetAsync($"{_baseApi}/visit/{visitID}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<Prescription>>(content);
+            return JsonSerializer.Deserialize<List<Prescription>>(content, options);
         }
 
         public async Task<Prescription> InsertPrescriptionAsync(Prescription prescription)
         {
-            var json = JsonSerializer.Serialize(prescription);
+            var json = JsonSerializer.Serialize(prescription, options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseApi, content);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Prescription>(responseContent);
+            return JsonSerializer.Deserialize<Prescription>(responseContent, options);
         }
 
         public async Task UpdatePrescriptionAsync(int prescriptionID, Prescription prescription)
         {
-            var json = JsonSerializer.Serialize(prescription);
+            var json = JsonSerializer.Serialize(prescription, options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync($"{_baseApi}/{prescriptionID}", content);
             response.EnsureSuccessStatusCode();
