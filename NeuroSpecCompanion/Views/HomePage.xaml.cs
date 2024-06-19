@@ -18,14 +18,6 @@ namespace NeuroSpecCompanion.Views
         {
             InitializeComponent();
             hellolbl.Text = $"Hello, {LoggedInPatientService.LoggedInPatient.FirstName}";
-
-            // Initialize the timer
-            _longPressTimer = new Timer(OnLongPressCompleted, null, Timeout.Infinite, Timeout.Infinite);
-
-            // Add PanGestureRecognizer to the emergency button
-            var panGesture = new PanGestureRecognizer();
-            panGesture.PanUpdated += OnEmergencyButtonPanUpdated;
-            EmergencyButton.GestureRecognizers.Add(panGesture);
         }
 
         private void OnEmergencyButtonPanUpdated(object sender, PanUpdatedEventArgs e)
