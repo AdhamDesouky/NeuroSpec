@@ -23,11 +23,11 @@ namespace clinical
             globals.makeItLookClickableReverseColors(homeBTN);
             globals.makeItLookClickableReverseColors(patientSearchBTN);
             globals.makeItLookClickableReverseColors(calendarBtn);
-            globals.makeItLookClickableReverseColors(chatBtn);
-            globals.makeItLookClickableReverseColors(settingsBtn);
+            //globals.makeItLookClickableReverseColors(chatBtn);
+            //globals.makeItLookClickableReverseColors(settingsBtn);
 
             homeBTN.Focus();
-            settingsBtn.Visibility = Visibility.Hidden;
+            //settingsBtn.Visibility = Visibility.Hidden;
             which();
 
         }
@@ -44,13 +44,13 @@ namespace clinical
             homeBTN.BorderBrush = new SolidColorBrush(Colors.Transparent);
             patientSearchBTN.BorderBrush = new SolidColorBrush(Colors.Transparent);
             calendarBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            chatBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            settingsBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            //chatBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            //settingsBtn.BorderBrush = new SolidColorBrush(Colors.Transparent);
             ((PackIconMaterial)homeBTN.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
             ((PackIconMaterial)patientSearchBTN.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
             ((PackIconMaterial)calendarBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
-            ((PackIconMaterial)chatBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
-            ((PackIconMaterial)settingsBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
+            //((PackIconMaterial)chatBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
+            //((PackIconMaterial)settingsBtn.Child).Foreground = (Brush)Application.Current.Resources["lightFontColor"];
 
             if (curr == 0)
             {
@@ -71,25 +71,25 @@ namespace clinical
 
                 calendarBtn.BorderBrush = (Brush)Application.Current.Resources["darkerColor"];
             }
-            else if (curr == 3)
-            {
-                ((PackIconMaterial)chatBtn.Child).Foreground = (Brush)Application.Current.Resources["darkerColor"];
+            //else if (curr == 3)
+            //{
+            //    ((PackIconMaterial)chatBtn.Child).Foreground = (Brush)Application.Current.Resources["darkerColor"];
 
-                chatBtn.BorderBrush = (Brush)Application.Current.Resources["darkerColor"];
-            }
-            else if (curr == 4)
-            {
-                ((PackIconMaterial)settingsBtn.Child).Foreground = (Brush)Application.Current.Resources["darkerColor"];
+            //    chatBtn.BorderBrush = (Brush)Application.Current.Resources["darkerColor"];
+            //}
+            //else if (curr == 4)
+            //{
+            //    ((PackIconMaterial)settingsBtn.Child).Foreground = (Brush)Application.Current.Resources["darkerColor"];
 
-                settingsBtn.BorderBrush = (Brush)Application.Current.Resources["darkerColor"];
-            }
+            //    settingsBtn.BorderBrush = (Brush)Application.Current.Resources["darkerColor"];
+            //}
         }
         void which()
         {
             if (state == 1)
             {
                 mainFrame.Navigate(new adminDashboardPage(loggedIn));
-                settingsBtn.Visibility = Visibility.Visible;
+                //settingsBtn.Visibility = Visibility.Visible;
             }
 
             else if (state == 2)

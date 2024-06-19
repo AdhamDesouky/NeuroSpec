@@ -7,16 +7,16 @@
              StartupUri="loginPage.xaml">
     <Application.Resources>
 
-        <SolidColorBrush x:Key="darkerColor" Color="#2f3e46"/>
-        <SolidColorBrush x:Key="lighterColor" Color="#708d81"/>
-        <SolidColorBrush x:Key="selectedColor" Color="#354f52"/>
-        <SolidColorBrush x:Key="lightFontColor" Color="#FFD7E2D0"/>
+        <SolidColorBrush x:Key="darkerColor" Color="#164863"/>
+        <SolidColorBrush x:Key="lighterColor" Color="#427D9D"/>
+        <SolidColorBrush x:Key="selectedColor" Color="#9BBEC8"/>
+        <SolidColorBrush x:Key="lightFontColor" Color="#DDF2FD"/>
 
-        
-        <Color x:Key="darkerCol">#2f3e46</Color>
-        <Color x:Key="lighterCol">#708d81</Color>
-        <Color x:Key="selectedCol">#354f52</Color>
-        <Color x:Key="lightFontCol">#FFD7E2D0</Color>
+
+        <Color x:Key="darkerCol">#164863</Color>
+        <Color x:Key="lighterCol">#427D9D</Color>
+        <Color x:Key="selectedCol">#9BBEC8</Color>
+        <Color x:Key="lightFontCol">#DDF2FD</Color>
 
 
 

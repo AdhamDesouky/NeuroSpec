@@ -41,13 +41,13 @@ namespace clinical.Pages
         async Task updateDayAppointments()
         {
             todayAppointmentsStackPanel.Children.Clear();
-            //List<Visit> visits = await VisitService.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex);
-            //numberOfAppointmentsTB.Text = visits.Count.ToString();
+            List<Visit> visits = await VisitService.GetDoctorVisitsOnDateAsync(Doctor.UserID, currentDayIndex);
+            numberOfAppointmentsTB.Text = visits.Count.ToString();
 
-            //foreach (var i in visits)
-            //{
-            //    todayAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
-            //}
+            foreach (var i in visits)
+            {
+                todayAppointmentsStackPanel.Children.Add(await globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+            }
         }
         private void viewPatient(Patient patient)
         {
@@ -329,10 +329,10 @@ namespace clinical.Pages
 
         
 
-        private void ontologySearchButton_Click(object sender, RoutedEventArgs e)
+        private async void ontologySearchButton_Click(object sender, RoutedEventArgs e)
         {
             string query = ontologySearchTB.Text;
-            _ = searchOntologyAsync(query);
+            await searchOntologyAsync(query);
         }
         SNOMEDOntologyService sNOMEDOntologyService = new SNOMEDOntologyService();
         private async Task searchOntologyAsync(string query)
