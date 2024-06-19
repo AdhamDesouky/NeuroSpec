@@ -1,5 +1,6 @@
 ﻿using MvvmHelpers;
 using NeuroSpec.Shared.Models.DTO;
+using NeuroSpec.Shared.Services.DTO_Services;
 using NeuroSpecCompanion.Services;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using NeuroSpecCompanion.Views;
@@ -12,7 +13,10 @@ namespace NeuroSpecCompanion.ViewModels
     public class ViewAllAppointmentsViewModel : BaseViewModel
     {
         private readonly VisitService _visitService;
-        public ObservableCollection<Visit> Visits { get; }
+        private readonly BookAppointmentService _bookAppointmentService;
+        public ObservableCollection<Visit> PastVisits { get; }
+        public ObservableCollection<BookAppointmentRequest> NotYetConfirmedVisits { get; }
+        public ObservableCollection<BookAppointmentRequest> UpcomingVisits { get; }
 
         public ICommand DeleteVisitCommand { get; }
         public ICommand ViewVisitCommand { get; }
@@ -21,7 +25,10 @@ namespace NeuroSpecCompanion.ViewModels
         public ViewAllAppointmentsViewModel()
         {
             _visitService = new VisitService();
-            Visits = new ObservableCollection<Visit>();
+            _bookAppointmentService = new BookAppointmentService();
+            PastVisits = new ObservableCollection<Visit>();
+            NotYetConfirmedVisits = new ObservableCollection<BookAppointmentRequest>();
+            UpcomingVisits = new ObservableCollection<BookAppointmentRequest>();
             DeleteVisitCommand = new Command<Visit>(OnDeleteVisitClicked);
             ViewVisitCommand = new Command<Visit>(OnViewVisitClicked);
             BookAppointmentCommand = new Command(OnBookAppointmentClicked);
@@ -36,10 +43,25 @@ namespace NeuroSpecCompanion.ViewModels
 
         private async void LoadVisits()
         {
+            // Load past visits
             var visits = await _visitService.GetAllVisitsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
             foreach (var visit in visits)
             {
-                Visits.Add(visit);
+                PastVisits.Add(visit);
+            }
+
+            // Load appointment requests
+            var appointments = await _bookAppointmentService.GetBookAppointmentRequestsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
+            foreach (var appointment in appointments)
+            {
+                if (!appointment.IsConfirmed)
+                {
+                    NotYetConfirmedVisits.Add(appointment);
+                }
+                else if (appointment.AppointmentTime > DateTime.Now)
+                {
+                    UpcomingVisits.Add(appointment);
+                }
             }
         }
 
@@ -48,7 +70,7 @@ namespace NeuroSpecCompanion.ViewModels
             try
             {
                 await _visitService.DeleteVisitAsync(visit.VisitID);
-                Visits.Remove(visit);
+                PastVisits.Remove(visit);
             }
             catch (Exception ex)
             {
@@ -58,9 +80,10 @@ namespace NeuroSpecCompanion.ViewModels
 
         private async void OnViewVisitClicked(Visit visit)
         {
+            string visitJson = Newtonsoft.Json.JsonConvert.SerializeObject(visit);
             await Shell.Current.GoToAsync($"{nameof(ViewAppointmentPage)}", new Dictionary<string, object>
             {
-                { "Visit", visit }
+                { "Visit", visitJson }
             });
         }
     }

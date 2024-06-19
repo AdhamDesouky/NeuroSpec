@@ -12,15 +12,35 @@
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
             <Button Text="Book Appointment" Command="{Binding BookAppointmentCommand}" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource Primary}" CornerRadius="10"/>
-            <!-- Visits List -->
+
+            <!-- Not Yet Confirmed Visits -->
             <Label 
-                Text="Patient Visits"
+                Text="Not Yet Confirmed Visits"
                 FontSize="24"
                 FontAttributes="Bold"
                 TextColor="{StaticResource Secondary}"
                 Margin="0,20,0,10"/>
+            <CollectionView x:Name="NotYetConfirmedVisitsCollectionView" ItemsSource="{Binding NotYetConfirmedVisits}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame HasShadow="True" CornerRadius="10" Padding="10" Margin="0,5" BackgroundColor="LightGray">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding AppointmentTime, StringFormat='{}{0:MM/dd/yyyy hh:mm tt}'}" FontSize="18"/>
+                                <Label Text="{Binding Reason}" FontSize="14"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-            <CollectionView x:Name="VisitsCollectionView" ItemsSource="{Binding Visits}">
+            <!-- Past Visits -->
+            <Label 
+                Text="Past Visits"
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="{StaticResource Secondary}"
+                Margin="0,20,0,10"/>
+            <CollectionView x:Name="PastVisitsCollectionView" ItemsSource="{Binding PastVisits}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
@@ -29,20 +49,45 @@
                                     <SwipeItem
                                         Text="Delete"
                                         BackgroundColor="Red"
-                                        Command="{Binding Path=BindingContext.DeleteVisitCommand, Source={x:Reference VisitsCollectionView}}"
+                                        Command="{Binding Path=BindingContext.DeleteVisitCommand, Source={x:Reference PastVisitsCollectionView}}"
                                         CommandParameter="{Binding .}" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <Frame HasShadow="True" CornerRadius="10" Padding="10" Margin="0,5" BackgroundColor="CadetBlue">
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewVisitCommand, Source={x:Reference VisitsCollectionView}}" CommandParameter="{Binding .}"/>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewVisitCommand, Source={x:Reference PastVisitsCollectionView}}" CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
-                                <Label Text="{Binding TimeStamp, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="18"/>
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding TimeStamp, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="18"/>
+                                    <Label Text="{Binding TherapistNotes}" FontSize="14"/>
+                                </VerticalStackLayout>
+                                
                             </Frame>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <!-- Upcoming Visits -->
+            <Label 
+                Text="Upcoming Visits"
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="{StaticResource Secondary}"
+                Margin="0,20,0,10"/>
+            <CollectionView x:Name="UpcomingVisitsCollectionView" ItemsSource="{Binding UpcomingVisits}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame HasShadow="True" CornerRadius="10" Padding="10" Margin="0,5" BackgroundColor="LightGreen">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding AppointmentTime, StringFormat='{}{0:MM/dd/yyyy hh:mm tt}'}" FontSize="18"/>
+                                <Label Text="{Binding Reason}" FontSize="14"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

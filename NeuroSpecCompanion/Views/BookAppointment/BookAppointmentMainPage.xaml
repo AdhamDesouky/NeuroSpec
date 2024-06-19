@@ -4,41 +4,42 @@
              x:Class="NeuroSpecCompanion.Views.BookAppointment.BookAppointmentMainPage"
              xmlns:vm="clr-namespace:NeuroSpecCompanion.ViewModels"
              BackgroundColor="{StaticResource Primary}">
-    
-        <ContentPage.BindingContext>
-            <vm:BookAppointmentViewModel />
+
+    <ContentPage.BindingContext>
+        <vm:BookAppointmentViewModel />
         </ContentPage.BindingContext>
-        <ScrollView>
-            <VerticalStackLayout Spacing="20" Padding="20">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
 
-                <!-- Appointment Type Picker -->
-                <Label Text="Appointment Type" FontSize="18" />
-                <Picker ItemsSource="{Binding AppointmentTypes}" 
+            <!-- Appointment Type Picker -->
+            <Label Text="Appointment Type" FontSize="18" />
+            <Picker ItemsSource="{Binding AppointmentTypes}" 
                     ItemDisplayBinding="{Binding Name}" 
-                    SelectedItem="{Binding SelectedAppointmentType}" TextColor="{StaticResource Primary}" />
+                    FontSize="18"
+                    SelectedItem="{Binding SelectedAppointmentType}" TextColor="{StaticResource Secondary}" />
 
-                <!-- Date Picker -->
-                <Label Text="Select Date" FontSize="18" />
+            <!-- Date Picker -->
+            <Label Text="Select Date" FontSize="18" />
             <DatePicker Date="{Binding SelectedDate}" DateSelected="OnDateSelected" TextColor="{StaticResource Secondary}" />
 
-                <!-- Time Picker -->
-                <Label Text="Select Time" FontSize="18" />
-                <Picker ItemsSource="{Binding AvailableTimes}"
+            <!-- Time Picker -->
+            <Label Text="Select Time" FontSize="18" />
+            <Picker ItemsSource="{Binding AvailableTimes}" FontSize="18"
                     SelectedItem="{Binding SelectedTime}" TextColor="{StaticResource Secondary}" />
 
-                <!-- Reason Entry -->
-                <Label Text="Reason for Appointment" FontSize="18"  />
+            <!-- Reason Entry -->
+            <Label Text="Reason for Appointment" FontSize="18"  />
             <Editor Text="{Binding Reason}" HeightRequest="100" TextColor="{StaticResource Secondary}"/>
 
-                <!-- Urgent Switch -->
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Is Urgent?" FontSize="18" VerticalOptions="Center" TextColor="{StaticResource Secondary}" />
-                    <Switch IsToggled="{Binding IsUrgent}" />
-                </StackLayout>
+            <!-- Urgent Switch -->
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Is Urgent?" FontSize="18" VerticalOptions="Center" TextColor="{StaticResource Secondary}" />
+                <Switch IsToggled="{Binding IsUrgent}" />
+            </StackLayout>
 
-                <!-- Submit Button -->
-                <Button Text="Book Appointment" Command="{Binding BookAppointmentCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource Primary}"/>
-            </VerticalStackLayout>
-        </ScrollView>
-    </ContentPage>
+            <!-- Submit Button -->
+            <Button Text="Book Appointment" Command="{Binding BookAppointmentCommand}" FontAttributes="Bold" BackgroundColor="{StaticResource Secondary}" TextColor="{StaticResource Primary}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
 

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
 using NeuroSpecCompanion.Services;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
+using System.Threading.Tasks;
 
 namespace NeuroSpecCompanion.Views
 {
@@ -16,31 +17,43 @@ namespace NeuroSpecCompanion.Views
         {
             InitializeComponent();
             Assessments = new ObservableCollection<Assessment>();
-            drugService=new IssueDrugService();
-            prescriptionService=new PrescriptionService();
+            BindingContext = this;
+            drugService = new IssueDrugService();
+            prescriptionService = new PrescriptionService();
             LoadDataAsync();
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
-            var prescriptions = await prescriptionService.GetAllPrescriptionsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
-            foreach(var prescription in prescriptions)
+            try
             {
-                var drugs = await drugService.GetAllIssueDrugsByPrescriptionIDAsync(prescription.PrescriptionID);
-                var assessment = new Assessment
+                var prescriptions = await prescriptionService.GetAllPrescriptionsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID);
+                foreach (var prescription in prescriptions)
                 {
-                    AssessmentDate = prescription.TimeStamp.Date.ToShortDateString(),
-                    Medications = new ObservableCollection<Medication>()
-                };
-                foreach(var drug in drugs)
-                {
-                    assessment.Medications.Add(new Medication
+                    var drugs = await drugService.GetAllIssueDrugsByPrescriptionIDAsync(prescription.PrescriptionID);
+                    var assessment = new Assessment
                     {
-                        Name = drug.Name,
-                        Frequency = drug.Frequency
+                        AssessmentDate = prescription.TimeStamp.Date.ToShortDateString(),
+                        Medications = new ObservableCollection<Medication>()
+                    };
+                    foreach (var drug in drugs)
+                    {
+                        assessment.Medications.Add(new Medication
+                        {
+                            Name = drug.Name,
+                            Frequency = drug.Frequency
+                        });
+                    }
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        Assessments.Add(assessment);
                     });
                 }
-                Assessments.Add(assessment);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
     }

@@ -88,7 +88,7 @@ namespace NeuroSpecCompanion.ViewModels
 
                         Content = new Grid
                         {
-                            BackgroundColor = (Color)Application.Current.Resources["PrimaryColor"],
+                            BackgroundColor = (Color)Application.Current.Resources["Primary"],
                             MinimumWidthRequest = 10,
                             Children =
                             {
@@ -125,7 +125,7 @@ namespace NeuroSpecCompanion.ViewModels
                         MinimumHeightRequest = 40,
                         Content = new Grid
                         {
-                            BackgroundColor = (Color)Application.Current.Resources["PrimaryColor"],
+                            BackgroundColor = (Color)Application.Current.Resources["Primary"],
                             MinimumWidthRequest = 10,
                             Children =
                             {

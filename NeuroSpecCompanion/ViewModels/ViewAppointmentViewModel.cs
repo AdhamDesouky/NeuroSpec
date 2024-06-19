@@ -1,17 +1,11 @@
 ﻿using MvvmHelpers;
 using NeuroSpec.Shared.Models.DTO;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeuroSpecCompanion.ViewModels
 {
-    [QueryProperty(nameof(Visit), "Visit")]
-    public class ViewAppointmentViewModel:BaseViewModel
+    public class ViewAppointmentViewModel : BaseViewModel
     {
         private Visit visit;
         public Visit Visit
@@ -19,16 +13,8 @@ namespace NeuroSpecCompanion.ViewModels
             get => visit;
             set
             {
-                visit = value;
-                OnPropertyChanged();
+                SetProperty(ref visit, value);
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
     }
 }

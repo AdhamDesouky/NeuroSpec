@@ -2,11 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NeuroSpecCompanion.Views.BookAppointment.ViewAppointmentPage"
-             Title="ViewAppointmentPage">
+             BackgroundColor="{StaticResource Primary}"
+             Title="ViewAppointmentPage"
+             BindingContext="{Binding Source={RelativeSource Self}}">
     <StackLayout Padding="20">
-        <Label Text="{Binding Visit.TimeStamp, StringFormat='{}{0:MM/dd/yyyy HH:mm}'}" FontSize="24" FontAttributes="Bold"/>
-        <Label Text="{Binding Visit.TherapistNotes}" FontSize="18" Margin="0,10"/>
-        <Label Text="{Binding Visit.Height, StringFormat='Height: {0} cm'}" FontSize="18" Margin="0,10"/>
-        <Label Text="{Binding Visit.Weight, StringFormat='Weight: {0} kg'}" FontSize="18" Margin="0,10"/>
+        <Label Text="{Binding Visit.TimeStamp, StringFormat='{}{0:MM/dd/yyyy HH:mm}'}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource Secondary}" BackgroundColor="{StaticResource Primary}"/>
+        <Label Text="{Binding Visit.Notes}" FontSize="18" Margin="0,10" TextColor="{StaticResource Secondary}" BackgroundColor="{StaticResource Primary}"/>
+        <Label Text="{Binding Visit.Height, StringFormat='Height: {0} cm'}" FontSize="18" Margin="0,10" TextColor="{StaticResource Secondary}" BackgroundColor="{StaticResource Primary}"/>
+        <Label Text="{Binding Visit.Weight, StringFormat='Weight: {0} kg'}" FontSize="18" Margin="0,10" TextColor="{StaticResource Secondary}" BackgroundColor="{StaticResource Primary}"/>
     </StackLayout>
 </ContentPage>

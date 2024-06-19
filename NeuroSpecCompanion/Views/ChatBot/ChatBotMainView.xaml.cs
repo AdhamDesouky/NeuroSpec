@@ -37,7 +37,7 @@ public partial class ChatBotMainView : ContentPage
 
                         Content = new Grid
                         {
-                            BackgroundColor = (Color)Application.Current.Resources["LighterPrimaryColor"],
+                            BackgroundColor = Color.FromHex("#324161"),
                             MinimumWidthRequest = 10,
                             Children =
                             {
@@ -74,7 +74,7 @@ public partial class ChatBotMainView : ContentPage
                         MinimumHeightRequest = 40,
                         Content = new Grid
                         {
-                            BackgroundColor = (Color)Application.Current.Resources["PrimaryColor"],
+                            BackgroundColor = (Color)Application.Current.Resources["Primary"],
                             MinimumWidthRequest = 10,
                             Children =
                             {

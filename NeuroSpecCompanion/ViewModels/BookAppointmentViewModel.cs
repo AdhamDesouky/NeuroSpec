@@ -5,6 +5,7 @@ using NeuroSpecCompanion.Services;
 using NeuroSpecCompanion.Shared.Services.DTO_Services;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -15,6 +16,7 @@ namespace NeuroSpecCompanion.ViewModels
         private readonly BookAppointmentService _appointmentService;
         private readonly AppointmentTypeService _appointmentTypeService;
         private readonly VisitService _visitService;
+        private readonly PatientService _patientService;
         public ObservableCollection<AppointmentType> AppointmentTypes { get; }
         public ObservableCollection<string> AvailableTimes { get; }
 
@@ -31,6 +33,8 @@ namespace NeuroSpecCompanion.ViewModels
         {
             _appointmentService = new BookAppointmentService();
             _appointmentTypeService = new AppointmentTypeService();
+            _visitService = new VisitService();
+            _patientService = new PatientService();
 
             AppointmentTypes = new ObservableCollection<AppointmentType>();
             AvailableTimes = new ObservableCollection<string>();
@@ -50,26 +54,28 @@ namespace NeuroSpecCompanion.ViewModels
             {
                 AppointmentTypes.Add(type);
             }
+            await UpdateAvailableTimes(SelectedDate);
         }
 
         private async void OnSelectedDateChanged(DateTime selectedDate)
         {
-            int doctorId = 0;
-            SelectedDate= selectedDate;
-            
-            List<Visit> patientVisits = await _visitService.GetAllVisitsByPatientIDAsync(LoggedInPatientService.LoggedInPatient.PatientID); //changed the GetVisitsByPatientIDAsync to GetAllVisitsByPatientIDAsync
-            if (patientVisits.Count > 0)
-            {
-                doctorId = patientVisits[patientVisits.Count - 1].DoctorID;
-            }
-            else doctorId = 0;
+            await UpdateAvailableTimes(selectedDate);
+        }   
+
+        private async Task UpdateAvailableTimes(DateTime selectedDate)
+        {
+            int doctorId = (int)(await _patientService.GetPatientByIdAsync(LoggedInPatientService.LoggedInPatient.PatientID)).AssignedDoctorID;
+            SelectedDate = selectedDate;
+
+
             AvailableTimes.Clear();
-            var times = await _visitService.GetAvailableTimeSlotsOnDayAsync(SelectedDate,doctorId);
+            var times = await _visitService.GetAvailableTimeSlotsOnDayAsync(SelectedDate, doctorId);
+            Debug.WriteLine("Available times: " + times.Count);
             foreach (var time in times)
             {
                 AvailableTimes.Add(time);
             }
-        }   
+        }
 
         private async void OnBookAppointment()
         {

@@ -1,25 +1,43 @@
 using NeuroSpec.Shared.Models.DTO;
 using NeuroSpecCompanion.ViewModels;
+using Microsoft.Maui.Controls;
 
-namespace NeuroSpecCompanion.Views.BookAppointment;
-[QueryProperty(nameof(Visit), "Visit")]
-public partial class ViewAppointmentPage : ContentPage
+namespace NeuroSpecCompanion.Views.BookAppointment
 {
-    public Visit Visit { get; set; }
-
-    public ViewAppointmentPage()
+    [QueryProperty(nameof(VisitJson), "Visit")]
+    public partial class ViewAppointmentPage : ContentPage
     {
-        InitializeComponent();
-        BindingContext = new ViewAppointmentViewModel();
-    }
+        private ViewAppointmentViewModel viewModel;
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-
-        if (BindingContext is ViewAppointmentViewModel viewModel)
+        public ViewAppointmentPage()
         {
-            viewModel.Visit = Visit;
+            InitializeComponent();
+            viewModel = new ViewAppointmentViewModel();
+            BindingContext = viewModel;
+        }
+
+        private string visitJson;
+        public string VisitJson
+        {
+            set
+            {
+                // Deserialize the Visit object from the query parameter
+                if (value != null)
+                {
+                    visitJson = Uri.UnescapeDataString(value);
+                    viewModel.Visit = Newtonsoft.Json.JsonConvert.DeserializeObject<Visit>(visitJson);
+                }
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (viewModel != null)
+            {
+                viewModel.Visit = Newtonsoft.Json.JsonConvert.DeserializeObject<Visit>(visitJson);
+            }
         }
     }
 }

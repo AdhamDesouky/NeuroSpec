@@ -85,7 +85,7 @@
                 <Setter Property="BackgroundColor" Value="{StaticResource ChatEntryBackgroundColor}" />
                 <Setter Property="MinimumHeightRequest" Value="65" />
                 <Setter Property="CornerRadius" Value="22" />
-                <Setter Property="BorderColor" Value="{StaticResource LightButNotWhiteColor}" />
+                <Setter Property="BorderColor" Value="{StaticResource LightButNotWhite}" />
                 <Setter Property="HasShadow" Value="False" />
                 <Setter Property="Padding" Value="4" />
                 <Setter Property="Margin" Value="12" />
@@ -105,7 +105,7 @@
             </Style>
 
             <Style x:Key="SearchButtonEllipseStyle" TargetType="BoxView">
-                <Setter Property="Color" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="Color" Value="{StaticResource Primary}" />
                 <Setter Property="CornerRadius" Value="25" />
                 <Setter Property="HeightRequest" Value="32" />
                 <Setter Property="WidthRequest" Value="32" />
@@ -185,7 +185,7 @@
                                     Source="paper_plane_solid.svg"
                                     Style="{StaticResource SearchButtonImageStyle}">
                                     <ImageButton.Behaviors>
-                                        <toolkit:IconTintColorBehavior TintColor="{StaticResource PrimaryColor}"/>
+                                        <toolkit:IconTintColorBehavior TintColor="{StaticResource Primary}"/>
                                     </ImageButton.Behaviors>
                                 </ImageButton>
                             </Grid>

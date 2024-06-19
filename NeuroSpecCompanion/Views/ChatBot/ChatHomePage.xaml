@@ -46,7 +46,7 @@
     <ContentPage.Content>
         <Grid></Grid>
         <!--<Grid  
-            BackgroundColor="{StaticResource PrimaryColor}"
+            BackgroundColor="{StaticResource Primary}"
             RowDefinitions="220, *">
             <Grid
                 RowDefinitions="Auto, *">
