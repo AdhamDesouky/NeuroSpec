@@ -23,7 +23,7 @@
             <Frame BackgroundColor="{StaticResource Secondary}"
                    HeightRequest="150" WidthRequest="150" HorizontalOptions="Center"
                    CornerRadius="75" Padding="0">
-                <Image Source="app_logo.png" Aspect="AspectFit" HorizontalOptions="Center"
+                <Image Source="brain.svg" Aspect="AspectFit" HorizontalOptions="Center"
                        VerticalOptions="Center" Margin="10" />
             </Frame>
 
