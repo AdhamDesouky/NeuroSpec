@@ -26,6 +26,7 @@
                     x:Name="ExtractedTextEditor"
                     Placeholder="Extracted text will appear here..."
                     AutoSize="TextChanges"
+                    Text="{Binding ExtractedText}"
                     BackgroundColor="White"
                     TextColor="Black"
                     IsReadOnly="True"/>
