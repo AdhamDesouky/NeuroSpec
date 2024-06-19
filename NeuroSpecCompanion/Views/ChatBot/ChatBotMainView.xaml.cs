@@ -127,7 +127,7 @@ public partial class ChatBotMainView : ContentPage
         }
         else
         {
-            responseMessage = "I think you mean 'dizzy'\n Oh! Sorry for hearing this...\n Here are some tips that can help:\n- Rest in a quiet, dark room.\n- Stay hydrated.\n- Avoid sudden movements.\n- If symptoms persist, seek medical advice.";
+            responseMessage = "I think you mean 'dizzy'\n \n Oh! Sorry for hearing this...\n Here are some tips that can help:\n- Rest in a quiet, dark room.\n- Stay hydrated.\n- Avoid sudden movements.\n- If symptoms persist, seek medical advice.";
         }
 
 
