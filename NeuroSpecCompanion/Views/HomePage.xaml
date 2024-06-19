@@ -113,7 +113,7 @@
                                 <Grid ColumnDefinitions="Auto, *">
                                     <!-- Image Box -->
                                     <Frame WidthRequest="100" HeightRequest="100" CornerRadius="10">
-                                        <Image Source="brain" HeightRequest="120" WidthRequest="120"/>
+                                        <Image Source="brainbad" HeightRequest="120" WidthRequest="120"/>
                                     </Frame>
                                     <Grid Grid.Column="1" RowDefinitions="Auto, Auto, *" Margin="10, 0">
                                         <VerticalStackLayout>

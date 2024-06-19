@@ -16,19 +16,14 @@
                 <Grid VerticalOptions="Center" HeightRequest="50" Padding="10, 0">
                     <Label Text="NeuroSpec" HorizontalOptions="Center" VerticalOptions="Center"
                            FontSize="40" TextColor="{StaticResource White}" FontAttributes="Bold"/>
+                    
                 </Grid>
             </Frame>
 
-            <!-- Logo Section -->
-            <Frame BackgroundColor="{StaticResource Secondary}"
-                   HeightRequest="150" WidthRequest="150" HorizontalOptions="Center"
-                   CornerRadius="75" Padding="0">
-                <Image Source="brain.svg" Aspect="AspectFit" HorizontalOptions="Center"
-                       VerticalOptions="Center" Margin="10" />
-            </Frame>
+           
 
             <!-- Welcome Message -->
-            <Label Text="Welcome, let's navigate your journey with care and support."
+            <Label Text="Welcome, let's navigate your journey with care and support!"
                    FontSize="18" TextColor="{StaticResource White}" HorizontalTextAlignment="Center"
                    Margin="20,10,20,0"/>
 
