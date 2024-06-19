@@ -74,10 +74,10 @@
             </Style>
 
             <!-- Define colors -->
-            <Color x:Key="Primary">#00123a</Color>
-            <Color x:Key="Secondary">#fdffff</Color>
-            <Color x:Key="LighterPrimary">#324161</Color>
-            <Color x:Key="LightButNotWhite">#B2B7C3</Color>
+            <Color x:Key="Primary">#164863</Color>
+            <Color x:Key="Secondary">#DDF2FD</Color>
+            <Color x:Key="LighterPrimary">#427D9D</Color>
+            <Color x:Key="LightButNotWhite">#9BBEC8</Color>
 
             <!-- Define pastel colors for progress tracker page -->
             <Color x:Key="PastelColor1">#FFA07A</Color>

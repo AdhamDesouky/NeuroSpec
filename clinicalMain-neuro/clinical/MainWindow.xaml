@@ -63,12 +63,6 @@
                                 <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="calendarBtn" MouseDown="calendarBtn_Click" CornerRadius="15">
                                     <Icon:PackIconMaterial Kind="Calendar" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
                                 </Border>
-                                <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="chatBtn" MouseDown="chatBtn_Click" CornerRadius="15">
-                                    <Icon:PackIconMaterial Kind="MessageText" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
-                                </Border>
-                                <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="settingsBtn" MouseDown="settingsBtn_Click" CornerRadius="15">
-                                    <Icon:PackIconMaterial Kind="Cog" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
-                                </Border>
 
 
                             </StackPanel>

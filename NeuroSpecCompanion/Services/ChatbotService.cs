@@ -12,7 +12,7 @@ namespace NeuroSpecCompanion.Services
     {
         string apiKey = "AIzaSyAIY2li7RtySecrkx0FNMKx0MwOY4YY2iE";// for gemini
         GenerativeModel _model;
-        string huggingFaceUrl = "https://ruslanmv-ai-medical-chatbot.hf.space/run/predict";
+        string huggingFaceUrl = "https://onabajomonsurat-medical-diagnosis-chatbot.hf.space/run/predict";
 
         public ChatbotService()
         {
@@ -22,54 +22,54 @@ namespace NeuroSpecCompanion.Services
 
         //gemini
 
-        public async Task<string> ProcessMessageAsync(string text)
-        {
-            try
-            {
-                var chat = _model.StartChat(new GenerativeAI.Types.StartChatParams());
-                var response = await chat.SendMessageAsync(text);
-                return response;
-
-            }
-            catch (Exception e)
-            {
-                return $"Request error: {e.Message}";
-            }
-        }
-
         //public async Task<string> ProcessMessageAsync(string text)
         //{
-        //    var payload = new
+        //    try
         //    {
-        //        data = new string[] { text },
-        //        fn_index = 0
-        //    };
+        //        var chat = _model.StartChat(new GenerativeAI.Types.StartChatParams());
+        //        var response = await chat.SendMessageAsync(text);
+        //        return response;
 
-        //    string jsonPayload = JsonConvert.SerializeObject(payload);
-
-        //    using (HttpClient client = new HttpClient())
+        //    }
+        //    catch (Exception e)
         //    {
-        //        HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-        //        try
-        //        {
-        //            HttpResponseMessage response = await client.PostAsync(huggingFaceUrl, content);
-
-        //            response.EnsureSuccessStatusCode();
-
-        //            string responseBody = await response.Content.ReadAsStringAsync();
-        //            JObject jsonResponse = JObject.Parse(responseBody);
-
-        //            JArray data = (JArray)jsonResponse["data"];
-        //            string result = data[0].ToString();
-        //            return result;
-        //        }
-        //        catch (HttpRequestException e)
-        //        {
-        //            return("Request error: " + e.Message);
-        //        }
+        //        return $"Request error: {e.Message}";
         //    }
         //}
+
+        public async Task<string> ProcessMessageAsync(string text)
+        {
+            var payload = new
+            {
+                data = new string[] { text },
+                fn_index = 1
+            };
+
+            string jsonPayload = JsonConvert.SerializeObject(payload);
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsync(huggingFaceUrl, content);
+
+                    response.EnsureSuccessStatusCode();
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    JObject jsonResponse = JObject.Parse(responseBody);
+
+                    JArray data = (JArray)jsonResponse["data"];
+                    string result = data[0].ToString();
+                    return result;
+                }
+                catch (HttpRequestException e)
+                {
+                    return ("Request error: " + e.Message);
+                }
+            }
+        }
 
     }
 

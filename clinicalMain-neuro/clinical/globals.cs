@@ -85,6 +85,7 @@ namespace clinical
                 FontSize = 12
             };
             makeTextBlockLookLikeHyperLink(DOID);
+            DOID.MouseDown+= (sender, e) => ViewOntologyTerm(oi);
 
             TextBlock ontologyTitle = new TextBlock
             {
