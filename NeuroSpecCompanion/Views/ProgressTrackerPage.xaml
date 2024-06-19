@@ -4,14 +4,16 @@
              xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              xmlns:local="clr-namespace:NeuroSpecCompanion"
              x:Class="NeuroSpecCompanion.Views.ProgressTrackerPage"
-             Title="Progress Tracker"
-             BackgroundColor="{StaticResource Primary}">
+             Title="Progress Tracker">
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Color x:Key="Primary">#FF007AFF</Color>
+            <Color x:Key="Secondary">White</Color>
+            <Color x:Key="PrimaryLight">#CC007AFF</Color>
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="18"/>
-                <Setter Property="TextColor" Value="{StaticResource White}"/>
+                <Setter Property="TextColor" Value="{StaticResource Secondary}"/>
                 <Setter Property="Margin" Value="0,10,0,5"/>
             </Style>
             <Style TargetType="Frame" x:Key="FrameStyle">
@@ -26,24 +28,14 @@
     <ScrollView>
         <StackLayout Margin="20">
 
-            <Label Text="Progress 1"/>
-            <Frame Style="{StaticResource FrameStyle}">
-                <microcharts:ChartView x:Name="progress1Chart" HeightRequest="150"/>
+            <Label Text="Progress Overview" FontSize="24" HorizontalOptions="Center"/>
+            <Frame Style="{StaticResource FrameStyle}" BackgroundColor="{StaticResource Primary}">
+                <microcharts:ChartView x:Name="lineChart" HeightRequest="200"/>
             </Frame>
 
-            <Label Text="Progress 2"/>
-            <Frame Style="{StaticResource FrameStyle}">
-                <microcharts:ChartView x:Name="progress2Chart" HeightRequest="150"/>
-            </Frame>
-
-            <Label Text="Progress 3"/>
-            <Frame Style="{StaticResource FrameStyle}">
-                <microcharts:ChartView x:Name="progress3Chart" HeightRequest="150"/>
-            </Frame>
-
-            <Label Text="Progress 4"/>
-            <Frame Style="{StaticResource FrameStyle}">
-                <microcharts:ChartView x:Name="progress4Chart" HeightRequest="150"/>
+            <Label Text="Task Completion" FontSize="24" HorizontalOptions="Center"/>
+            <Frame Style="{StaticResource FrameStyle}" BackgroundColor="{StaticResource Primary}">
+                <microcharts:ChartView x:Name="donutChart" HeightRequest="200"/>
             </Frame>
 
         </StackLayout>

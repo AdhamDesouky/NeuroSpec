@@ -41,15 +41,7 @@
                 </HorizontalStackLayout>
             </Frame>
 
-            <!-- Request Alternative Prescription -->
-            <Frame BackgroundColor="{StaticResource Secondary}" Padding="20" CornerRadius="10" HasShadow="True">
-                <HorizontalStackLayout>
-                    <VerticalStackLayout VerticalOptions="Center">
-                        <Label Text="Request Alternative Prescription" FontSize="20" TextColor="Black"/>
-                        <Button Text="Request Now" Clicked="OnRequestAlternativeClicked" BackgroundColor="LightGray" TextColor="Black"/>
-                    </VerticalStackLayout>
-                </HorizontalStackLayout>
-            </Frame>
+    
 
             <!-- Emergency Call Ambulance -->
             <Frame BackgroundColor="DarkRed" Padding="20" CornerRadius="10" HasShadow="True">

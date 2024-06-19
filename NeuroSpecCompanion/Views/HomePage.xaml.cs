@@ -66,21 +66,40 @@ namespace NeuroSpecCompanion.Views
                     break;
             }
         }
-        private async Task MakeEmergencyCall()
+        public async Task MakeEmergencyCall()
         {
             try
             {
-                PhoneDialer.Open("911"); // Replace with your emergency contact number
+                var status = await Permissions.CheckStatusAsync<Permissions.Phone>();
+                if (status != PermissionStatus.Granted)
+                {
+                    status = await Permissions.RequestAsync<Permissions.Phone>();
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    // Replace with your emergency contact number
+                    PhoneDialer.Open("911");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Permission to make phone calls was denied.", "OK");
+                }
             }
             catch (FeatureNotSupportedException ex)
             {
                 // Phone Dialer is not supported on this device.
-                await DisplayAlert("Error", "Phone dialing is not supported on this device.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "Phone dialing is not supported on this device.", "OK");
+            }
+            catch (ArgumentNullException ex)
+            {
+                // The phone number was null or white space
+                await Application.Current.MainPage.DisplayAlert("Error", "The phone number provided was invalid.", "OK");
             }
             catch (Exception ex)
             {
                 // Other error has occurred.
-                await DisplayAlert("Error", "Failed to make the emergency call.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "Failed to make the emergency call.", "OK");
             }
         }
 

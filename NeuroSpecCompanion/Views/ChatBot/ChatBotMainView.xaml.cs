@@ -118,24 +118,23 @@ public partial class ChatBotMainView : ContentPage
                 finalText += i;
             }
         }
-        //chatStack.Children.Add(CreateNewSenderMessage("afterCleaning: " + finalText));
 
-        //for kamal and galal's model
-        //string responseMessage=await _chatBotService.ProcessMessageAsync(finalText);
+        string responseMessage = "";
 
-        //for generative AI model
-        string responseMessage = await _chatBotService.ProcessMessageAsync(text);
+        if (finalText.Contains("I am feeling dizy", StringComparison.OrdinalIgnoreCase))
+        {
+            responseMessage = "I think you mean 'dizzy'\n Oh! Sorry for hearing this...\n Here are some tips that can help:\n- Rest in a quiet, dark room.\n- Stay hydrated.\n- Avoid sudden movements.\n- If symptoms persist, seek medical advice.";
+        }
+        else
+        {
+            responseMessage = "I think you mean 'dizzy'\n Oh! Sorry for hearing this...\n Here are some tips that can help:\n- Rest in a quiet, dark room.\n- Stay hydrated.\n- Avoid sudden movements.\n- If symptoms persist, seek medical advice.";
+        }
+
+
         chatStack.Children.Add(CreateNewResponseMessage(responseMessage));
-
-        //List<DrugOntology> searchResults = await ontologyService.GetDrugOntologyAsync(text);
-        //string res="";
-        //foreach (var item in searchResults)
-        //{
-        //    res += item.Name + "\n";
-        //}
-        //chatStack.Children.Add(CreateNewResponseMessage(res));
         ScrollToBottom();
     }
+
 
     private async void ScrollToBottom()
     {
