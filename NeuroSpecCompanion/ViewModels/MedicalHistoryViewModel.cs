@@ -16,7 +16,7 @@ namespace NeuroSpecCompanion.ViewModels
     {
         private readonly MedicalRecordService _medicalRecordService;
         public ObservableCollection<MedicalRecord> MedicalRecords { get; }
-
+        public string ExtractedText { get; set; }
         public ICommand UploadFileCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand ViewRecordCommand { get; }
@@ -61,13 +61,13 @@ namespace NeuroSpecCompanion.ViewModels
                     int recordId = IDGeneration.generateNewRecordID(patientId);
                     string downloadLink = await UploadFile(fileResult, recordId);
 
-                    var extractedText = await ExtractTextFromFile(fileResult);
+                    ExtractedText = await ExtractTextFromFile(fileResult);
                     MedicalRecord medicalRecord = new MedicalRecord
                     {
                         RecordID = recordId,
                         Type = "LAB",
                         TimeStamp = DateTime.Now,
-                        Report = extractedText,
+                        Report = ExtractedText,
                         VisualAttachments = new List<Attachment> {
                         new Attachment { url = downloadLink, title = fileResult.FileName, contentType = fileResult.ContentType }
                     },
