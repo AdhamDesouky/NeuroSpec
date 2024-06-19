@@ -10,9 +10,9 @@ namespace NeuroSpecCompanion.Services
 
     public class ChatbotService
     {
-        string apiKey = "AIzaSyAIY2li7RtySecrkx0FNMKx0MwOY4YY2iE";// for gemini
+        string apiKey = "AIzaSyAhLXNxmn7k1jBsdHtUYK3mnr6g2QSk_Vc";// for gemini
         GenerativeModel _model;
-        string huggingFaceUrl = "https://onabajomonsurat-medical-diagnosis-chatbot.hf.space/run/predict";
+        string huggingFaceUrl = "https://huggingface.co/spaces/OnabajoMonsurat/Medical_Diagnosis_Chatbot";
 
         public ChatbotService()
         {

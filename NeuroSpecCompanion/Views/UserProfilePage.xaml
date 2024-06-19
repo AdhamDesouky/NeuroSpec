@@ -3,18 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="NeuroSpecCompanion.Views.UserProfilePage"
-             Title="Profile"
+             Title="My Profile"
              BackgroundColor="{StaticResource Primary}">
         
     <ScrollView>
         <StackLayout Margin="20">
+       
             <!-- User Image and Name -->
             <StackLayout Orientation="Horizontal" Margin="0,0,0,20" VerticalOptions="Center">
                 <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="LightGray" Padding="10">
                     <ImageButton x:Name="userImageButton" Source="camerasolid.svg" WidthRequest="60" HeightRequest="60" CornerRadius="30" BackgroundColor="Transparent" Clicked="OnUploadPhotoClicked"/>
                 </Frame>
+                
 
                 <Label Text="Abdelrahman Saleh" FontSize="24" VerticalOptions="Center" Margin="20,0,0,0" TextColor="{StaticResource Secondary}" />
+                <Frame CornerRadius="0" BackgroundColor="{StaticResource Primary}" 
+                    HasShadow="True" HeightRequest="65"
+                    Padding="0, 10" BorderColor="{StaticResource Primary}">
+                    <Grid VerticalOptions="Center" HeightRequest="50" Padding="10, 0">
+                        <ImageButton Source="bell_solid" HeightRequest="25" WidthRequest="25"
+                 HorizontalOptions="End" Margin="10, 0" Clicked="signOut">
+                            <ImageButton.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                            </ImageButton.Behaviors>
+                        </ImageButton>
+
+                    </Grid>
+                </Frame>
             </StackLayout>
 
             <!-- My Account Section -->
