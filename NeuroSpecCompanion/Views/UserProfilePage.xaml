@@ -91,6 +91,196 @@
             <!-- Status Message -->
             <Label x:Name="statusLabel" Text="" FontSize="16" TextColor="Green" Margin="0,10,0,0" HorizontalOptions="Center" />
 
+
+            <!-- Medical Form Section -->
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Spacing="10">
+                <Label Text="Medical Form" FontSize="22" TextColor="{StaticResource White}" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+
+                <!-- Referral Information -->
+                <Label Text="Who referred you to us? (List the Physician’s name/address/phone):" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Editor Placeholder="Enter details here" HeightRequest="80" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <!-- Other Physicians -->
+                <Label Text="Other physicians, including your neurologist, who should receive correspondence regarding your care:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <StackLayout Orientation="Vertical" Spacing="10">
+                    <Label Text="1. Name:" TextColor="{StaticResource White}" FontSize="16"/>
+                    <Entry Placeholder="Name" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+                    <Label Text="Address:" TextColor="{StaticResource White}" FontSize="16"/>
+                    <Editor Placeholder="Address" HeightRequest="40" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+                    <Label Text="Phone:" TextColor="{StaticResource White}" FontSize="16"/>
+                    <Entry Placeholder="Phone" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                </StackLayout>
+
+                <!-- Symptoms and Medical History -->
+
+                <Label Text="Describe any known allergies:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Editor Placeholder="Enter details here" HeightRequest="40" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label Text="Has anyone in your family ever had a brain tumor, seizures or epilepsy, dementia, Parkinson’s, multiple sclerosis, muscle disease, neuropathy, other neurological disorder? If yes, please describe and give relationship of family member:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <CheckBox x:Name="familyNeuroHistoryCB" />
+
+                <Label Text="Any other medical problems run in your family?" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Editor Placeholder="Enter details here" HeightRequest="40" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label Text="Do you use tobacco products? If yes, describe" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Editor Placeholder="Enter details here" HeightRequest="40" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label Text="Do you consume alcohol? If yes, what/how much per week:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Editor Placeholder="Enter details here" HeightRequest="40" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label Text="Marital Status?" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <CheckBox x:Name="marriedCB" />
+
+                <Label Text="Do you have children?" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <CheckBox x:Name="childrenCB" />
+
+                <Label Text="Are you receiving disability? YES / NO  If yes, are you on permanent or temporary disability?" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter details here" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label Text="Are you experiencing any sexual dysfunction?" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter details here" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label Text="Are you trying for a pregnancy?" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter details here" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <Label Text="Do you have a healthcare proxy? If yes, who is it? If no, and want more information, please ask the receptionist." TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Entry Placeholder="Enter details here" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <!-- Current Medications -->
+                <Label Text="LIST CURRENT MEDICATIONS:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Editor Placeholder="Drug Name, Dose, Frequency, Refills Needed?" HeightRequest="80" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+
+                <!-- Review of Systems -->
+                <Label Text="REVIEW OF SYSTEMS:" TextColor="{StaticResource White}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+
+                <!-- Neurological System -->
+                <Label Text="Neurological System" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you have a headache?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="headacheCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do your headaches wake you up at night?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="headacheAtNightCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have seizures?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="seizuresCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Additional Neurological Questions -->
+                <Label Text="Do you have weakness?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="weaknessCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have numbness?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="numbnessCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have dizziness?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="dizzinessCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have double vision?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="doubleVisionCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have blurred vision?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="blurredVisionCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have confusion?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="confusionCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have memory loss?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="memoryLossCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have trouble walking?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="troubleWalkingCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Can you take care of yourself?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="selfCareCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you fall?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="fallCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Mental Health -->
+                <Label Text="Mental Health" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you feel depressed?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="depressedCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have sleeping problems?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="sleepingProblemsCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you feel anxious?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="anxiousCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you feel threatened by anyone?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="threatenedCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Are you being mentally abused by anyone?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="mentalAbuseCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Respiratory System -->
+                <Label Text="Respiratory System" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you have a cough?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="coughCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you cough up thick mucus?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="thickMucusCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Have you coughed up blood?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="coughedBloodCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have shortness of breath?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="shortnessBreathCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Skin -->
+                <Label Text="Skin" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you have a rash?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="rashCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Cardiac System -->
+                <Label Text="Cardiac System" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you have chest pains?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="chestPainsCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have palpitations?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="palpitationsCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Gastrointestinal System -->
+                <Label Text="Gastrointestinal System" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Have you lost your appetite?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="lostAppetiteCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Have you lost weight unexpectedly?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="lostWeightCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have indigestion or heartburn?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="indigestionCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have stomach pains?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="stomachPainsCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have constipation or diarrhea?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="constipationDiarrheaCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have nausea or vomiting?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="nauseaVomitingCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Urinary System -->
+                <Label Text="Urinary System" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you have burning while urinating?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="burningUrinatingCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have blood in your urine?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="bloodUrineCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you wake up at night to urinate?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="nightUrinatingCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have to rush to urinate?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="rushUrinatingCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you lose control over urinating or stool?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="controlUrinatingStoolCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- Musculoskeletal System -->
+                <Label Text="Musculoskeletal System" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you have neck pain?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="neckPainCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have back pain?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="backPainCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have joint pains? Where?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="jointPainsCB" Color="{StaticResource Blue100Accent}" />
+                <Entry Placeholder="Enter details here" TextColor="{StaticResource White}" BackgroundColor="{StaticResource Primary}"/>
+                <Label Text="Are you being physically abused by anyone?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="physicalAbuseCB" Color="{StaticResource Blue100Accent}" />
+
+                <!-- General -->
+                <Label Text="General" TextColor="{StaticResource White}" FontSize="20" FontAttributes="Bold"/>
+                <Label Text="Do you have fevers?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="feversCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have night sweats?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="nightSweatsCB" Color="{StaticResource Blue100Accent}" />
+                <Label Text="Do you have fatigue?" TextColor="{StaticResource White}" FontSize="18"/>
+                <CheckBox x:Name="fatigueCB" Color="{StaticResource Blue100Accent}" />
+
+
+
+            </StackLayout>
+            <Button
+                Text="Save"
+                TextColor="Black"
+                FontSize="20"
+                FontAttributes="Bold"
+                BackgroundColor="{StaticResource Secondary}"
+                Command="Save"
+                Margin="0,10"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

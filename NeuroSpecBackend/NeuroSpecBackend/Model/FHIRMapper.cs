@@ -93,7 +93,7 @@ namespace NeuroSpecBackend.Model
 
             return diagnosticReport;
         }
-        public static MedicationRequest ToHl7MedicationRequest(Prescription prescription,List<IssueDrug> issueDrugs)
+        public async static Task<MedicationRequest> ToHl7MedicationRequest(Prescription prescription,List<IssueDrug> issueDrugs)
         {
             var hl7MedicationRequest = new MedicationRequest();
             hl7MedicationRequest.Status = MedicationRequest.MedicationrequestStatus.Active;
@@ -112,10 +112,12 @@ namespace NeuroSpecBackend.Model
 
             hl7MedicationRequest.AuthoredOn = prescription.TimeStamp.ToLongDateString();
             IssueDrugService issueDrugService = new IssueDrugService();
-            List<Coding> issuedDrugs = new List<Coding>();
-            foreach (var issueDrug in issueDrugs)
+            List<IssueDrug> issuedDrugs = await issueDrugService.GetAllIssueDrugsByPrescriptionIDAsync(prescription.PrescriptionID);
+            List<Coding> issuedDrugsCoding = new List<Coding>();
+
+            foreach (var issueDrug in issuedDrugs)
             {
-                issuedDrugs.Add(new Coding
+                issuedDrugsCoding.Add(new Coding
                 {
                     System = "http://hlsemops.microsoft.com",
                     Code = issueDrug.Name
@@ -123,7 +125,7 @@ namespace NeuroSpecBackend.Model
             }
             CodeableConcept codeableConcept = new CodeableConcept
             {
-                Coding = issuedDrugs
+                Coding = issuedDrugsCoding
             };
 
             hl7MedicationRequest.Medication = new CodeableReference

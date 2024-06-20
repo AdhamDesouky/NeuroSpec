@@ -110,26 +110,7 @@ public partial class ChatBotMainView : ContentPage
         chatStack.Children.Add(CreateNewSenderMessage(text));
         chatEntry.Text = "";
 
-        string finalText = "";
-        foreach (char i in text)
-        {
-            if (arabicLetters.Contains(i))
-            {
-                finalText += i;
-            }
-        }
-
-        string responseMessage = "";
-
-        if (finalText.Contains("I am feeling dizy", StringComparison.OrdinalIgnoreCase))
-        {
-            responseMessage = "I think you mean 'dizzy'\n Oh! Sorry for hearing this...\n Here are some tips that can help:\n- Rest in a quiet, dark room.\n- Stay hydrated.\n- Avoid sudden movements.\n- If symptoms persist, seek medical advice.";
-        }
-        else
-        {
-            responseMessage = "I think you mean 'dizzy'\n \n Oh! Sorry for hearing this...\n Here are some tips that can help:\n- Rest in a quiet, dark room.\n- Stay hydrated.\n- Avoid sudden movements.\n- If symptoms persist, seek medical advice.";
-        }
-
+        var responseMessage= await _chatBotService.ProcessMessageAsync(text);
 
         chatStack.Children.Add(CreateNewResponseMessage(responseMessage));
         ScrollToBottom();

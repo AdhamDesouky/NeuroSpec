@@ -5,7 +5,7 @@
              x:Class="NeuroSpecCompanion.Views.MainPage"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Primary}"
-             Title="LoginPage">
+             Title="Medical Form">
 
     <ScrollView>
         <VerticalStackLayout Margin="20" Spacing="20">
@@ -16,11 +16,8 @@
                 <Grid VerticalOptions="Center" HeightRequest="50" Padding="10, 0">
                     <Label Text="NeuroSpec" HorizontalOptions="Center" VerticalOptions="Center"
                            FontSize="40" TextColor="{StaticResource White}" FontAttributes="Bold"/>
-                    
                 </Grid>
             </Frame>
-
-           
 
             <!-- Welcome Message -->
             <Label Text="Welcome, let's navigate your journey with care and support!"
@@ -29,10 +26,10 @@
 
             <!-- Username Section -->
             <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Spacing="10">
-                <Label Text="Username:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
+                <Label Text="Patient ID:" TextColor="{StaticResource White}" FontSize="18" FontAttributes="Bold"/>
                 <StackLayout Orientation="Horizontal" VerticalOptions="Center" Spacing="10">
                     <Image Source="username_icon.png" HeightRequest="24" WidthRequest="24"/>
-                    <Entry x:Name="userNameEntry" Placeholder="Username" TextColor="{StaticResource White}"
+                    <Entry x:Name="userNameEntry" Placeholder="Your ID Here" TextColor="{StaticResource White}"
                            HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Primary}" 
                            FontSize="18" />
                 </StackLayout>

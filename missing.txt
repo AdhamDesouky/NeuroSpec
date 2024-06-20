@@ -31,15 +31,15 @@ ScanTest, Exercise, and Drug are to be read from ontology search selections and 
 - path game 
 - progress tracker
 ✅ check appointment booking 
-- resolve icon size 
-- color of the system
-- working pages
-- slow demo with voice-over 
+✅ resolve icon size 
+✅ color of the system
+✅ working pages
+✅ slow demo with voice-over 
 ✅ more FHIR resources (7ateet el prescription kman, kda total 3 kfaya)
-- sending and receiving prescriptions
+✅ sending and receiving prescriptions
 ✅ Appointment request with the receptionist (abdo 3aref)
 - emergency contact to see GPS 
-- prescription dropdown
+✅ prescription dropdown
 
 
 
@@ -59,6 +59,11 @@ not to touch:
 - dont type fast in the freq tb in prescription (crash)
 - dont add and save in calendar page as nothing happens
 - dont switch days in dashboard (crash)
+
+
+- medical history form
+- Mention FHIR Resources
+- chatGpt
 
 
 

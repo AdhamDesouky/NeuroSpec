@@ -104,7 +104,7 @@ namespace NeuroSpecBackend.Controllers
             }
             var issueDrugs = await _IssueDrugs.Find(i => i.PrescriptionID == prescriptionID).ToListAsync();
 
-            return FHIRMapper.ToHl7MedicationRequest(prescription, issueDrugs);
+            return await FHIRMapper.ToHl7MedicationRequest(prescription, issueDrugs);
         }
     }
 }
