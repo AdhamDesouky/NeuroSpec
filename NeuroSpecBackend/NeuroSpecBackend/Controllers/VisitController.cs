@@ -164,7 +164,7 @@ namespace NeuroSpecBackend.Controllers
                 v.TimeStamp <= endOfDay
             ).ToListAsync();
 
-            if (visits == null || visits.Count == 0)
+            if (visits == null)
             {
                 return NotFound();
             }
